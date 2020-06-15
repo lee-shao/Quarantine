@@ -59,9 +59,9 @@ export class SkillTreeView extends PopupWindow {
 
     private addSkillButtons(): void {
         const medicalTreatmentButton = new Icon(this.scene, this.x + 960, this.y + 250, 'medical-treatment', this, true).setScale(0.75).setName('mtButton');  //.setInteractive();
-        const policeButton = new Icon(this.scene, this.x + 1240, this.y + 400, 'police', this, true).setScale(0.75).setName('pButton');  //.setInteractive();
+        const policeButton = new Icon(this.scene, this.x + 1240, this.y + 400, 'police-icon', this, true).setScale(0.75).setName('pButton');  //.setInteractive();
         const testingButton = new Icon(this.scene, this.x + 1160, this.y + 700, 'testing', this, true).setScale(0.75).setName('tButton');    //.setInteractive();
-        const lockdownButton = new Icon(this.scene, this.x + 760, this.y + 700, 'lockdown', this, true).setScale(0.75).setName('ldButton');   //.setInteractive();
+        const lockdownButton = new Icon(this.scene, this.x + 760, this.y + 700, 'lockdown-icon', this, true).setScale(0.75).setName('ldButton');   //.setInteractive();
         const citizensButton = new Icon(this.scene, this.x + 680, this.y + 400, 'citizen', this, true).setScale(0.75).setName('cButton');    //.setInteractive();
 
         this.add(medicalTreatmentButton);

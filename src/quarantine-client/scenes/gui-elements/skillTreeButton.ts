@@ -13,7 +13,7 @@ export class SkillTreeButton extends GuiElement {
 
     /** Create and add a skill tree button to the GuiScene */
     public create(): void {
-        const yourSkills = this.scene.add.sprite(1850, 550, 'your_skills').setInteractive()
+        const yourSkills = this.scene.add.sprite(innerWidth*0.95, innerHeight*0.6, 'your_skills').setInteractive()
             .on('pointerover', () => {
                 yourSkills.setScale(0.6);
             })
