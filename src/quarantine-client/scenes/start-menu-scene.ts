@@ -99,7 +99,7 @@ export class StartMenuScene extends Phaser.Scene {
             this.createDifficultyButtons();
         });
         // Delete later
-        /*
+        
         const skipButton = this.add.sprite(1800, 750, 'Skip').setScale(0.4);
         skipButton.setInteractive();
         skipButton.on('pointerdown', () => {
@@ -108,7 +108,7 @@ export class StartMenuScene extends Phaser.Scene {
             this.scene.setVisible(false);
             this.loadScenes();
         });
-        */
+        
     }
 
     createDifficultyButtons(): void {

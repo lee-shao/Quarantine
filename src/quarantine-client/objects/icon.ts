@@ -21,23 +21,25 @@ export class Icon extends Phaser.GameObjects.Image {
         this.skillIsActive = active;
 
         this.addButtonAnimations(texture, skillTree);
+        this.setScale(0.4);
+        this.setName(texture);
 
-        //this.scene.add.existing(this);
+        //scene.add.existing(this);
     }
 
     private addButtonAnimations(key: string, skillTree: SkillTreeView): void {
         this.setInteractive()
         .on('pointerover', () => {
-            this.setScale(0.85);
+            this.setScale(0.5);
         })
         .on('pointerout', () => {
-            this.setScale(0.75);
+            this.setScale(0.4);
         })
         .on('pointerdown', () => {
-            this.setScale(0.75);
+            this.setScale(0.4);
         })
         .on('pointerup', () => {
-            this.setScale(0.85);
+            this.setScale(0.5);
             skillTree.openSubtree(key);
             
             if(key == 'additional-medical-supplies-1') {
