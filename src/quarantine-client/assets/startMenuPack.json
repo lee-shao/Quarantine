@@ -1,0 +1,117 @@
+{
+    "prelaod": {
+        "files": [
+            {
+                "type": "image",
+                "key": "Background",
+                "url": "assets/sprites/start-menu/quarantine-logo-17.png"
+            },
+            {
+                "type": "image",
+                "key": "Attributes",
+                "url": "assets/sprites/start-menu/difficulty-attributes.png"
+            },
+            {
+                "type": "image",
+                "key": "Sticker",
+                "url": "assets/sprites/start-menu/old-virus-sticker.png"
+            },
+            {
+                "type": "image",
+                "key": "EasyA",
+                "url": "assets/sprites/start-menu/easy-button-active.png"
+            },
+            {
+                "type": "image",
+                "key": "EasyH",
+                "url": "assets/sprites/start-menu/easy-button-hovered.png"
+            },
+            {
+                "type": "image",
+                "key": "Easy",
+                "url": "assets/sprites/start-menu/easy-button-neutral.png"
+            },
+            {
+                "type": "image",
+                "key": "EasyP",
+                "url": "assets/sprites/start-menu/easy-button-pressed.png"
+            },
+            {
+                "type": "image",
+                "key": "NormalA",
+                "url": "assets/sprites/start-menu/normal-button-active.png"
+            },
+            {
+                "type": "image",
+                "key": "NormalH",
+                "url": "assets/sprites/start-menu/normal-button-hovered.png"
+            },
+            {
+                "type": "image",
+                "key": "Normal",
+                "url": "assets/sprites/start-menu/normal-button-neutral.png"
+            },
+            {
+                "type": "image",
+                "key": "NormalP",
+                "url": "assets/sprites/start-menu/normal-button-pressed.png"
+            },
+            {
+                "type": "image",
+                "key": "HardA",
+                "url": "assets/sprites/start-menu/hard-button-active.png"
+            },
+            {
+                "type": "image",
+                "key": "HardH",
+                "url": "assets/sprites/start-menu/hard-button-hovered.png"
+            },
+            {
+                "type": "image",
+                "key": "Hard",
+                "url": "assets/sprites/start-menu/hard-button-neutral.png"
+            },
+            {
+                "type": "image",
+                "key": "HardP",
+                "url": "assets/sprites/start-menu/hard-button-pressed.png"
+            },
+            {
+                "type": "image",
+                "key": "NewGameH",
+                "url": "assets/sprites/start-menu/new-game-button-hovered.png"
+            },
+            {
+                "type": "image",
+                "key": "NewGame",
+                "url": "assets/sprites/start-menu/new-game-button-neutral.png"
+            },
+            {
+                "type": "image",
+                "key": "NewGameP",
+                "url": "assets/sprites/start-menu/new-game-button-pressed.png"
+            },
+            {
+                "type": "image",
+                "key": "StartH",
+                "url": "assets/sprites/start-menu/start-button-hovered.png"
+            },
+            {
+                "type": "image",
+                "key": "Start",
+                "url": "assets/sprites/start-menu/start-button-neutral.png"
+            },
+            {
+                "type": "image",
+                "key": "StartP",
+                "url": "assets/sprites/start-menu/start-button-pressed.png"
+            },
+            {
+                "type": "image",
+                "key": "Skip",
+                "url": "assets/sprites/arrow-button-right.png"
+            }
+        ]
+    }
+}
+  

@@ -503,6 +503,11 @@
         },
         {
           "type": "image",
+          "key": "police-icon",
+          "url": "assets/sprites/log-book/police.png"
+        },
+        {
+          "type": "image",
           "key": "vaccine",
           "url": "assets/sprites/skill-tree/vaccine.png"
         },
@@ -745,6 +750,16 @@
         "type": "image",
         "key": "upgrade-test-kit-2",
         "url": "assets/sprites/skill-tree/upgrade-test-kit-2.png"
+      },
+      {
+        "type": "image",
+        "key": "status-bar",
+        "url": "assets/sprites/status-bar/bar.png"
+      },
+      {
+        "type": "image",
+        "key": "cash",
+        "url": "assets/sprites/status-bar/cash.png"
       }
     ]
   }

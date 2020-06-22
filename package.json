@@ -1,7 +1,7 @@
 {
-  "name": "quarantine-prototype",
+  "name": "quarantine",
   "version": "1.0.0",
-  "description": "A throwaway prototype for project 'quarantine'.",
+  "description": "A game about a virus which has to be contained.",
   "devDependencies": {
     "@types/jest": "^25.2.1",
     "@typescript-eslint/eslint-plugin": "^2.27.0",
