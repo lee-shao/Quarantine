@@ -15,14 +15,15 @@ export class SkillTreeView extends PopupWindow {
     private nextSkillPointPrice: number;
 
     constructor(scene: Phaser.Scene) {
-        super(scene, 0, 5, 'open-notebook', 1550, 50, true, [], false);
-        /*super(scene, 0, 5, 'open-notebook', 1550, 50, true, [
-            new Phaser.GameObjects.Text(scene, 820, 50, 'Skill Tree', { 
+        super(scene, 0, 5, 'open-notebook2', innerWidth*0.805, innerHeight*0.055, true, [
+            new Phaser.GameObjects.Image(scene, innerWidth*0.705, innerHeight*0.5, 'transparent-area').setOrigin(0.5),
+            new Phaser.GameObjects.Text(scene, innerWidth*0.7, innerHeight*0.1, 'Skillbeschreibung', {
                 color: 'Black', 
-                fontSize: '70px',
+                fontSize: '50px',
                 fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif'
-            }),
-        ], false);*/
+            }).setOrigin(0.5)
+        ],
+        false);
 
         this.availableSkillPoints = SkillController.getInstance().getAvailableSkillPoints();
         this.nextSkillPointPrice = SkillController.getInstance().getNextSkillPointPrice();
@@ -59,18 +60,20 @@ export class SkillTreeView extends PopupWindow {
     }
 
     private addSkillButtons(): void {
-        const title = new Phaser.GameObjects.Text(this.scene, innerWidth/2, innerHeight*0.1, 'Skill Tree', {
+        const title = new Phaser.GameObjects.Text(this.scene, innerWidth*0.35, innerHeight*0.1, 'Skill Tree', {
             color: 'Black', 
             fontSize: '70px',
             fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif'
         }).setOrigin(0.5).setName('skilltree');
-        const medicalTreatmentButton = new Icon(this.scene, innerWidth*0.2, innerHeight*0.25, 'medical-treatment', this, true);
-        const policeButton = new Icon(this.scene, innerWidth*0.275, innerHeight*0.25, 'police-icon', this, true);
-        const testingButton = new Icon(this.scene, innerWidth*0.35, innerHeight*0.25, 'testing', this, true);
-        const lockdownButton = new Icon(this.scene, innerWidth*0.425, innerHeight*0.25, 'lockdown-icon', this, true);
-        const citizensButton = new Icon(this.scene, innerWidth*0.5, innerHeight*0.25, 'citizen', this, true);
+        const connections = new Phaser.GameObjects.Image(this.scene, innerWidth*0.35, innerHeight*0.5, 'connections').setName('connections');
+        const medicalTreatmentButton = new Icon(this.scene, innerWidth*0.35, innerHeight*0.275, 'medical-treatment', this, true);
+        const policeButton = new Icon(this.scene, innerWidth*0.465, innerHeight*0.45, 'police-skill', this, true);
+        const testingButton = new Icon(this.scene, innerWidth*0.425, innerHeight*0.725, 'testing', this, true);
+        const lockdownButton = new Icon(this.scene, innerWidth*0.28, innerHeight*0.725, 'lockdown-skill', this, true);
+        const citizensButton = new Icon(this.scene, innerWidth*0.24, innerHeight*0.45, 'citizen', this, true);
 
         this.add(title);
+        this.add(connections);
         this.add(medicalTreatmentButton);
         this.add(policeButton);
         this.add(testingButton);
@@ -83,11 +86,12 @@ export class SkillTreeView extends PopupWindow {
         this.removeMainSkillButtons();
         this.addBackButton(key);
         if(key == 'medical-treatment') {
-            const title = new Phaser.GameObjects.Text(this.scene, innerWidth/2, innerHeight*0.1, 'Medical-Treatment', {
+            const title = new Phaser.GameObjects.Text(this.scene, innerWidth*0.35, innerHeight*0.1, 'Medical-Treatment', {
                 color: 'Black', 
                 fontSize: '70px',
                 fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif'
             }).setOrigin(0.5).setName('medical-treatment-title');
+            const connections = new Phaser.GameObjects.Image(this.scene, innerWidth*0.35, innerHeight*0.5, 'medical-treatment-connections').setName('medical-treatment-connections');
             const additionalMedicalSuppliesI = new Icon(this.scene, innerWidth*0.35, innerHeight*0.35, 'additional-medical-supplies-1', this, true);
             const additionalMedicalSuppliesII = new Icon(this.scene, innerWidth*0.25, innerHeight*0.475, 'additional-medical-supplies-2', this, true);
             const upgradeMedicalFacilitiesI = new Icon(this.scene, innerWidth*0.45, innerHeight*0.475, 'upgrade-medical-facilities-1', this, true);
@@ -98,6 +102,7 @@ export class SkillTreeView extends PopupWindow {
             const medicinIII = new Icon(this.scene, innerWidth*0.35, innerHeight*0.85, 'medicine-3', this, true);
 
             this.add(title);
+            this.add(connections);
             this.add(additionalMedicalSuppliesI);
             this.add(additionalMedicalSuppliesII);
             this.add(upgradeMedicalFacilitiesI);
@@ -108,12 +113,13 @@ export class SkillTreeView extends PopupWindow {
             this.add(medicinIII);
         }
 
-        if(key == 'police-icon') {
-            const title = new Phaser.GameObjects.Text(this.scene, innerWidth/2, innerHeight*0.1, 'Police', {
+        if(key == 'police-skill') {
+            const title = new Phaser.GameObjects.Text(this.scene, innerWidth*0.35, innerHeight*0.1, 'Police', {
                 color: 'Black', 
                 fontSize: '70px',
                 fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif'
             }).setOrigin(0.5).setName('police-title');
+            const connections = new Phaser.GameObjects.Image(this.scene, innerWidth*0.35, innerHeight*0.5, 'police-connections').setName('police-connections');
             const learnExpertise = new Icon(this.scene, this.x + 960, this.y + 300, 'expertise', this, true);
             const militaryI = new Icon(this.scene, this.x + 760, this.y + 400, 'military-1', this, true);
             const militaryII = new Icon(this.scene, this.x + 1160, this.y + 400, 'military-2', this, true);
@@ -123,6 +129,7 @@ export class SkillTreeView extends PopupWindow {
             const trackingEncounters = new Icon(this.scene, this.x + 1160, this.y + 600, 'tracking', this, true);
 
             this.add(title);
+            this.add(connections);
             this.add(learnExpertise);
             this.add(militaryI);
             this.add(militaryII);
@@ -133,11 +140,12 @@ export class SkillTreeView extends PopupWindow {
         }
 
         if(key == 'testing') {
-            const title = new Phaser.GameObjects.Text(this.scene, innerWidth/2, innerHeight*0.1, 'Testing', {
+            const title = new Phaser.GameObjects.Text(this.scene, innerWidth*0.35, innerHeight*0.1, 'Testing', {
                 color: 'Black', 
                 fontSize: '70px',
                 fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif'
             }).setOrigin(0.5).setName('testing-title');
+            const connections = new Phaser.GameObjects.Image(this.scene, innerWidth*0.35, innerHeight*0.5, 'testing-connections').setName('testing-connections');
             const additionalTestKits = new Icon(this.scene, this.x + 960, this.y + 300, 'additional-test-kits', this, true);
             const upgradeTestKitsI = new Icon(this.scene, this.x + 760, this.y + 400, 'upgrade-test-kit-1', this, true);
             const upgradeTestKitsII = new Icon(this.scene, this.x + 1160, this.y + 400, 'upgrade-test-kit-2', this, true);
@@ -146,6 +154,7 @@ export class SkillTreeView extends PopupWindow {
             const immunityTests = new Icon(this.scene, this.x + 1360, this.y + 500, 'immunity-tests', this, true); 
 
             this.add(title);
+            this.add(connections);
             this.add(additionalTestKits);
             this.add(upgradeTestKitsI);
             this.add(upgradeTestKitsII);
@@ -154,12 +163,13 @@ export class SkillTreeView extends PopupWindow {
             this.add(immunityTests);
         }
 
-        if(key == 'lockdown-icon') {
-            const title = new Phaser.GameObjects.Text(this.scene, innerWidth/2, innerHeight*0.1, 'Lockdown', {
+        if(key == 'lockdown-skill') {
+            const title = new Phaser.GameObjects.Text(this.scene, innerWidth*0.35, innerHeight*0.1, 'Lockdown', {
                 color: 'Black', 
                 fontSize: '70px',
                 fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif'
             }).setOrigin(0.5).setName('lockdown-title');
+            const connections = new Phaser.GameObjects.Image(this.scene, innerWidth*0.35, innerHeight*0.5, 'lockdown-connections').setName('lockdown-connections');
             const lockdownStageI = new Icon(this.scene, this.x + 960, this.y + 300, 'lockdown-stage-1', this, true);
             const lockdownStageII = new Icon(this.scene, this.x + 760, this.y + 400, 'lockdown-stage-2', this, true);
             const lockdownStageIII = new Icon(this.scene, this.x + 1160, this.y + 400, 'lockdown-stage-3', this, true);
@@ -170,6 +180,7 @@ export class SkillTreeView extends PopupWindow {
             const fincancialSupportII = new Icon(this.scene, this.x + 960, this.y + 700, 'financial-support-2', this, true);
 
             this.add(title);
+            this.add(connections);
             this.add(lockdownStageI);
             this.add(lockdownStageII);
             this.add(lockdownStageIII);
@@ -181,11 +192,12 @@ export class SkillTreeView extends PopupWindow {
         }
 
         if(key == 'citizen') {
-            const title = new Phaser.GameObjects.Text(this.scene, innerWidth/2, innerHeight*0.1, 'Citizen', {
+            const title = new Phaser.GameObjects.Text(this.scene, innerWidth*0.35, innerHeight*0.1, 'Citizen', {
                 color: 'Black', 
                 fontSize: '70px',
                 fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif'
             }).setOrigin(0.5).setName('citizen-title');
+            const connections = new Phaser.GameObjects.Image(this.scene, innerWidth*0.35, innerHeight*0.5, 'citizens-connections').setName('citizens-connections');
             const expertiseI = new Icon(this.scene, this.x + 960, this.y + 300, 'expertise-1', this, true);
             const expertiseII = new Icon(this.scene, this.x + 760, this.y + 400, 'expertise-2', this, true);
             const expertiseIII = new Icon(this.scene, this.x + 1160, this.y + 400, 'expertise-3', this, true);
@@ -193,6 +205,7 @@ export class SkillTreeView extends PopupWindow {
             const trackingAppII = new Icon(this.scene, this.x + 760, this.y + 600, 'tracking-2', this, true);
 
             this.add(title);
+            this.add(connections);
             this.add(expertiseI);
             this.add(expertiseII);
             this.add(expertiseIII);
@@ -203,16 +216,18 @@ export class SkillTreeView extends PopupWindow {
 
     private removeMainSkillButtons(): void {
         this.getByName('skilltree').destroy();
+        this.getByName('connections').destroy();
         this.getByName('medical-treatment').destroy();
-        this.getByName('police-icon').destroy();
+        this.getByName('police-skill').destroy();
         this.getByName('testing').destroy();
-        this.getByName('lockdown-icon').destroy();
+        this.getByName('lockdown-skill').destroy();
         this.getByName('citizen').destroy();
     }
 
     public removeSkillButtons(key: string): void {
         if(key == 'medical-treatment') {
             this.getByName('medical-treatment-title').destroy();
+            this.getByName('medical-treatment-connections').destroy();
             this.getByName('additional-medical-supplies-1').destroy();
             this.getByName('additional-medical-supplies-2').destroy();
             this.getByName('upgrade-medical-facilities-1').destroy();
@@ -222,8 +237,9 @@ export class SkillTreeView extends PopupWindow {
             this.getByName('medicine-2').destroy();
             this.getByName('medicine-3').destroy();
         }
-        if(key == 'police-icon') {
+        if(key == 'police-skill') {
             this.getByName('police-title').destroy();
+            this.getByName('police-connections').destroy();
             this.getByName('expertise').destroy();
             this.getByName('military-1').destroy();
             this.getByName('military-2').destroy();
@@ -234,6 +250,7 @@ export class SkillTreeView extends PopupWindow {
         }
         if(key == 'testing') {
             this.getByName('testing-title').destroy();
+            this.getByName('testing-connections').destroy();
             this.getByName('additional-test-kits').destroy();
             this.getByName('upgrade-test-kit-1').destroy();
             this.getByName('upgrade-test-kit-2').destroy();
@@ -241,8 +258,9 @@ export class SkillTreeView extends PopupWindow {
             this.getByName('dna').destroy();
             this.getByName('immunity-tests').destroy();
         }
-        if(key == 'lockdown-icon') {
+        if(key == 'lockdown-skill') {
             this.getByName('lockdown-title').destroy();
+            this.getByName('lockdown-connections').destroy();
             this.getByName('lockdown-stage-1').destroy();
             this.getByName('lockdown-stage-2').destroy();
             this.getByName('lockdown-stage-3').destroy();
@@ -254,6 +272,7 @@ export class SkillTreeView extends PopupWindow {
         }
         if(key == 'citizen') {
             this.getByName('citizen-title').destroy();
+            this.getByName('citizens-connections').destroy();
             this.getByName('expertise-1').destroy();
             this.getByName('expertise-2').destroy();
             this.getByName('expertise-3').destroy();
