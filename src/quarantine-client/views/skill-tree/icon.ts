@@ -1,6 +1,10 @@
 import { SkillController } from "../../controller/skillController";
 import { SkillTreeView } from "./skillTreeView";
 
+/**
+ * 
+ * @author Shao
+ */
 export class Icon extends Phaser.GameObjects.Image {
     
     /** Number of currently available skill points */
@@ -23,8 +27,6 @@ export class Icon extends Phaser.GameObjects.Image {
         this.addButtonAnimations(texture, skillTree);
         this.setScale(0.4);
         this.setName(texture);
-
-        //scene.add.existing(this);
     }
 
     private addButtonAnimations(key: string, skillTree: SkillTreeView): void {
