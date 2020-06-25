@@ -17,6 +17,12 @@ export class SkillTreeView extends PopupWindow {
     /** Purchase price of the next skill point */
     private nextSkillPointPrice: number;
 
+    public skillDescription: Phaser.GameObjects.Text;
+
+    public buyButton: Phaser.GameObjects.Image;
+    
+    public descriptions = require("./../../../../res/json/skill-descriptions.json");
+
     constructor(scene: Phaser.Scene) {
         super(scene, 0, 5, 'open-notebook2', innerWidth*0.805, innerHeight*0.055, true, [
             new Phaser.GameObjects.Image(scene, innerWidth*0.705, innerHeight*0.5, 'transparent-area').setOrigin(0.5),
@@ -28,6 +34,15 @@ export class SkillTreeView extends PopupWindow {
         ],
         false);
 
+        this.skillDescription = new Phaser.GameObjects.Text(this.scene, innerWidth*0.585, innerHeight*0.215, ' ', {
+            color: 'Black', 
+            fontSize: '20px',
+            fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif'
+        });
+        this.add(this.skillDescription);
+
+        this.buyButton = new Phaser.GameObjects.Image(this.scene, innerWidth*0.775, innerHeight*0.9, 'buyButton').setScale(0.4).setOrigin(0.5).setName('buyButton').setInteractive();
+
         this.availableSkillPoints = SkillController.getInstance().getAvailableSkillPoints();
         this.nextSkillPointPrice = SkillController.getInstance().getNextSkillPointPrice();
 
@@ -36,7 +51,6 @@ export class SkillTreeView extends PopupWindow {
     }
 
     private addBackButton(key: string): void {
-        
         const backButton = new Phaser.GameObjects.Image(this.scene, 320, 870, 'arrow-next');
         backButton.angle = 180;
 
@@ -57,8 +71,26 @@ export class SkillTreeView extends PopupWindow {
             this.removeSkillButtons(key);
             backButton.destroy();
         });
-
         this.add(backButton);
+    }
+
+    public addBuyButton(key: string, skillTree: SkillTreeView): void {
+        this.buyButton
+        .on('pointerover', () => {
+            this.buyButton.setTexture('buyButtonH');
+        })
+        .on('pointerout', () => {
+            this.buyButton.setTexture('buyButton');
+        })
+        .on('pointerdown', () => {
+            this.buyButton.setTexture('buyButtonP')
+        })
+        .on('pointerup', () => {
+            this.buyButton.setTexture('buyButtonA')
+            this.buyButton.disableInteractive();
+            this.activateSkill(key, skillTree);
+        });
+        this.add(this.buyButton);
     }
 
     private addSkillButtons(): void {
@@ -70,7 +102,7 @@ export class SkillTreeView extends PopupWindow {
         const connections = new Phaser.GameObjects.Image(this.scene, innerWidth*0.35, innerHeight*0.5, 'connections').setName('connections');
         const medicalTreatmentButton = new Icon(this.scene, innerWidth*0.35, innerHeight*0.275, 'medical-treatment', this, true);
         const policeButton = new Icon(this.scene, innerWidth*0.465, innerHeight*0.45, 'police-skill', this, true);
-        const testingButton = new Icon(this.scene, innerWidth*0.425, innerHeight*0.725, 'testing', this, true);
+        const testingButton = new Icon(this.scene, innerWidth*0.425, innerHeight*0.725, 'testing-skill', this, true);
         const lockdownButton = new Icon(this.scene, innerWidth*0.28, innerHeight*0.725, 'lockdown-skill', this, true);
         const citizensButton = new Icon(this.scene, innerWidth*0.24, innerHeight*0.45, 'citizen', this, true);
 
@@ -145,7 +177,7 @@ export class SkillTreeView extends PopupWindow {
             this.add(trackingEncounters);
         }
 
-        if(key == 'testing') {
+        if(key == 'testing-skill') {
             const title = new Phaser.GameObjects.Text(this.scene, innerWidth*0.35, innerHeight*0.1, 'Testing', {
                 color: 'Black', 
                 fontSize: '70px',
@@ -231,12 +263,13 @@ export class SkillTreeView extends PopupWindow {
         this.getByName('connections').destroy();
         this.getByName('medical-treatment').destroy();
         this.getByName('police-skill').destroy();
-        this.getByName('testing').destroy();
+        this.getByName('testing-skill').destroy();
         this.getByName('lockdown-skill').destroy();
         this.getByName('citizen').destroy();
     }
 
     public removeSkillButtons(key: string): void {
+        this.eraseDescription();
         if(key == 'medical-treatment') {
             this.getByName('medical-treatment-title').destroy();
             this.getByName('medical-treatment-connections').destroy();
@@ -262,7 +295,7 @@ export class SkillTreeView extends PopupWindow {
             this.getByName('testing').destroy();
             this.getByName('tracking').destroy();
         }
-        if(key == 'testing') {
+        if(key == 'testing-skill') {
             this.getByName('testing-title').destroy();
             this.getByName('testing-connections').destroy();
             this.getByName('testing').destroy();
@@ -297,67 +330,128 @@ export class SkillTreeView extends PopupWindow {
             this.getByName('tracking-2').destroy();
         }
     }
-/*
 
-    
-
-    /*private setColor(sC: SkillController, x: number, y: number, skill?: Function): Phaser.GameObjects.Image {
-        let color = '';
-       
-        if(skill() == true) {
-            color = 'circle-green';
-        } else {
-            if(sC.skillBuyable(sC) == true) {
-                color = 'circle-orange';
-            } else {
-                 color = 'circle-red';
-            }
+    public activateSkill(key: string, skillTree: SkillTreeView): void {
+        if(key == 'additional-medical-supplies-1') {
+            SkillController.getInstance().activateAdditionalMedicalSuppliesI(SkillController.getInstance());
         }
-        const iconColor = this.scene.add.image(x, y, color).setScale(0.75);
+        if(key == 'additional-medical-supplies-2') {
+            SkillController.getInstance().activateAdditionalMedicalSuppliesII(SkillController.getInstance());
+        }
+        if(key == 'upgrade-medical-facilities-1') {
+            SkillController.getInstance().activateUpgradeMedicalFacilitiesI(SkillController.getInstance());
+        }
+        if(key == 'upgrade-medical-facilities-2') {
+            SkillController.getInstance().activateUpgradeMedicalFacilitiesII(SkillController.getInstance());
+        }
+        if(key == 'upgrade-medical-facilities-3') {
+            SkillController.getInstance().activateUpgradeMedicalFacilitiesIII(SkillController.getInstance());
+        }
+        if(key == 'medicine-1') {
+            SkillController.getInstance().activateMedicineI(SkillController.getInstance());
+        }
+        if(key == 'medicine-2') {
+            SkillController.getInstance().activateMedicineII(SkillController.getInstance());
+        }
+        if(key == 'medicine-3') {
+            SkillController.getInstance().activateMedicineIII(SkillController.getInstance());
+        }
 
-        return iconColor;
+        if(key == 'expertise') {
+            SkillController.getInstance().activateLearnExpertise(SkillController.getInstance());
+        }
+        if(key == 'military-1') {
+            SkillController.getInstance().activateMilitaryI(SkillController.getInstance());
+        }
+        if(key == 'military-2') {
+            SkillController.getInstance().activateMilitaryII(SkillController.getInstance());
+        }
+        if(key == 'military-3') {
+            SkillController.getInstance().activateMilitaryIII(SkillController.getInstance());
+        }
+        if(key == 'police-equipment') {
+            SkillController.getInstance().activatePoliceEquipment(SkillController.getInstance());
+        }
+        if(key == 'testing') {
+            SkillController.getInstance().activateTesting(SkillController.getInstance());
+        }
+        if(key == 'tracking') {
+            SkillController.getInstance().activateTrackingEncounters(SkillController.getInstance());
+        }
+
+        if(key == 'additional-test-kits') {
+            SkillController.getInstance().activateAdditionalTestKits(SkillController.getInstance());
+        }
+        if(key == 'upgrade-test-kit-1') {
+            SkillController.getInstance().activateUpgradeTestKitI(SkillController.getInstance());
+        }
+        if(key == 'upgrade-test-kit-2') {
+            SkillController.getInstance().activateUpgradeTestKitII(SkillController.getInstance());
+        }
+        if(key == 'nationwide-testing') {
+            SkillController.getInstance().activateNationwideTesting(SkillController.getInstance());
+        }
+        if(key == 'dna') {
+            SkillController.getInstance().activatednaRnaCodeSequence(SkillController.getInstance());
+        }
+        if(key == 'immunity-tests') {
+            SkillController.getInstance().activateImmunityTests(SkillController.getInstance());
+        }
+
+        if(key == 'lockdown-stage-1') {
+            SkillController.getInstance().activateLockdownStageI(SkillController.getInstance());
+        }
+        if(key == 'lockdown-stage-2') {
+            SkillController.getInstance().activateLockdownStageII(SkillController.getInstance());
+        }
+        if(key == 'lockdown-stage-3') {
+            SkillController.getInstance().activateLockdownStageIII(SkillController.getInstance());
+        }
+        if(key == 'lockdown-stage-4') {
+            SkillController.getInstance().activateLockdownStageIV(SkillController.getInstance());
+        }
+        if(key == 'public-transport') {
+            SkillController.getInstance().activatePublicTransport(SkillController.getInstance());
+        }
+        if(key == 'restricted-traffic') {
+            SkillController.getInstance().activateRestrictedTraffic(SkillController.getInstance());
+        }
+        if(key == 'financial-support-1') {
+            SkillController.getInstance().activateFinancialSupportI(SkillController.getInstance());
+        }
+        if(key == 'financial-support-2') {
+            SkillController.getInstance().activateFinancialSupportI(SkillController.getInstance());
+        }
+
+        if(key == 'expertise-1') {
+            SkillController.getInstance().activateExpertiseI(SkillController.getInstance());
+        }
+        if(key == 'expertise-2') {
+            SkillController.getInstance().activateExpertiseII(SkillController.getInstance());
+        }
+        if(key == 'expertise-3') {
+            SkillController.getInstance().activateExpertiseIII(SkillController.getInstance());
+        }
+        if(key == 'tracking-1') {
+            SkillController.getInstance().activateTrackingAppI(SkillController.getInstance());
+        }
+        if(key == 'tracking-2') {
+            SkillController.getInstance().activateTrackingAppII(SkillController.getInstance());
+        }
+}
+
+    public showDescription(key: string): void {
+        this.skillDescription.setText(this.descriptions[key]['description']);
     }
 
-    private setIcon(x: number, y: number, texture: string): Phaser.GameObjects.Image {
-        const icon = this.scene.add.image(x, y, texture).setScale(0.75);
-        return icon;
-    }*/
+    public destroyBuyButton(): void {
+        if(this.getByName('buyButton') != null) {
+            this.getByName('buyButton').destroy();
+        }
+    }
 
-    /*private addSkillTitles(): void {
-        this.scene.add.text(960, 200, 'Medical Treatment', {
-            color: 'Black',
-            fontSize: '50px',
-            fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif'
-        }),
-        this.scene.add.text(960, 200, 'Police', {
-            color: 'Black',
-            fontSize: '50px',
-            fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif'
-        }),
-        this.scene.add.text(960, 200, 'Testing', {
-            color: 'Black',
-            fontSize: '50px',
-            fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif'
-        }),
-        new Phaser.GameObjects.Text(this.scene, 960, 200, 'Lockdown', {
-            color: 'Black',
-            fontSize: '50px',
-            fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif'
-        }),
-        new Phaser.GameObjects.Text(this.scene, 960, 200, 'Citizens', {
-            color: 'Black',
-            fontSize: '50px',
-            fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif'
-        })
-    }*/
-
-    public showDescription(): void {
-
+    public eraseDescription(): void {
+        this.skillDescription.setText(' ');
     }
     
-    /** @returns The singleton instance */
-    /*public getInstance(): SkillTreeView {
-        if (!SkillTreeView.instance) SkillTreeView.instance = new SkillTreeView(this.scene);
-        return SkillTreeView.instance;
-    }*/
 }

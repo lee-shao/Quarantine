@@ -800,6 +800,31 @@
         "type": "image",
         "key": "testing-connections",
         "url": "assets/sprites/skill-tree/testing-connections.png"
+      },
+      {
+        "type": "image",
+        "key": "buyButton",
+        "url": "assets/sprites/skill-tree/buy-button-neutral.png"
+      },
+      {
+        "type": "image",
+        "key": "buyButtonA",
+        "url": "assets/sprites/skill-tree/buy-button-active.png"
+      },
+      {
+        "type": "image",
+        "key": "buyButtonH",
+        "url": "assets/sprites/skill-tree/buy-button-hovered.png"
+      },
+      {
+        "type": "image",
+        "key": "buyButtonP",
+        "url": "assets/sprites/skill-tree/buy-button-pressed.png"
+      },
+      {
+        "type": "image",
+        "key": "testing-skill",
+        "url": "assets/sprites/skill-tree/testing-skill.png"
       }
     ]
   }
