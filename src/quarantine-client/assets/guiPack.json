@@ -154,17 +154,17 @@
       {
         "type": "image",
         "key": "vitamines",
-        "url": "assets/sprites/skill tree/vitamines.png"
+        "url": "assets/sprites/skill-tree/vitamines.png"
       },
       {
         "type": "image",
         "key": "medicine",
-        "url": "assets/sprites/skill tree/medicine.png"
+        "url": "assets/sprites/skill-tree/medicine.png"
       },
       {
         "type": "image",
         "key": "physician",
-        "url": "assets/sprites/skill tree/physician.png"
+        "url": "assets/sprites/skill-tree/physician.png"
       },
       {
         "type": "image",
@@ -756,6 +756,16 @@
         "key": "cash",
         "url": "assets/sprites/status-bar/cash.png"
       },
+      {
+       "type": "image",
+       "key": "state",
+       "url": "assets/sprites/population-protocols/ppState.png"
+     },
+     {
+       "type": "image",
+       "key": "view",
+       "url": "assets/sprites/population-protocols/ppView.png"
+     },
       {
         "type": "image",
         "key": "home-button",

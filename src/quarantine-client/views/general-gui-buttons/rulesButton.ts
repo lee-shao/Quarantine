@@ -51,15 +51,20 @@ export class RuleButton extends GuiElement {
                 info.setInteractive();
 
                 info.on('pointerup', () => {
-                    const popupTitle = 'The Information';
-                    const popupStr = 'The Agents exchange their state when they are close together';
+                    const popupTitle = 'Population Protocols';
+                    const popupStr = 'Population protocols are used as a theoretical model \nfor a collection (or population) of tiny mobile agents \nthat interact with one another to carry out a computation. \n\nAgents: are identically programmed finite state machines. \n\n\n\nInteraction: exchange of the state information between \nthe agents by collision. \n\n\n\n\n\n\nMovement pattern of the agents is unpredictable. \nHere: random selection inside of an array. \n\nSource: Aspnes, J., Ruppert, E. (2007): \nAn introduction to population protocols ';
+                    const view = this.scene.add.sprite(1000, 670, 'view');
+                    view.setDepth(4);
+                    const state = this.scene.add.sprite(1000, 450, 'state');
+                    state.setDepth(4);
 
                     const popupInfo = new PopupWindow(this.scene, 0, 0, '', 1300, 130, true, [], true);
                     const blankNode = this.scene.add.sprite(this.scene.game.renderer.width / 2 + 50, this.scene.game.renderer.height / 2, 'blank-note').setDisplaySize(1200, 970);
                     popupInfo.add(blankNode);
                     popupInfo.add(new Phaser.GameObjects.Text(this.scene, 550, 130, popupTitle, { color: 'Black', fontSize: '50px', fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' }));
                     popupInfo.add(new Phaser.GameObjects.Text(this.scene, 550, 220, popupStr, { color: 'Black', fontSize: '30px', fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' }));
-
+                    popupInfo.add(view);
+                    popupInfo.add(state);
                     popupInfo.createModal();
                     if (this.scene.soundON) this.scene.buttonClickMusic.play();
                 });
@@ -68,7 +73,7 @@ export class RuleButton extends GuiElement {
                 this.ruleBtn.setScale(0.8);
                 popupRules.createModal();
                 if (this.scene.soundON) this.scene.buttonClickMusic.play();
-                
+
             } else {
                 const popupMss = new PopupWindow(this.scene, 0, 0, '', 1050, 400, false, [], false);
                 const blankNode = this.scene.add.sprite(this.scene.game.renderer.width / 2 + 50, this.scene.game.renderer.height / 2, 'blank-note').setDisplaySize(300, 200);
@@ -82,7 +87,7 @@ export class RuleButton extends GuiElement {
     }
 
     private addRuleToContainer(container: Phaser.GameObjects.Container, rule: Rule, ruleIndex: number): void {
-        // The following x and y for test. 
+        // The following x and y for test.
         // To rescale for the 3200x1600 pixel version (if needed) changes x and y as following x = this.game.redereer.width /2 +- number; y = this.game.redereer.height /2 +- number;
         const x = this.scene.game.renderer.width / 2 - 450;
         const y = this.scene.game.renderer.height / 2 - 250 + ruleIndex * 170;
