@@ -38,7 +38,7 @@ export class GameSpeedButtons extends GuiElement {
         const pause = this.scene.add.image(this.scene.game.renderer.width / 2 + 150, 50, 'pause').setInteractive();
 
         pause.on('pointerover', () => {
-            pause.setScale(0.7);
+            pause.setScale(this.scaling);
         });
 
         pause.on('pointerout', () => {
@@ -65,7 +65,7 @@ export class GameSpeedButtons extends GuiElement {
         const resume = this.scene.add.image(this.scene.game.renderer.width / 2 + 250, 50, 'resume-button').setInteractive();
 
         resume.on('pointerover', () => {
-            resume.setScale(0.7);
+            resume.setScale(this.scaling);
         });
 
         resume.on('pointerout', () => {
@@ -95,7 +95,7 @@ export class GameSpeedButtons extends GuiElement {
         const speed1x = this.scene.add.image(this.scene.game.renderer.width / 2 + 350, 50, 'speed1x').setInteractive();
 
         speed1x.on('pointerover', () => {
-            speed1x.setScale(0.7);
+            speed1x.setScale(this.scaling);
         });
 
         speed1x.on('pointerout', () => {
@@ -122,7 +122,7 @@ export class GameSpeedButtons extends GuiElement {
         const speed2x = this.scene.add.image(this.scene.game.renderer.width / 2 + 450, 50, 'speed2x').setInteractive();
 
         speed2x.on('pointerover', () => {
-            speed2x.setScale(0.7);
+            speed2x.setScale(this.scaling);
         });
 
         speed2x.on('pointerout', () => {
@@ -149,7 +149,7 @@ export class GameSpeedButtons extends GuiElement {
         const speed3x = this.scene.add.image(this.scene.game.renderer.width / 2 + 550, 50, 'speed3x').setInteractive();
 
         speed3x.on('pointerover', () => {
-            speed3x.setScale(0.7);
+            speed3x.setScale(this.scaling);
         });
 
         speed3x.on('pointerout', () => {

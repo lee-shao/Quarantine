@@ -3,7 +3,6 @@ import { TimeController } from "../../controller/timeController";
 import { TutorialComponent } from "./tutorialComponent";
 import { GuiScene } from "../scenes/gui-scene";
 import { ItemMenu } from "../item-menu/menu";
-import { TutorialController } from "../../controller/gui-controller/tutorialController";
 import { EventController } from "../../controller/eventController";
 
 /**

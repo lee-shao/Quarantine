@@ -1,6 +1,5 @@
 import { Controller } from "../../controller/controller";
 import { TimeController } from "../../controller/timeController";
-import { EventController } from "../../controller/eventController";
 
 /**
  * Main phaser scene which manages the other game scene

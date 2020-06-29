@@ -18,7 +18,7 @@ export class SoundButtons extends GuiElement {
         const soundOn = this.scene.add.image(this.scene.game.renderer.width - 100, 350, 'sound_on').setInteractive();
 
         musicOn.on('pointerover', () => {
-            musicOn.setScale(0.7);
+            musicOn.setScale(this.scaling);
         });
 
         musicOn.on('pointerout', () => {
@@ -26,7 +26,7 @@ export class SoundButtons extends GuiElement {
         });
 
         soundOn.on('pointerover', () => {
-            soundOn.setScale(0.7);
+            soundOn.setScale(this.scaling);
         });
 
         soundOn.on('pointerout', () => {
