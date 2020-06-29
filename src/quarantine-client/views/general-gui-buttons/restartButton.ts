@@ -55,7 +55,17 @@ export class RestartButton extends GuiElement {
 
                     //do restart the game when btn were clicked
                     restartOKBtn.on('pointerup', () => {
-                        location.reload();
+                    const main = this.scene.scene.get('MainScene') as MainScene;
+                    const chart = this.scene.scene.get('ChartScene') as ChartScene;
+                    const map = this.scene.scene.get('MapScene') as MapScene;
+
+                    main.scene.restart();
+                    chart.scene.restart();
+                    map.scene.restart();
+
+                    //close modal
+                    popupMss.closeModal();
+                    if (this.scene.soundON) this.scene.buttonClickMusic.play();
                 });
 
                     //add confirm to object container and show the popup
