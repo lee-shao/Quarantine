@@ -55,7 +55,7 @@ export class SkillTreeView extends PopupWindow {
         this.scene.add.existing(this);
     }
 
-    private addBackButton(key: string, buttons: any): void {
+    private addBackButton(): void {
         const backButton = new Phaser.GameObjects.Image(this.scene, 320, 870, 'arrow-next');
         backButton.angle = 180;
 
@@ -91,7 +91,7 @@ export class SkillTreeView extends PopupWindow {
         .on('pointerup', () => {
             this.buyButton.setTexture('buyButtonA')
             this.buyButton.removeInteractive();
-            this.activateSkill(key, skillTree);
+            this.activateSkill(key);
         });
         this.add(this.buyButton);
     }
@@ -99,7 +99,7 @@ export class SkillTreeView extends PopupWindow {
     public openSubtree(key: string, buttons: any): void {
         
         this.currentSkillIcons = buttons;
-        this.addBackButton(key, buttons);
+        this.addBackButton();
         this.addSkills(buttons);
     }
 
@@ -262,7 +262,7 @@ export class SkillTreeView extends PopupWindow {
         return [title, connections, medicalTreatmentButton, policeButton, testingButton, lockdownButton, citizensButton]
     }
 
-    public activateSkill(key: string, skillTree: SkillTreeView): void {
+    public activateSkill(key: string): void {
         this.getByName(key).disableInteractive();
         if(key == 'additional-medical-supplies-1') {
             SkillController.getInstance().activateAdditionalMedicalSuppliesI(SkillController.getInstance());
