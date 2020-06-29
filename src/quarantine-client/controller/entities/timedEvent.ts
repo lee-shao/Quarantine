@@ -26,9 +26,10 @@ export class TimedEvent implements TimeSubscriber {
     }
 
     notify(): void {
-        this.timeSpan--;
+        this.timeSpan -= 1;
         if (this.timeSpan == 0) {
             this.timedEventFunction();
+            TimeController.getInstance().unsubscibe(this);
         }
     }
 

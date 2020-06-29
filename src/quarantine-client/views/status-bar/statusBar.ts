@@ -2,7 +2,7 @@ import { GuiElement } from "../guiElement";
 import { GuiScene } from "../scenes/gui-scene";
 import { Stats } from "../../controller/stats";
 
-export class StatusBar extends GuiElement {
+export class StatusBar extends GuiElement{
 
     private stats: Stats;
 
@@ -22,7 +22,7 @@ export class StatusBar extends GuiElement {
         this.scene.add.image(1200, 1, 'money').setOrigin(0).setScale(0.5);
     }
 
-    public create(): void {
+    public create(): StatusBar {
         this.init();
 
         const style = {
@@ -33,6 +33,8 @@ export class StatusBar extends GuiElement {
         this.infected = this.scene.add.text(720, 5, "Infected: " + this.stats.getInfectedString(), style).setOrigin(0);
         this.dailyIncome = this.scene.add.text(1000, 5, this.stats.getEarningsString(), style).setOrigin(0);
         this.budget = this.scene.add.text(1240, 5, this.stats.getBudgetString(), style).setOrigin(0);
+
+        return this;
     }
 
     public update(): void {

@@ -154,17 +154,17 @@
       {
         "type": "image",
         "key": "vitamines",
-        "url": "assets/sprites/skill tree/vitamines.png"
+        "url": "assets/sprites/skill-tree/vitamines.png"
       },
       {
         "type": "image",
         "key": "medicine",
-        "url": "assets/sprites/skill tree/medicine.png"
+        "url": "assets/sprites/skill-tree/medicine.png"
       },
       {
         "type": "image",
         "key": "physician",
-        "url": "assets/sprites/skill tree/physician.png"
+        "url": "assets/sprites/skill-tree/physician.png"
       },
       {
         "type": "image",
@@ -175,11 +175,6 @@
         "type": "image",
         "key": "speed3x",
         "url": "assets/sprites/main-scene/speed3x.png"
-      },
-      {
-        "type": "image",
-        "key": "tablet",
-        "url": "assets/sprites/main-scene/tablet.png"
       },
       {
         "type": "image",
@@ -762,6 +757,7 @@
         "url": "assets/sprites/status-bar/cash.png"
       },
       {
+<<<<<<< HEAD
         "type": "image",
         "key": "open-notebook2",
         "url": "assets/sprites/skill-tree/open-notebook2.png"
@@ -825,6 +821,21 @@
         "type": "image",
         "key": "testing-skill",
         "url": "assets/sprites/skill-tree/testing-skill.png"
+=======
+       "type": "image",
+       "key": "state",
+       "url": "assets/sprites/population-protocols/ppState.png"
+     },
+     {
+       "type": "image",
+       "key": "view",
+       "url": "assets/sprites/population-protocols/ppView.png"
+     },
+      {
+        "type": "image",
+        "key": "home-button",
+        "url": "assets/sprites/main-scene/home-button.png"
+>>>>>>> c8b7a3d5f8a62b2c62c2b7dd024861963084e8c5
       }
     ]
   }

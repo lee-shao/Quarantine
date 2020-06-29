@@ -1,5 +1,6 @@
 import 'phaser';
 import { TimeSubscriber } from '../models/util/timeSubscriber';
+import { TimedEvent } from './entities/timedEvent';
 
 /**
  * Singleton controller which simulates ingame time. It acts as the central 
@@ -74,11 +75,25 @@ export class TimeController {
 
     /**
      * Subscribe to the TimeController (Pub/Sub) to get notified about changes in time.
-     * @param subscriber Expects a Phaser.GameObject if this object wants to be notfied about time changes
+     * @param subscriber object which wants to be notfied about time changes
      */
     public subscribe(subscriber: TimeSubscriber): TimeController {
         this.subscribers.push(subscriber);
         return this;
+    }
+
+    /**
+     * Unsubscribe to the TimeController. Especially used in the context of timedEvents{@see timedEvents.ts}.
+     * @param subscriber object which wants to be notfied about time changes
+     */
+    public unsubscibe(subscriber: TimeSubscriber): void {
+        const index = this.subscribers.findIndex(x => x === subscriber);
+        this.subscribers.splice(index, 1);
+    }
+
+    /** Removes all TimedEvents of the tutorial (that means whithin the first 15 days) from subscribers */
+    public removeAllTimedTutorialEvents(): void {
+        if(this.getDaysSinceGameStart() <= 15) this.subscribers.filter(x => x instanceof TimedEvent).forEach(x => this.unsubscibe(x));
     }
 
     // ----------------------------------------------------------------- GETTER-METHODS

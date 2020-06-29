@@ -1,4 +1,4 @@
-import { SkillController } from "../../controller/skillController";
+import { SkillController } from "../../controller/gui-controller/skillController";
 import { SkillTreeView } from "./skillTreeView";
 
 /**

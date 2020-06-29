@@ -1,6 +1,6 @@
 import { MainScene } from "../scenes/main-scene";
-import { ChartScene } from "../scenes/chart-scene";
-import { MapScene } from "../scenes/map-scene";
+import { ChartScene } from "../tablet/chart-scene";
+import { MapScene } from "../tablet/map-scene";
 import { PopupWindow } from "../popupWindow";
 import { GuiElement } from "../guiElement";
 
@@ -13,58 +13,79 @@ import { GuiElement } from "../guiElement";
  */
 export class RestartButton extends GuiElement {
 
+    private restartBtn: Phaser.GameObjects.Image;
+
     /** Create and add a restart button to the GuiScene */
-    public create(): void {
-        const resetBtn = this.scene.add.image(this.scene.game.renderer.width - 100, 150, 'restart');
-        resetBtn.setInteractive();
+    public create(): RestartButton {
+        this.restartBtn = this.scene.add.image(this.scene.game.renderer.width - 100, 150, 'restart');
+    /*public create(): Phaser.GameObjects.Sprite {
+        const this.restartBtn = this.scene.add.sprite(this.scene.game.renderer.width - 100, 150, 'restart');*/
+
+        this.restartBtn.setInteractive();
 
         // hover, click event etc.
-        resetBtn.on('pointerover', () => {
-            resetBtn.setScale(0.7);
+        this.restartBtn.on('pointerover', () => {
+            this.restartBtn.setScale(0.7);
         });
 
-        resetBtn.on('pointerout', () => {
-            resetBtn.setScale(1);
+        this.restartBtn.on('pointerout', () => {
+            this.restartBtn.setScale(1);
         });
 
-        resetBtn.on('pointerup', () => {
-            //creates popup messages
-            const popupMss = new PopupWindow(this.scene, 0, 0, 'note', this.scene.game.renderer.width / 2 + 60, this.scene.game.renderer.height / 2 - 70, true, [new Phaser.GameObjects.Text(this.scene, this.scene.game.renderer.width / 2 - 100, this.scene.game.renderer.height / 2, 'Do you want to restart this game ?', { color: 'Black', fontSize: '14px', fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' })], false);
-            //creates confirm button
-            const restartOKBtn = new Phaser.GameObjects.Image(this.scene, this.scene.game.renderer.width / 2, this.scene.game.renderer.height / 2 + 50, 'restart-popup');
+        this.restartBtn.on('pointerup', () => {
+                if(!this.scene.mainSceneIsPaused){
+                    //creates popup messages
+                    const popupMss = new PopupWindow(this.scene, 0, 0, '', 1100, 350, true, [], false);
+                    const blankNode = this.scene.add.sprite(this.scene.game.renderer.width / 2 + 50, this.scene.game.renderer.height / 2, 'blank-note').setDisplaySize(500, 300);
+                    const content = new Phaser.GameObjects.Text(this.scene, this.scene.game.renderer.width / 2 - 100, this.scene.game.renderer.height / 2, 'Do you want to reset the game?', { color: 'Black', fontSize: '20px', fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' });
 
-            //confirm button interactive events
-            restartOKBtn.setInteractive();
-            //hover, click event etc
-            restartOKBtn.on('pointerover', () => {
-                restartOKBtn.setTexture('restart-popup-hover');
-            });
+                    //creates confirm button
+                    const restartOKBtn = new Phaser.GameObjects.Image(this.scene, this.scene.game.renderer.width / 2 - 50, this.scene.game.renderer.height / 2 + 50, 'restart-popup');
 
-            restartOKBtn.on('pointerout', () => {
-                restartOKBtn.setTexture('restart-popup');
-            });
+                    //confirm button interactive events
+                    restartOKBtn.setInteractive();
+                    //hover, click event etc
+                    restartOKBtn.on('pointerover', () => {
+                    restartOKBtn.setTexture('restart-popup-hover');
+                    });
 
-            //do restart the game when btn were clicked
-            restartOKBtn.on('pointerup', () => {
-                const main = this.scene.scene.get('MainScene') as MainScene;
-                const chart = this.scene.scene.get('ChartScene') as ChartScene;
-                const map = this.scene.scene.get('MapScene') as MapScene;
+                    restartOKBtn.on('pointerout', () => {
+                    restartOKBtn.setTexture('restart-popup');
+                    });
 
-                main.scene.restart();
-                chart.scene.restart();
-                map.scene.restart();
+                    //do restart the game when btn were clicked
+                    restartOKBtn.on('pointerup', () => {
+                    const main = this.scene.scene.get('MainScene') as MainScene;
+                    const chart = this.scene.scene.get('ChartScene') as ChartScene;
+                    const map = this.scene.scene.get('MapScene') as MapScene;
 
-                //close modal
-                popupMss.closeModal();
-                if (this.scene.soundON) this.scene.buttonClickMusic.play();
-            });
+                    main.scene.restart();
+                    chart.scene.restart();
+                    map.scene.restart();
 
-            //add confirm to object container and show the popup
-            popupMss.addGameObjects([restartOKBtn]);
-            popupMss.createModal();
-            if (this.scene.soundON) this.scene.buttonClickMusic.play();
+                    //close modal
+                    popupMss.closeModal();
+                    if (this.scene.soundON) this.scene.buttonClickMusic.play();
+                });
+
+                    //add confirm to object container and show the popup
+                    popupMss.addGameObjects([blankNode, content, restartOKBtn]);
+                    popupMss.createModal();
+                    if (this.scene.soundON) this.scene.buttonClickMusic.play();
+            }else{
+                const popupMss = new PopupWindow(this.scene, 0, 0, '', 1050, 400, false, [], false);
+                const blankNode = this.scene.add.sprite(this.scene.game.renderer.width / 2 + 50, this.scene.game.renderer.height / 2, 'blank-note').setDisplaySize(300, 200);
+                const content = new Phaser.GameObjects.Text(this.scene, this.scene.game.renderer.width / 2 - 50, this.scene.game.renderer.height / 2, 'The game is paused', { color: 'Black', fontSize: '20px', fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' });
+                popupMss.addGameObjects([blankNode, content]);
+                popupMss.createModal();
+            }
 
         });
+
+        return this;
     }
+
+    /** @returns Phaser.GameObjects.Image of restart button */
+    public getRestartButton(): Phaser.GameObjects.Image { return this.restartBtn; }
 
 }

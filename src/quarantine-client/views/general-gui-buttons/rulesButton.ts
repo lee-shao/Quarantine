@@ -13,64 +13,81 @@ import { GuiElement } from "../guiElement";
  */
 export class RuleButton extends GuiElement {
 
+    private ruleBtn: Phaser.GameObjects.Image;
+
     /** Create and add a rules button to the GuiScene */
-    public create(): void {
-        const rulesBtn = this.scene.add.image(this.scene.game.renderer.width - 100, this.scene.game.renderer.height - 250, 'rules');
-        const popupRules = new PopupWindow(this.scene, 0, 0, '', 1300, 130, true, [], false);
-        const title = this.scene.add.text(550, 130, 'The Rules', { color: 'Black', fontSize: '50px', fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' }).setDepth(1);
-        const blankNode = this.scene.add.sprite(this.scene.game.renderer.width / 2 + 50, this.scene.game.renderer.height / 2, 'blank-note').setDisplaySize(1200, 970);
-        popupRules.addGameObjects([blankNode, title]);
-        /*---------START: add Rules ---------- */
-        const allRules = Controller.getInstance().getRules();
-        let ruleIndex = 0;
-
-        allRules.forEach(r => {
-            this.addRuleToContainer(popupRules, r, ruleIndex);
-            ruleIndex++;
-        });
-        /*---------END: add Rules ---------- */
-
-        // popup info as a seconde popup
-        const info = new Phaser.GameObjects.Image(this.scene, 800, 150, 'information').setScale(0.4);
-        info.setInteractive();
-
-        info.on('pointerup', () => {
-            const popupTitle = 'The Information';
-            const popupStr = 'The Agents exchange their state when they are close together';
-
-            const popupInfo = new PopupWindow(this.scene, 0, 0, '', 1300, 130, true, [], true);
-            const blankNode = this.scene.add.sprite(this.scene.game.renderer.width / 2 + 50, this.scene.game.renderer.height / 2, 'blank-note').setDisplaySize(1200, 970);
-            popupInfo.add(blankNode);
-            popupInfo.add(new Phaser.GameObjects.Text(this.scene, 550, 130, popupTitle, { color: 'Black', fontSize: '50px', fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' }));
-            popupInfo.add(new Phaser.GameObjects.Text(this.scene, 550, 220, popupStr, { color: 'Black', fontSize: '30px', fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' }));
-
-            popupInfo.createModal();
-            if (this.scene.soundON) this.scene.buttonClickMusic.play();
-        });
-        //add popup Info into popup Rules.
-        popupRules.add(info);
-
-        rulesBtn.setInteractive();
+    public create(): RuleButton {
+        this.ruleBtn = this.scene.add.image(this.scene.game.renderer.width - 100, this.scene.game.renderer.height - 250, 'rules');
+        this.ruleBtn.setInteractive();
 
         // Change the button textures on hover, press, etc.
-        rulesBtn.on('pointerover', () => {
-            rulesBtn.setScale(0.7);
+        this.ruleBtn.on('pointerover', () => {
+            this.ruleBtn.setScale(0.7);
         });
-        rulesBtn.on('pointerout', () => {
-            rulesBtn.setScale(1);
+        this.ruleBtn.on('pointerout', () => {
+            this.ruleBtn.setScale(1);
         });
-        rulesBtn.on('pointerdown', () => {
-            rulesBtn.setScale(1);
+        this.ruleBtn.on('pointerdown', () => {
+            this.ruleBtn.setScale(1);
         });
-        rulesBtn.on('pointerup', () => {
-            rulesBtn.setScale(0.8);
-            popupRules.createModal();
-            if (this.scene.soundON) this.scene.buttonClickMusic.play();
+        this.ruleBtn.on('pointerup', () => {
+            if(!this.scene.mainSceneIsPaused){
+                const popupRules = new PopupWindow(this.scene, 0, 0, '', 1300, 130, true, [], false);
+                const title = this.scene.add.text(550, 130, 'The Rules', { color: 'Black', fontSize: '50px', fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' }).setDepth(1);
+                const blankNode = this.scene.add.sprite(this.scene.game.renderer.width / 2 + 50, this.scene.game.renderer.height / 2, 'blank-note').setDisplaySize(1200, 970);
+                popupRules.addGameObjects([blankNode, title]);
+                /*---------START: add Rules ---------- */
+                const allRules = Controller.getInstance().getRules();
+                let ruleIndex = 0;
+
+                allRules.forEach(r => {
+                    this.addRuleToContainer(popupRules, r, ruleIndex);
+                    ruleIndex++;
+                });
+                /*---------END: add Rules ---------- */
+
+                // popup info as a seconde popup
+                const info = new Phaser.GameObjects.Sprite(this.scene, 800, 150, 'information').setScale(0.4);
+                info.setInteractive();
+
+                info.on('pointerup', () => {
+                    const popupTitle = 'Population Protocols';
+                    const popupStr = 'Population protocols are used as a theoretical model \nfor a collection (or population) of tiny mobile agents \nthat interact with one another to carry out a computation. \n\nAgents: are identically programmed finite state machines. \n\n\n\nInteraction: exchange of the state information between \nthe agents by collision. \n\n\n\n\n\n\nMovement pattern of the agents is unpredictable. \nHere: random selection inside of an array. \n\nSource: Aspnes, J., Ruppert, E. (2007): \nAn introduction to population protocols ';
+                    const view = this.scene.add.sprite(1000, 670, 'view');
+                    view.setDepth(4);
+                    const state = this.scene.add.sprite(1000, 450, 'state');
+                    state.setDepth(4);
+
+                    const popupInfo = new PopupWindow(this.scene, 0, 0, '', 1300, 130, true, [], true);
+                    const blankNode = this.scene.add.sprite(this.scene.game.renderer.width / 2 + 50, this.scene.game.renderer.height / 2, 'blank-note').setDisplaySize(1200, 970);
+                    popupInfo.add(blankNode);
+                    popupInfo.add(new Phaser.GameObjects.Text(this.scene, 550, 130, popupTitle, { color: 'Black', fontSize: '50px', fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' }));
+                    popupInfo.add(new Phaser.GameObjects.Text(this.scene, 550, 220, popupStr, { color: 'Black', fontSize: '30px', fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' }));
+                    popupInfo.add(view);
+                    popupInfo.add(state);
+                    popupInfo.createModal();
+                    if (this.scene.soundON) this.scene.buttonClickMusic.play();
+                });
+                //add popup Info into popup Rules.
+                popupRules.add(info);
+                this.ruleBtn.setScale(0.8);
+                popupRules.createModal();
+                if (this.scene.soundON) this.scene.buttonClickMusic.play();
+
+            } else {
+                const popupMss = new PopupWindow(this.scene, 0, 0, '', 1050, 400, false, [], false);
+                const blankNode = this.scene.add.sprite(this.scene.game.renderer.width / 2 + 50, this.scene.game.renderer.height / 2, 'blank-note').setDisplaySize(300, 200);
+                const content = new Phaser.GameObjects.Text(this.scene, this.scene.game.renderer.width / 2 - 50, this.scene.game.renderer.height / 2, 'The game is paused', { color: 'Black', fontSize: '20px', fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' });
+                popupMss.addGameObjects([blankNode, content]);
+                popupMss.createModal();
+            }
         });
+
+        return this;
     }
 
     private addRuleToContainer(container: Phaser.GameObjects.Container, rule: Rule, ruleIndex: number): void {
-        // The following x and y for test. 
+        // The following x and y for test.
         // To rescale for the 3200x1600 pixel version (if needed) changes x and y as following x = this.game.redereer.width /2 +- number; y = this.game.redereer.height /2 +- number;
         const x = this.scene.game.renderer.width / 2 - 450;
         const y = this.scene.game.renderer.height / 2 - 250 + ruleIndex * 170;
@@ -114,5 +131,8 @@ export class RuleButton extends GuiElement {
                 return 'test-kit';
         }
     }
+
+    /** @returns Phaser.GameObjects.Image of rule button */
+    public getRulesButton(): Phaser.GameObjects.Image {return this.ruleBtn}
 
 }

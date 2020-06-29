@@ -1,11 +1,11 @@
-import { Controller } from "./controller";
-import { State } from "../models/util/enums/healthStates";
-import { Rule } from "./entities/rule";
-import { Role } from "../models/util/enums/roles";
-import { Stats } from "./stats";
-import { TimeSubscriber } from "../models/util/timeSubscriber";
-import { TimeController } from "./timeController";
-import { IncomeStatement } from "./entities/incomeStatement";
+import { Controller } from "../controller";
+import { State } from "../../models/util/enums/healthStates";
+import { Rule } from "../entities/rule";
+import { Role } from "../../models/util/enums/roles";
+import { Stats } from "../stats";
+import { TimeSubscriber } from "../../models/util/timeSubscriber";
+import { TimeController } from "../timeController";
+import { IncomeStatement } from "../entities/incomeStatement";
 
 
 /**
@@ -31,7 +31,7 @@ export class UpgradeController implements TimeSubscriber {
      * * Social Distancing [sc]
      * * Lock Down [ld]
      */
-    public measures = require("./../../../res/json/measures.json");
+    public measures = require("./../../../../res/json/measures.json");
 
     private constructor() {
         this.stats = Stats.getInstance();

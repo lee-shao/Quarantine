@@ -3,15 +3,16 @@ import "chartjs-plugin-zoom";
 import "hammerjs";
 import { TimeSubscriber } from "../../models/util/timeSubscriber";
 import { TimeController } from "../../controller/timeController";
-import { UpgradeController } from "../../controller/upgradeController";
+import { UpgradeController } from "../../controller/gui-controller/upgradeController";
 import { Stats } from "../../controller/stats";
+import { TutorialComponent } from "../tutorial/tutorialComponent";
 
 /**
  * Scene for creating and updating the graphical
  * representation of infection numbers using Chart.js
  * @author Jakob Hartmann
  */
-export class ChartScene extends Phaser.Scene implements TimeSubscriber {
+export class ChartScene extends Phaser.Scene implements TimeSubscriber, TutorialComponent {
     /** initial population */
     private initialInfected: number;
 
@@ -48,6 +49,8 @@ export class ChartScene extends Phaser.Scene implements TimeSubscriber {
     /** Container to change the size of the chart */
     private chartContainer: HTMLDivElement;
 
+    private formContainer: HTMLFormElement;
+
     /** Canvas element to render the chart */
     private canvas: HTMLCanvasElement;
 
@@ -60,6 +63,10 @@ export class ChartScene extends Phaser.Scene implements TimeSubscriber {
             active: false
         });
         TimeController.getInstance().subscribe(this);
+    }
+
+    preload(): void {
+        this.load.image('tablet', 'assets/sprites/main-scene/tablet.png')
     }
 
     init(): void {
@@ -89,6 +96,8 @@ export class ChartScene extends Phaser.Scene implements TimeSubscriber {
         /** Initialize the chart and create the form to customize the chart */
         this.initializeChart();
         this.createForm();
+
+        this.hideComponent();
     }
 
     /** 
@@ -124,16 +133,16 @@ export class ChartScene extends Phaser.Scene implements TimeSubscriber {
         /** Create the form, which allows to customize the chart */
     createForm(): void {
         /** Create the form */
-        const form = document.createElement('form');
-        form.setAttribute('id', 'chart-form');
+        this.formContainer = document.createElement('form');
+        this.formContainer.setAttribute('id', 'chart-form');
 
         const textNodeAxis = document.createTextNode('Choose axis:');
-        form.appendChild(textNodeAxis);
+        this.formContainer.appendChild(textNodeAxis);
 
         /** Create the dropdown menu and associated options to change between the linear and logarithmic scale */
         const selectChartAxis = document.createElement('select');
         selectChartAxis.setAttribute('id', 'chart-axis');
-        form.appendChild(selectChartAxis);
+        this.formContainer.appendChild(selectChartAxis);
 
         const optionLinearAxis = document.createElement('option');
         optionLinearAxis.setAttribute('value', 'linear');
@@ -147,12 +156,12 @@ export class ChartScene extends Phaser.Scene implements TimeSubscriber {
         selectChartAxis.appendChild(optionLogarithmicAxis);
 
         const textNodeTimeframe = document.createTextNode('Select timeframe:');
-        form.appendChild(textNodeTimeframe);
+        this.formContainer.appendChild(textNodeTimeframe);
 
         /** Create the dropdown menu and associated options to select how many days should be displayed on the chart */
         const selectTimeframe = document.createElement('select');
         selectTimeframe.setAttribute('id', 'timeframe');
-        form.appendChild(selectTimeframe);
+        this.formContainer.appendChild(selectTimeframe);
 
         const option10Days = document.createElement('option');
         option10Days.setAttribute('value', '-10');
@@ -181,10 +190,10 @@ export class ChartScene extends Phaser.Scene implements TimeSubscriber {
         updateButton.setAttribute('id', 'update-button');
         updateButton.setAttribute('type', 'submit');
         updateButton.setAttribute('value', 'Update Chart');
-        form.appendChild(updateButton);
+        this.formContainer.appendChild(updateButton);
 
         /** Change what happens when you submit the form */
-        form.onsubmit = function(event): void {
+        this.formContainer.onsubmit = function(event): void {
             /** Prevent the default behaviour of the button */
             event.preventDefault();
 
@@ -211,7 +220,7 @@ export class ChartScene extends Phaser.Scene implements TimeSubscriber {
         resetZoomButton.setAttribute('id', 'reset-zoom-button');
         resetZoomButton.setAttribute('type', 'button');
         resetZoomButton.setAttribute('value', 'Reset Zoom');
-        form.appendChild(resetZoomButton);
+        this.formContainer.appendChild(resetZoomButton);
 
         resetZoomButton.onclick = function(): void {
             this.chart.resetZoom();
@@ -231,11 +240,11 @@ export class ChartScene extends Phaser.Scene implements TimeSubscriber {
         document.head.appendChild(style);
 
         /** Add the form to the scene */
-        const formDomElement = this.add.dom(this.canvasDomElement.x + 10, this.canvasDomElement.y + this.canvas.clientHeight - 2, form);
+        const formDomElement = this.add.dom(this.canvasDomElement.x + 10, this.canvasDomElement.y + this.canvas.clientHeight - 2, this.formContainer);
         formDomElement.setOrigin(0, 0);
 
         /** Append the form to the container in index.html, otherwise the form will not be displayed */
-        document.getElementById('form-container').appendChild(form);
+        document.getElementById('form-container').appendChild(this.formContainer);
     }
 
     /** @see TimeSubscriber */
@@ -352,5 +361,17 @@ export class ChartScene extends Phaser.Scene implements TimeSubscriber {
                 }
             }
         });
+    }
+
+    /** @see TutorialComponent */    
+    public hideComponent(): void {
+        this.chartContainer.style.visibility = "hidden"; //hide HTML-Elements 
+        this.formContainer.style.visibility = "hidden";
+    }
+
+    /** @see TutorialComponent */
+    public activateComponent(): void {
+        this.chartContainer.style.visibility = "visible"; //make HTML-Elements visible
+        this.formContainer.style.visibility = "visible";
     }
 }

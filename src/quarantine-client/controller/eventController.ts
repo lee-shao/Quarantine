@@ -3,10 +3,11 @@ import { TimeController } from "./timeController";
 import { EventRarity } from "../models/util/enums/eventRarity";
 import { Event } from "./entities/event";
 import { Stats } from "./stats";
-import { UpgradeController } from "./upgradeController";
+import { UpgradeController } from "./gui-controller/upgradeController";
 import { TimedEvent } from "./entities/timedEvent";
 import { Controller } from "./controller";
 import { Role } from "../models/util/enums/roles";
+import { TutorialController } from "./gui-controller/tutorialController";
 
 /**
  * Singleton controller which implements application logic for events.
@@ -20,6 +21,8 @@ export class EventController implements TimeSubscriber {
 
     /** List of the event categories which hold a list of events each */
     public eventList = require("./../../../res/json/random-events.json");
+
+    private lessThan1500000Infected = true;
 
     /** List of callback functions for events */
     private static eventFunctionList = {
@@ -152,7 +155,7 @@ export class EventController implements TimeSubscriber {
         this.calcRanTimeSpan(EventRarity.RARE);
         this.calcRanTimeSpan(EventRarity.VERY_RARE);
         this.calcRanTimeSpan(EventRarity.EPIC);
-        this.calcRanTimeSpan(EventRarity.LEGENDARY);
+        
     }
 
     /**
@@ -176,6 +179,11 @@ export class EventController implements TimeSubscriber {
             this.callRandomEvent(EventRarity.COMMON);
         }
         this.resetTriggeredEventCounters();
+
+        if(this.lessThan1500000Infected && Stats.getInstance().getInfected() >= 150000) { //triggers lockdown event
+            this.lessThan1500000Infected = false;
+            TutorialController.getInstance().enableLockdown();
+        }
     }
 
     /**

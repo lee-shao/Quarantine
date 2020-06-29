@@ -1,0 +1,30 @@
+{
+    "start" : [
+        "Hello, good that you're here. \nWe have some important news. Apparently a disease, the virus has started spreading in our country. For now, the numbers are low but we should keep an eye on it.",
+        "To the right you see how our scientist understand this virus. In that petri net you can not only check the detailed numbers but they are also kept up to date with our top-secret technologies. Go ahead and hover over the different bubbles to try it out. If you are curios, click the small i-button in the corner of the screen for more information."
+    ],
+    "status-bar": [
+        "Do you see those numbers at the top of the screen? Those are mostly rather self explanatory, income, budget, amount of infections. The only explanation-worthy one is R_0, it basically tells you how many other citizens a typical active case infects. The lower it is, the better."
+    ],
+    "newspaper": [
+        "Oh as you may have noticed, I have bought you a subscription to the newspaper, those will keep you informed about your citizens' mood and current events, keep an eye on it if you want to stay on top of things."
+    ],
+    "tablet": [
+        "I finished upgrading your tablet, by the way. It now receives the newest infection numbers daily. That graph is pretty handy, don't you think? It also features an infection map, if you prefer more abstract imagery. Give it a whirl later."
+    ],
+    "measures": [
+        "You might have pondered what to do about those undiscovered cases you can see in the petri net. Well, in fact, I just got news that test kits have been developed. They cost XX€ per piece and are handed out by our health workers, so you might want to employ more of those by clicking on that new button on the notepad. If a cure were to be found, they would also be the ones to distribute that.",
+        "Our police is also not idling at the moment. They are patroling the streets, quarantining infected people, if they come across them. Feel free to employ more police officers, if that is your strategy. The button is also on the notepad.",
+        "Keep in mind though, that you have to pay salaries to all of those people. If you run out of funds, we could get in serious trouble, so budget wisely."
+    ],
+    "log": [
+        "The small book there, you have probably already tried it, this is your log. If you want to have a close look at your expenses, infections and other numbers to see how they develop on a weekly basis, this is your best bet."
+    ],
+    "researchAndSkills": [
+        "Our emergency team of researchers has finally settled into their new lab. They still heavily depend on your funding though. If you have money to spare, investing in the development of the cure seems very sensible to me. You can find the button on the notepad.",
+        "Also now that you settled in a bit more, you can use that money of yours to develop some perks and techniques. Go ahead and take a look at your skills, there are some nice things to uncover."
+    ],
+    "lockdown": [
+        "Well the virus sure is more infectious than we feared. This demands more drastic action. On the notepad, you can now call Lockdown, this will make people seriously unhappy and your income will be affected too but that might be necessary sometimes. You can only keep it active for XX days at a time, with XX days in between. So use it wisely."
+    ]
+}

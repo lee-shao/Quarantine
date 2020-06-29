@@ -1,5 +1,5 @@
 import { PopupWindow } from "../popupWindow";
-import { SkillController } from "../../controller/skillController";
+import { SkillController } from "../../controller/gui-controller/skillController";
 import { Icon } from "./icon";
 
 /**

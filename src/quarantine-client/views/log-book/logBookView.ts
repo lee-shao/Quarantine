@@ -1,5 +1,5 @@
 import { PopupWindow } from "../popupWindow";
-import { LogBook } from "../../controller/gui-controller/logBook";
+import { LogBookController } from "../../controller/gui-controller/logBookController";
 
 /**
  * @author Sebastian Führ
@@ -48,7 +48,7 @@ export class LogBookView extends PopupWindow {
         nextBtn.on('pointerout', () => {nextBtn.scale = 1;});
 
         nextBtn.on('pointerup', () => {
-            if (LogBook.getInstance().showNextWeek(this.currWeek)) this.setVisible(false);
+            if (LogBookController.getInstance().showNextWeek(this.currWeek)) this.destroy();
         });
 
         const prevBtn = new Phaser.GameObjects.Image(this.scene, 320, 870, 'arrow-next');
@@ -62,7 +62,7 @@ export class LogBookView extends PopupWindow {
         prevBtn.on('pointerout', () => {prevBtn.scale = 1;});
 
         prevBtn.on('pointerup', () => {
-            if (LogBook.getInstance().showPrevWeek(this.currWeek)) this.setVisible(false);
+            if (LogBookController.getInstance().showPrevWeek(this.currWeek)) this.destroy();
         });
 
         return [nextBtn, prevBtn];

@@ -15,5 +15,5 @@ export abstract class GuiElement {
     }
 
     /** Create and add an instance of the element to the GuiScene */
-    public abstract create(): void;
+    public abstract create(): GuiElement;
 }

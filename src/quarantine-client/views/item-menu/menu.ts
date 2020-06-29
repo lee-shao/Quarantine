@@ -1,25 +1,35 @@
 import 'phaser';
 import { GameObjects } from 'phaser';
-import { UpgradeController } from '../../controller/upgradeController';
+import { UpgradeController } from '../../controller/gui-controller/upgradeController';
 import { ButtonContainer } from './button-container';
+import { TutorialComponent } from '../tutorial/tutorialComponent';
 
 /**
  * Extends Phaser.GameObjects.Container and represents the ingame item menu.
  * 
  * It contains the single items as well as all relevant layout components like navigation buttons (@see arrow-button) and so on.
- * @author Shao, Marvin Kruber
+ * ItemMenu is implemented as a singleton
+ * @author Marvin Kruber
+ * @author Shao
  */
-export class ItemMenu extends Phaser.GameObjects.Container {
+export class ItemMenu extends Phaser.GameObjects.Container implements TutorialComponent {
 
+    /** Current available budget */
     private budget: number;
+    /** Current income */
     private income: number;
 
-    private currLv: number;
-    private currPrice: number;
-    public researchText: Phaser.GameObjects.Text;
+    /** Instance of upgradeController. Used to buy measures */
     public upgradeContr: UpgradeController;
     
+    /** Data of all measures @see measures.json */
     public measures = require("./../../../../res/json/measures.json");
+
+    /** Counts the number of invocations of activateComponent*/
+    private activationCounter = 0;
+
+    /** Singleton instance */
+    private static instance: ItemMenu;
 
     /**
      * 
@@ -27,7 +37,7 @@ export class ItemMenu extends Phaser.GameObjects.Container {
      * @param x horizontal position of this menu
      * @param y vertical position of this menu
      */
-    public constructor(scene: Phaser.Scene, x: number, y: number) {
+    private constructor(scene: Phaser.Scene, x: number, y: number) {
         super(scene, x, y);
 
         this.upgradeContr = UpgradeController.getInstance();
@@ -37,11 +47,6 @@ export class ItemMenu extends Phaser.GameObjects.Container {
         this.scene.add.image(this.x + 350 , this.y + 120, 'notebook').setScale(0.6);  //.setAlpha(0.5); //dont work
         // Add menu bar
         this.add(this.scene.add.image(this.x + 515 , 70, 'note-pink').setScale(0.6));
-        // Add button container
-        new ButtonContainer(this.scene, this.x + 25, 475, 'research', this.measures['research']['prices'][0], this.buildClosure(this.upgradeContr.buyResearchLevel));
-        new ButtonContainer(this.scene, this.x + 25, 575, 'lockdown', this.measures['lockdown']['price'], this.buildClosure(this.upgradeContr.activateLockdown));
-        new ButtonContainer(this.scene, this.x + 25, 675, 'police', this.measures['police']['price'], this.buildClosure(this.upgradeContr.buyPoliceOfficers));
-        new ButtonContainer(this.scene, this.x + 25, 775, 'healthworkers', this.measures['healthworkers']['price'], this.buildClosure(this.upgradeContr.buyHealthWorkers));
 
         this.scene.add.existing(this);
 
@@ -68,5 +73,33 @@ export class ItemMenu extends Phaser.GameObjects.Container {
     private buildClosure(myFunction: Function): Function {
         const contr = this.upgradeContr;
         return function(): void {myFunction(contr)};
+    }
+
+    /** Adds lockdown button to the menu */
+    public unlockLockdownBtn(): void {
+        new ButtonContainer(this.scene, this.x + 25, 575, 'lockdown', this.measures['lockdown']['price'], this.buildClosure(this.upgradeContr.activateLockdown));
+    }
+
+    public activateComponent(): void {
+        // Add/unlocks button container
+        ++this.activationCounter;
+        if( this.activationCounter == 1) {
+            new ButtonContainer(this.scene, this.x + 25, 675, 'police', this.measures['police']['price'], this.buildClosure(this.upgradeContr.buyPoliceOfficers));
+            new ButtonContainer(this.scene, this.x + 25, 775, 'healthworkers', this.measures['healthworkers']['price'], this.buildClosure(this.upgradeContr.buyHealthWorkers));
+        } else {
+            new ButtonContainer(this.scene, this.x + 25, 475, 'research', this.measures['research']['prices'][0], this.buildClosure(this.upgradeContr.buyResearchLevel));
+        }
+    }
+
+    public hideComponent(): void {
+        // has to be implemented because of tutorialComponent (-> interface)
+    }
+
+    /** Singleton method.
+     * @returns Instance of ItemMenu
+     */
+    public static getInstance(scene = null, x = 0, y = 0): ItemMenu {
+        if(!ItemMenu.instance) ItemMenu.instance = new ItemMenu(scene, x, y);
+        return ItemMenu.instance;
     }
 }

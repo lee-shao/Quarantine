@@ -1,26 +1,33 @@
 import { PopupWindow } from "../popupWindow";
-import { Tutorial } from "../../controller/gui-controller/tutorial";
+import { TutorialController } from "../../controller/gui-controller/tutorialController";
 
 /**
+ * GUI for tutorials. 
  * @author Sebastian Führ
+ * @author Marvin Kruber
  */
 export class TutorialView extends PopupWindow {
 
     /** The current page of the tutorial */
     private currPage: number;
 
-    constructor(scene: Phaser.Scene, page: number) {
+    /** Key of the current tutorial (see /res/json/tutorial-messages.json) */
+    private tutorialKey: string;
+
+    constructor(scene: Phaser.Scene, page: number,  x: number, y: number, closeBtnX: number, closeBtnY: number, tutorialKey: string) {
         super(
             scene, 
-            0, 
-            5, 
+            x, 
+            y, 
             'tablet', 
-            1550, 
-            200,
+            closeBtnX, 
+            closeBtnY,
             true, 
             [],
             false
         );
+
+        this.tutorialKey = tutorialKey;
 
         this.currPage = page;
 
@@ -31,7 +38,7 @@ export class TutorialView extends PopupWindow {
     private createFBBtn(): Phaser.GameObjects.Image[] {
         const arr = [];
 
-        if (this.currPage < Tutorial.getInstance().getNumberOfPages() - 1) {
+        if (this.currPage < TutorialController.getInstance().getNumberOfPages(this.tutorialKey) - 1) {
             const nextBtn = new Phaser.GameObjects.Image(this.scene, 1580, 700, 'arrow-next');
 
             //confirm button interactive events
@@ -42,7 +49,7 @@ export class TutorialView extends PopupWindow {
             nextBtn.on('pointerout', () => {nextBtn.scale = 1;});
 
             nextBtn.on('pointerup', () => {
-                if (Tutorial.getInstance().showNextPage(this.currPage)) this.setVisible(false);
+                if (TutorialController.getInstance().showNextPage(this.currPage, this.x , this.y, this.getCloseBtnX(), this.getCloseBtnY(), this.tutorialKey)) this.destroy();
             });
             arr.push(nextBtn);
         }
@@ -59,7 +66,7 @@ export class TutorialView extends PopupWindow {
             prevBtn.on('pointerout', () => {prevBtn.scale = 1;});
 
             prevBtn.on('pointerup', () => {
-                if (Tutorial.getInstance().showPrevPage(this.currPage)) this.setVisible(false);
+                if (TutorialController.getInstance().showPrevPage(this.currPage, this.x, this.y, this.getCloseBtnX(), this.getCloseBtnY(), this.tutorialKey)) this.destroy();
             });
             arr.push(prevBtn);
         }

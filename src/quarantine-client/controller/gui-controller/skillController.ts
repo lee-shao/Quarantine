@@ -1,6 +1,6 @@
-import { Stats } from "./stats";
-import { Controller } from "./controller"
-import { Role } from "../models/util/enums/roles";
+import { Stats } from "../stats";
+import { Controller } from "../controller"
+import { Role } from "../../models/util/enums/roles";
 import { UpgradeController } from "./upgradeController";
 
 /**
