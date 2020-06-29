@@ -5,7 +5,7 @@ import { SkillTreeView } from "./skillTreeView";
  * 
  * @author Shao
  */
-export class Icon extends Phaser.GameObjects.Image {
+export class Icon extends Phaser.GameObjects.Container {
     
     /** Number of currently available skill points */
     private availableSkillPoints: number; 
@@ -13,24 +13,30 @@ export class Icon extends Phaser.GameObjects.Image {
     /** Purchase price of the next skill point */
     private nextSkillPointPrice: number;
 
-    private skillIsActive: boolean;
+    public skillIsActive: boolean;
+
+    public skillIcon: Phaser.GameObjects.Image;
 
     constructor(scene: Phaser.Scene, x: number, y: number, texture: string, skillTree: SkillTreeView, active: boolean) {
-        super(scene, x, y, texture);
+        super(scene, x, y);
+
+        //this.skillIcon = new Phaser.GameObjects.Image(scene, x, y, texture).setScale(0.4);
 
         this.availableSkillPoints = SkillController.getInstance().getAvailableSkillPoints();
         this.nextSkillPointPrice = SkillController.getInstance().getNextSkillPointPrice();
         this.skillIsActive = active;
 
-        this.addButtonAnimations(texture, skillTree);
-        this.setScale(0.4);
+        this.addButtonAnimations(skillTree, texture);
         this.setName(texture);
     }
 
-    private addButtonAnimations(key: string, skillTree: SkillTreeView): void {
-        this.setInteractive()
+    private addButtonAnimations(skillTree: SkillTreeView, key: string): void {
+        this.skillIcon = new Phaser.GameObjects.Image(this.scene, 0, 0, key).setScale(0.4).setInteractive()
+        //this.skillIcon = this.scene.add.image(this.x, this.y, key).setScale(0.4).setInteractive()
         .on('pointerover', () => {
-            this.setScale(0.5);
+            if(!(this.skillIcon.scale < 0.4)) {
+                this.skillIcon.setScale(0.5);
+            }
             if(!(key == 'medical-treatment' || key == 'police-skill' || key == 'testing-skill' || key == 'lockdown-skill' || key == 'citizen')) {
                 skillTree.eraseDescription();
                 skillTree.destroyBuyButton();
@@ -39,21 +45,32 @@ export class Icon extends Phaser.GameObjects.Image {
             }
         })
         .on('pointerout', () => {
-            this.setScale(0.4);
-            if(!(key == 'medical-treatment' || key == 'police-skill' || key == 'testing-skill' || key == 'lockdown-skill' || key == 'citizen')) {
+            if(this.skillIcon.scale == 0.5) {
+                this.skillIcon.setScale(0.4);
             }
+            //if(!(key == 'medical-treatment' || key == 'police-skill' || key == 'testing-skill' || key == 'lockdown-skill' || key == 'citizen')) {
+            //}
         })
         .on('pointerdown', () => {
-            this.setScale(0.4);
+            skillTree.resetPreviouslyPressed(skillTree.previousSkill);
+            this.skillIcon.setScale(0.35);
+            skillTree.previousSkill = key;
         })
         .on('pointerup', () => {
-            this.setScale(0.5);
             if(key == 'medical-treatment' || key == 'police-skill' || key == 'testing-skill' || key == 'lockdown-skill' || key == 'citizen') {
-                skillTree.openSubtree(key);
-            } else {
-                //skillTree.showDescription(key);
-                //skillTree.addBuyButton(key, skillTree);
-            }
+                //skillTree.currentSkillIcons = skillTree.addCurrentSkillIcons('main');
+                skillTree.removeCurrentSkills();
+                skillTree.openSubtree(key, skillTree.addCurrentSkillIcons(key));
+                if(this.skillIsActive == true) {
+                    skillTree.openMainTree();
+                }
+                this.skillIsActive = true;
+            } 
         });
+        this.add(this.skillIcon);
     }
+
+    /*public manualSetScale(scale: number): void {
+        this.setScale(scale);
+    }*/
 }
