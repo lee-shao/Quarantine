@@ -32,7 +32,6 @@ export class MainScene extends Phaser.Scene {
 
         this.timeController = TimeController.getInstance();
         this.controller = Controller.getInstance();
-        EventController.getInstance();
     }
 
     update(): void {

@@ -3,6 +3,8 @@ import { TimeController } from "../../controller/timeController";
 import { TutorialComponent } from "./tutorialComponent";
 import { GuiScene } from "../scenes/gui-scene";
 import { ItemMenu } from "../item-menu/menu";
+import { TutorialController } from "../../controller/gui-controller/tutorialController";
+import { EventController } from "../../controller/eventController";
 
 /**
  * Factory which generates the SkipTutorialButton.
@@ -37,8 +39,9 @@ export class SkipTutorialButton extends GuiElement{
         this.text.on('pointerover', () => { this.text.setColor('Black'); })
                  .on('pointerout', () => { this.text.setColor('Yellow'); })
                  .on('pointerup', () => {
-                     // activate/display all components immediately
+                    // activate/display all components immediately
                     TimeController.getInstance().removeAllTimedTutorialEvents();
+                    EventController.getInstance();
                     this.tutorialComponents.forEach(x => {x.activateComponent();
                                                     if(x instanceof ItemMenu) x.activateComponent() // has to be triggered a second time because of research
                                                 });
