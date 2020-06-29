@@ -129,7 +129,7 @@ export class Stats {
      * represents the number.
      * @param value to be formatted
      */
-    public formatLargerNumber(value: number): string {
+    public static formatLargerNumber(value: number): string {
         let invert = false;
         let result = "";
 
@@ -159,8 +159,8 @@ export class Stats {
      * @param value to be formatted
      * @see #formatLargeNumber
      */
-    public formatMoneyString(value: number): string {
-        return this.formatLargerNumber(value) + " " + this.currency;
+    public static formatMoneyString(value: number): string {
+        return this.formatLargerNumber(value) + " " + Stats.currency;
     }
 
     
@@ -239,7 +239,7 @@ export class Stats {
     /** Current income per tic */
     public income: number;
     /** The in-game currency */
-    public currency = '€';
+    public static readonly currency = '€';
 
     // ----------------------------------------------------------------------- WEEKLY LOGS
     /** Number of infected people each week */
@@ -309,6 +309,9 @@ export class Stats {
         return this.basicInteractionRate * this.populationFactor * 4 * suscetible/ this.population;
     }
 
+    /** @returns scale factor to multiply with population numbers to simulate real population numbers */
+    public getPopulationFactor(): number {return this.populationFactor;}
+
     /**
      * Returns an array of all weekly stats for the given week in the following order:  
      * 1. Infected
@@ -346,19 +349,19 @@ export class Stats {
     // --------------------- GETTER STRING METHODS -------------------------------- //
     /** @returns the budget as a formatted string */
     public getBudgetString(): string {
-        return this.formatMoneyString(this.budget);
+        return Stats.formatMoneyString(this.budget);
     }
 
     /** @returns the difference of the income and all epxenses as a formatted string */
     public getEarningsString(): string {
         const is = UpgradeController.getInstance().getIncomeStatementToday();
-        return this.formatMoneyString(is.getEarningsTotal());
+        return Stats.formatMoneyString(is.getEarningsTotal());
     }
 
     /** @returns the current percentage of infected people, e.g. 45 % */
     public getInfectedString(): string {
         if (this.infected * this.populationFactor < 1_000_000) {
-            return this.formatLargerNumber(this.infected * this.populationFactor);
+            return Stats.formatLargerNumber(this.infected * this.populationFactor);
         } else return ((this.infected / this.population) * this.populationFactor).toFixed(2) + " %";
     }
 

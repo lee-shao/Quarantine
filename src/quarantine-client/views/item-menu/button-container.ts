@@ -4,6 +4,7 @@ import { TimeController } from '../../controller/timeController';
 import { TimeSubscriber } from '../../models/util/timeSubscriber';
 import { GuiScene } from '../scenes/gui-scene';
 import { PopupWindow } from '../popupWindow';
+import { Stats } from '../../controller/stats';
 
 /**
  * Represents a container which inherit all necessary items
@@ -47,6 +48,12 @@ export class ButtonContainer implements TimeSubscriber {
 
     public upgradeContr: UpgradeController;
 
+    /**
+     * Scale factor to multiply with population numbers to simulate real population numbers.
+     * Evoked from the stats singleton.
+     */
+    private readonly popFactor: number;
+
     private eventListener: Function;
 
     private scene: Phaser.Scene;
@@ -57,6 +64,8 @@ export class ButtonContainer implements TimeSubscriber {
         this.scene = scene;
         this.x = x;
         this.y = y;
+
+        this.popFactor = Stats.getInstance().getPopulationFactor();
 
         this.eventListener = callback;
 
@@ -70,7 +79,7 @@ export class ButtonContainer implements TimeSubscriber {
         this.amount = this.measures[this.key]['amount'];
         // Load 'key' as image and price as text to fixed position in the container
         this.buttonImage = this.scene.add.image(this.x + 100, this.y + 100, this.key).setScale(0.5);
-        this.priceText = this.scene.add.text(this.x + 75, this.y + 138.5, `${price} €`, {
+        this.priceText = this.scene.add.text(this.x + 75, this.y + 138.5, `${Stats.formatLargerNumber(price)} €`, {
             fontFamily:'Arial',
             color:'#000000',
         });
@@ -80,8 +89,6 @@ export class ButtonContainer implements TimeSubscriber {
         this.buttonAnimations(this.buttonImage);
 
         TimeController.getInstance().subscribe(this);
-
-        //this.scene.add.existing(this);
     }
 
     /**
@@ -108,12 +115,12 @@ export class ButtonContainer implements TimeSubscriber {
             // Police and healthworkers buttons includes the amount, the daily costs and a plus/minus button
             if (title == 'police' || title == 'healthworkers') {
                 // Text of amount
-                this.amountText = this.scene.add.text(this.x + 160, this.y + 80, `${this.amount}`, {
+                this.amountText = this.scene.add.text(this.x + 160, this.y + 80, `${Stats.formatLargerNumber(this.amount * this.popFactor)}`, {
                     fontFamily: 'Arial',
                     color: '#000000',
                 });
                 // Text of daily costs
-                this.dailyCostText = this.scene.add.text(this.x + 160, this.y + 115, `${this.dailyCost} €/Day`, {
+                this.dailyCostText = this.scene.add.text(this.x + 160, this.y + 115, `${Stats.formatLargerNumber(this.dailyCost)} €/Day`, {
                     fontFamily: 'Arial',
                     color: '#000000',
                 });
@@ -227,7 +234,7 @@ export class ButtonContainer implements TimeSubscriber {
     public updateText(): void {
         const currLv = this.measures['research']['current_level'];
         const currPrice = this.measures['research']['prices'][currLv];
-        this.priceText.setText(`${currPrice} €`);
+        this.priceText.setText(`${Stats.formatLargerNumber(currPrice)} €`);
         this.percentText.setText(`${this.percent}%`);
     }
 
@@ -235,7 +242,7 @@ export class ButtonContainer implements TimeSubscriber {
      * Updates the amount and the daily costs
      */
     public setAmount(): void {
-        this.amountText.setText(`${this.amount}`);
-        this.dailyCostText.setText(`${this.dailyCost} €/Day`);
+        this.amountText.setText(`${Stats.formatLargerNumber(this.amount  * this.popFactor)}`);
+        this.dailyCostText.setText(`${Stats.formatLargerNumber(this.dailyCost)} €/Day`);
     }
 }

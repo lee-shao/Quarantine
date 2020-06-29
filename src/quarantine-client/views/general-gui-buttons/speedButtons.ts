@@ -1,10 +1,6 @@
-import { MainScene } from "../scenes/main-scene";
-import { ChartScene } from "../tablet/chart-scene";
-import { MapScene } from "../tablet/map-scene";
 import { TimeController } from "../../controller/timeController";
 import { GuiElement } from "../guiElement";
 import { PopupWindow } from "../popupWindow";
-import { Tablet } from "../tablet/tablet";
 
 /**
  * Factory which generates the game speed buttons.
@@ -54,7 +50,7 @@ export class GameSpeedButtons extends GuiElement {
             if (!this.scene.mainSceneIsPaused) {
                 this.scene.mainSceneIsPaused = true;
                 this.timeController.pauseGame();
-                
+
                 if (this.scene.soundON) this.scene.buttonClickMusic.play();
             }
         });
