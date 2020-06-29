@@ -53,7 +53,7 @@ export class ButtonContainer implements TimeSubscriber {
     private x: number;
     private y: number;
 
-    public constructor(scene: Phaser.Scene, x: number, y: number, texture: string, price: number, callback: Function) {
+    public constructor(scene: Phaser.Scene, x: number, y: number, texture: string, price: number, callback: Function = null) {
         this.scene = scene;
         this.x = x;
         this.y = y;
@@ -194,10 +194,10 @@ export class ButtonContainer implements TimeSubscriber {
                     }
                     break;
                 case 'police':
-                    UpgradeController.getInstance().buyPoliceOfficers(UpgradeController.getInstance(), this.amount, this.dailyCost);
+                    UpgradeController.getInstance().buyPoliceOfficers(this.amount, this.dailyCost);
                     break;
                 case 'healthworkers':
-                    UpgradeController.getInstance().buyHealthWorkers(UpgradeController.getInstance(), this.amount, this.dailyCost);
+                    UpgradeController.getInstance().buyHealthWorkers(this.amount, this.dailyCost);
                     break;
                 default: 
                     console.error("[WARNING] - Passed key does not exist.");

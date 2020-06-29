@@ -69,25 +69,19 @@ export class ItemMenu extends Phaser.GameObjects.Container implements TutorialCo
     }
 
     //-------------------------------------------------------------------------------------------------
-    /** */
-    private buildClosure(myFunction: Function): Function {
-        const contr = this.upgradeContr;
-        return function(): void {myFunction(contr)};
-    }
-
     /** Adds lockdown button to the menu */
     public unlockLockdownBtn(): void {
-        new ButtonContainer(this.scene, this.x + 25, 575, 'lockdown', this.measures['lockdown']['price'], this.buildClosure(this.upgradeContr.activateLockdown));
+        new ButtonContainer(this.scene, this.x + 25, 575, 'lockdown', this.measures['lockdown']['price'], () => this.upgradeContr.activateLockdown());
     }
 
     public activateComponent(): void {
         // Add/unlocks button container
         ++this.activationCounter;
         if( this.activationCounter == 1) {
-            new ButtonContainer(this.scene, this.x + 25, 675, 'police', this.measures['police']['price'], this.buildClosure(this.upgradeContr.buyPoliceOfficers));
-            new ButtonContainer(this.scene, this.x + 25, 775, 'healthworkers', this.measures['healthworkers']['price'], this.buildClosure(this.upgradeContr.buyHealthWorkers));
+            new ButtonContainer(this.scene, this.x + 25, 675, 'police', this.measures['police']['price']);
+            new ButtonContainer(this.scene, this.x + 25, 775, 'healthworkers', this.measures['healthworkers']['price']);
         } else {
-            new ButtonContainer(this.scene, this.x + 25, 475, 'research', this.measures['research']['prices'][0], this.buildClosure(this.upgradeContr.buyResearchLevel));
+            new ButtonContainer(this.scene, this.x + 25, 475, 'research', this.measures['research']['prices'][0], () => this.upgradeContr.buyResearchLevel());
         }
     }
 
