@@ -17,6 +17,9 @@ export class GameSpeedButtons extends GuiElement {
 
     private gameSpeedButtons: Phaser.GameObjects.Image[];
 
+    /** Only existing instance of the time controller singleton */
+    private timeController: TimeController;
+
     /**
      * Creates the following buttons and adds them to the GuiScene:  
      * * pause
@@ -26,6 +29,8 @@ export class GameSpeedButtons extends GuiElement {
      * * the fastest speed
      */
     public create(): GameSpeedButtons {
+        this.timeController = TimeController.getInstance();
+
         this.gameSpeedButtons = [this.addPauseButton(), 
         this.addButtonResume(),
         this.addSpeedButtonNormal(),
@@ -47,13 +52,9 @@ export class GameSpeedButtons extends GuiElement {
 
         pause.on('pointerup', () => {
             if (!this.scene.mainSceneIsPaused) {
-                const main = this.scene.scene.get('MainScene') as MainScene;
-                const chart = this.scene.scene.get('ChartScene') as ChartScene;
-                const map = this.scene.scene.get('MapScene') as MapScene;
-                main.scene.pause();
-                chart.scene.pause();
-                map.scene.pause();
                 this.scene.mainSceneIsPaused = true;
+                this.timeController.pauseGame();
+                
                 if (this.scene.soundON) this.scene.buttonClickMusic.play();
             }
         });
@@ -74,17 +75,10 @@ export class GameSpeedButtons extends GuiElement {
 
         resume.on('pointerup', () => {
             if (this.scene.mainSceneIsPaused) {
-                const chart = this.scene.scene.get('ChartScene') as ChartScene;
-                const map = this.scene.scene.get('MapScene') as MapScene;
-                const main = this.scene.scene.get('MainScene') as MainScene;
-                main.scene.resume();
-                chart.scene.resume();
-                map.scene.resume();
                 this.scene.showBtns();
+                this.timeController.resumeGame();
                 this.scene.mainSceneIsPaused = false;
-                /** Only wake up the scenes if they were prviously displayed in the tablet */
-                if (!Tablet.instance.getChartSceneIsSleeping()) chart.scene.wake();
-                if (!Tablet.instance.getMapSceneIsSleeping()) map.scene.wake();
+
                 if (this.scene.soundON) this.scene.buttonClickMusic.play();
             }
         });
