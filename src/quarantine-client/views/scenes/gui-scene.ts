@@ -9,6 +9,7 @@ import { SoundButtons } from '../general-gui-buttons/soundButtons';
 import { SkipTutorialButton } from '../tutorial/skipTutorialButton';
 import { StatusBar } from '../status-bar/statusBar';
 import { Tablet } from '../tablet/tablet';
+import { PetriInfoButton } from '../general-gui-buttons/petriInfoButton';
 
 /** Scene for user interface elements. */
 export class GuiScene extends Phaser.Scene {
@@ -82,6 +83,8 @@ export class GuiScene extends Phaser.Scene {
         this.inGameMusic.play(musicConfig);
 
         // ------------------------------------------------------------------- GUI ELEMENTS
+        // adds petri Info button
+        this.buttons.push(new PetriInfoButton(this).create().getInfoButton());
         // adds pause, slow, normal, quicker and quickest game speed buttons
         new GameSpeedButtons(this).create().getGameSpeedButtons().forEach(b =>{
             this.buttons.push(b);
