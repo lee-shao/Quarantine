@@ -55,7 +55,7 @@ export class RestartButton extends GuiElement {
 
                     //do restart the game when btn were clicked
                     restartOKBtn.on('pointerup', () => {
-                    location.reload();
+                        location.reload();
                 });
 
                     //add confirm to object container and show the popup
