@@ -9,6 +9,8 @@ export abstract class GuiElement {
 
     /** The GuiScene where the element belongs to */
     protected scene: GuiScene;
+    /** The scale an object should adapt to when hovered over */
+    protected scaling = 1.1;
 
     constructor(scene: GuiScene) {
         this.scene = scene;

@@ -1,10 +1,6 @@
-import { MainScene } from "../scenes/main-scene";
-import { ChartScene } from "../tablet/chart-scene";
-import { MapScene } from "../tablet/map-scene";
 import { TimeController } from "../../controller/timeController";
 import { GuiElement } from "../guiElement";
 import { PopupWindow } from "../popupWindow";
-import { Tablet } from "../tablet/tablet";
 
 /**
  * Factory which generates the game speed buttons.
@@ -17,6 +13,9 @@ export class GameSpeedButtons extends GuiElement {
 
     private gameSpeedButtons: Phaser.GameObjects.Image[];
 
+    /** Only existing instance of the time controller singleton */
+    private timeController: TimeController;
+
     /**
      * Creates the following buttons and adds them to the GuiScene:  
      * * pause
@@ -26,6 +25,8 @@ export class GameSpeedButtons extends GuiElement {
      * * the fastest speed
      */
     public create(): GameSpeedButtons {
+        this.timeController = TimeController.getInstance();
+
         this.gameSpeedButtons = [this.addPauseButton(), 
         this.addButtonResume(),
         this.addSpeedButtonNormal(),
@@ -38,7 +39,7 @@ export class GameSpeedButtons extends GuiElement {
         const pause = this.scene.add.image(this.scene.game.renderer.width / 2 + 150, 50, 'pause').setInteractive();
 
         pause.on('pointerover', () => {
-            pause.setScale(0.7);
+            pause.setScale(this.scaling);
         });
 
         pause.on('pointerout', () => {
@@ -47,13 +48,9 @@ export class GameSpeedButtons extends GuiElement {
 
         pause.on('pointerup', () => {
             if (!this.scene.mainSceneIsPaused) {
-                const main = this.scene.scene.get('MainScene') as MainScene;
-                const chart = this.scene.scene.get('ChartScene') as ChartScene;
-                const map = this.scene.scene.get('MapScene') as MapScene;
-                main.scene.pause();
-                chart.scene.pause();
-                map.scene.pause();
                 this.scene.mainSceneIsPaused = true;
+                this.timeController.pauseGame();
+
                 if (this.scene.soundON) this.scene.buttonClickMusic.play();
             }
         });
@@ -65,7 +62,7 @@ export class GameSpeedButtons extends GuiElement {
         const resume = this.scene.add.image(this.scene.game.renderer.width / 2 + 250, 50, 'resume-button').setInteractive();
 
         resume.on('pointerover', () => {
-            resume.setScale(0.7);
+            resume.setScale(this.scaling);
         });
 
         resume.on('pointerout', () => {
@@ -74,17 +71,10 @@ export class GameSpeedButtons extends GuiElement {
 
         resume.on('pointerup', () => {
             if (this.scene.mainSceneIsPaused) {
-                const chart = this.scene.scene.get('ChartScene') as ChartScene;
-                const map = this.scene.scene.get('MapScene') as MapScene;
-                const main = this.scene.scene.get('MainScene') as MainScene;
-                main.scene.resume();
-                chart.scene.resume();
-                map.scene.resume();
                 this.scene.showBtns();
+                this.timeController.resumeGame();
                 this.scene.mainSceneIsPaused = false;
-                /** Only wake up the scenes if they were prviously displayed in the tablet */
-                if (!Tablet.instance.getChartSceneIsSleeping()) chart.scene.wake();
-                if (!Tablet.instance.getMapSceneIsSleeping()) map.scene.wake();
+
                 if (this.scene.soundON) this.scene.buttonClickMusic.play();
             }
         });
@@ -95,7 +85,7 @@ export class GameSpeedButtons extends GuiElement {
         const speed1x = this.scene.add.image(this.scene.game.renderer.width / 2 + 350, 50, 'speed1x').setInteractive();
 
         speed1x.on('pointerover', () => {
-            speed1x.setScale(0.7);
+            speed1x.setScale(this.scaling);
         });
 
         speed1x.on('pointerout', () => {
@@ -122,7 +112,7 @@ export class GameSpeedButtons extends GuiElement {
         const speed2x = this.scene.add.image(this.scene.game.renderer.width / 2 + 450, 50, 'speed2x').setInteractive();
 
         speed2x.on('pointerover', () => {
-            speed2x.setScale(0.7);
+            speed2x.setScale(this.scaling);
         });
 
         speed2x.on('pointerout', () => {
@@ -149,7 +139,7 @@ export class GameSpeedButtons extends GuiElement {
         const speed3x = this.scene.add.image(this.scene.game.renderer.width / 2 + 550, 50, 'speed3x').setInteractive();
 
         speed3x.on('pointerover', () => {
-            speed3x.setScale(0.7);
+            speed3x.setScale(this.scaling);
         });
 
         speed3x.on('pointerout', () => {

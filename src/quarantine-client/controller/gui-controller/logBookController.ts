@@ -47,7 +47,7 @@ export class LogBookController {
             this.scene,
             400, 
             this.textStatPosY, 
-            name + ": " + this.stats.formatLargerNumber(value), 
+            name + ": " + Stats.formatLargerNumber(value), 
             { color: 'Black', fontSize: '28px', fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' }
         );
         this.textStatPosY += 64;
@@ -68,7 +68,7 @@ export class LogBookController {
             this.scene,
             1070 + offset, 
             posY, 
-            name + ": " + this.stats.formatMoneyString(value), 
+            name + ": " + Stats.formatMoneyString(value), 
             { color: 'Black', fontSize: '18px', fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' }
         );
         if (offset == 0) this.textFinanceIncPosY += 32;
@@ -195,14 +195,14 @@ export class LogBookController {
             this.scene,
             1050, 
             tempY, 
-            this.stats.formatMoneyString(incomeStatement.getIncome()), 
+            Stats.formatMoneyString(incomeStatement.getIncome()), 
             { color: 'Black', fontSize: '22px', fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' }
         ));
         arr.push(new Phaser.GameObjects.Text(
             this.scene,
             1300, 
             tempY, 
-            this.stats.formatMoneyString(incomeStatement.getExpenses()), 
+            Stats.formatMoneyString(incomeStatement.getExpenses()), 
             { color: 'Black', fontSize: '22px', fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' }
         ));
 

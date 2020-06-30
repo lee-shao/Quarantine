@@ -25,7 +25,7 @@ export class RestartButton extends GuiElement {
 
         // hover, click event etc.
         this.restartBtn.on('pointerover', () => {
-            this.restartBtn.setScale(0.7);
+            this.restartBtn.setScale(this.scaling);
         });
 
         this.restartBtn.on('pointerout', () => {
