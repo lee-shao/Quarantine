@@ -770,6 +770,16 @@
         "type": "image",
         "key": "home-button",
         "url": "assets/sprites/main-scene/home-button.png"
+      },
+      {
+        "type": "image",
+        "key": "flu-virus",
+        "url": "assets/sprites/main-scene/flu-virus.png"
+      },
+      {
+        "type": "image",
+        "key": "ambulance",
+        "url": "assets/sprites/main-scene/ambulance.png"
       }
     ]
   }
