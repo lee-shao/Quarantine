@@ -3,8 +3,6 @@ import { TutorialView } from "../../views/tutorial/tutorialView";
 import { TutorialComponent } from "../../views/tutorial/tutorialComponent";
 import { TimedEvent } from "../entities/timedEvent";
 import { LogBookButton } from "../../views/log-book/logBookButton";
-import { MapScene } from "../../views/tablet/map-scene";
-import { ChartScene } from "../../views/tablet/chart-scene";
 import { ItemMenu } from "../../views/item-menu/menu";
 import { SkillTreeButton } from "../../views/skill-tree/skillTreeButton";
 import { GuiScene } from "../../views/scenes/gui-scene";

@@ -46,7 +46,9 @@ export class ItemMenu extends Phaser.GameObjects.Container implements TutorialCo
         // Add background
         this.scene.add.image(this.x + 350 , this.y + 120, 'notebook').setScale(0.6);  //.setAlpha(0.5); //dont work
         // Add menu bar
-        this.add(this.scene.add.image(this.x + 515 , 70, 'note-pink').setScale(0.6));
+        const stickyNote = this.scene.add.image(this.x - 110 , -120, 'note-pink').setScale(0.6);
+        stickyNote.depth = 100;
+        this.add(stickyNote);
 
         this.scene.add.existing(this);
 
@@ -55,7 +57,7 @@ export class ItemMenu extends Phaser.GameObjects.Container implements TutorialCo
 
     /** Creates the "profile". That means item menu relevant stats are visualized on the menu. */
     private addStatistics(): void {
-        this.add(this.scene.add.text(this.x + 425, 0,`Budget: ${this.budget}\nIncome: ${this.income}`,{ // \n for line break and then setLineSpacing
+        this.add(this.scene.add.text(this.x - 180, -150,`Budget: ${this.budget}\nIncome: ${this.income}`,{ // \n for line break and then setLineSpacing
             fontFamily:'Arial',
             color:'#000000',
         }))

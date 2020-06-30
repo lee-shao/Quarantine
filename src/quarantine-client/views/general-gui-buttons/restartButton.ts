@@ -17,7 +17,7 @@ export class RestartButton extends GuiElement {
 
     /** Create and add a restart button to the GuiScene */
     public create(): RestartButton {
-        this.restartBtn = this.scene.add.image(this.scene.game.renderer.width - 100, 150, 'restart');
+        this.restartBtn = this.scene.add.image(this.scene.game.renderer.width - 50, 150, 'restart');
     /*public create(): Phaser.GameObjects.Sprite {
         const this.restartBtn = this.scene.add.sprite(this.scene.game.renderer.width - 100, 150, 'restart');*/
 
