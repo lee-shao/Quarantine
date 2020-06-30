@@ -8,7 +8,7 @@ import { TimedEvent } from "./entities/timedEvent";
 import { Controller } from "./controller";
 import { Role } from "../models/util/enums/roles";
 import { TutorialController } from "./gui-controller/tutorialController";
-
+import { EventLog } from "./eventLog";
 /**
  * Singleton controller which implements application logic for events.
  * @author Sebastian Führ
@@ -199,6 +199,7 @@ export class EventController implements TimeSubscriber {
             eventInfo["description"],
             eventInfo["image-path"]
         );
+        EventLog.getInstance().updateEventList( eventInfo["name"], eventInfo["description"], eventInfo["image-path"] );
     }
 
     /** Reduces all event counters by one. */
