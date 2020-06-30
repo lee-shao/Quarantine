@@ -10,6 +10,8 @@ import { SkipTutorialButton } from '../tutorial/skipTutorialButton';
 import { StatusBar } from '../status-bar/statusBar';
 import { Tablet } from '../tablet/tablet';
 import { PetriInfoButton } from '../general-gui-buttons/petriInfoButton';
+import { EventList } from '../event-list';
+import { EventButton } from '../event-button';
 
 /** Scene for user interface elements. */
 export class GuiScene extends Phaser.Scene {
@@ -26,6 +28,7 @@ export class GuiScene extends Phaser.Scene {
 
     private menu: ItemMenu;
     private skipTutorialBtn: SkipTutorialButton;
+    private eventList: EventList;
 
     private statusBar: StatusBar;
     public mainSceneIsPaused = false;
@@ -64,6 +67,8 @@ export class GuiScene extends Phaser.Scene {
     create(): void {
         // Creates Itemmenu and it to this scene
         this.menu = ItemMenu.getInstance(this, 0, 750);
+        // this.eventNote = EventNote.getInstance(this, 1500, 875);
+
 
         //** create sound objects */
         this.inGameMusic = this.sound.add("game_theme_music");
@@ -97,6 +102,10 @@ export class GuiScene extends Phaser.Scene {
         const skillTreeBtn = new SkillTreeButton(this).create();
         // add the log book button
         const logBookBtn = new LogBookButton(this).create();
+
+        this.buttons.push(new EventButton(this).create().getEventButton());
+        // const eventButton = new EventButton(this).create();
+
         // add the sound buttons
         new SoundButtons(this).create().getSoundButtons().forEach(b => {
             this.buttons.push(b);
@@ -146,4 +155,9 @@ export class GuiScene extends Phaser.Scene {
     public addToVisibleButtons(element: Phaser.GameObjects.Image): void {
         this.buttons.push(element);
     }
+
+    // public static getInstance(scene = null, x = 0, y = 0): GuiScene {
+    //     if(!GuiScene.instance) GuiScene.instance = new GuiScene();
+    //     return GuiScene.instance;
+    // }
 }
