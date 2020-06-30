@@ -20,7 +20,6 @@ export class LogBookButton extends GuiElement implements TutorialComponent {
         this.lbBtn = this.scene.add.image(1050, 780, 'log').setOrigin(0);
         this.lbBtn.scale = 0.6;
         this.lbBtn.angle = -10;
-        this.lbBtn.depth = 10;
 
         // hover effect
         this.lbBtn.on('pointerover', () => { this.lbBtn.scale = 0.65; });

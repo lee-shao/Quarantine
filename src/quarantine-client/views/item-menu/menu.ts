@@ -45,10 +45,8 @@ export class ItemMenu extends Phaser.GameObjects.Container implements TutorialCo
         this.income = this.upgradeContr.getIncome();
         // Add background
         this.scene.add.image(this.x + 350 , this.y + 120, 'notebook').setScale(0.6);  //.setAlpha(0.5); //dont work
-        // Add menu bar
-        const stickyNote = this.scene.add.image(this.x - 110 , -120, 'note-pink').setScale(0.6);
-        stickyNote.depth = 100;
-        this.add(stickyNote);
+        // Add sticky note
+        this.add(this.scene.add.image(this.x - 110 , -120, 'note-pink').setScale(0.6));
 
         this.scene.add.existing(this);
 
