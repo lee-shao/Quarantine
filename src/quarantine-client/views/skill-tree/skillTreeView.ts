@@ -11,19 +11,17 @@ export class SkillTreeView extends PopupWindow {
     /** Instance of SkillTreeView */
     private static instance: SkillTreeView;
 
-    /** Number of currently available skill points */
-    private availableSkillPoints: number; 
-
-    /** Purchase price of the next skill point */
-    private nextSkillPointPrice: number;
-
     public currentSkillIcons: any;
 
     public previousSkill: string;
+    
+    public iconIsPressed: boolean;
 
     public skillDescription: Phaser.GameObjects.Text;
 
-    public buyButton: Phaser.GameObjects.Image;
+    public backButton: Phaser.GameObjects.Image;
+
+    //public buyButton: Phaser.GameObjects.Image;
     
     public descriptions = require("./../../../../res/json/skill-descriptions.json");
 
@@ -45,70 +43,50 @@ export class SkillTreeView extends PopupWindow {
         });
         this.add(this.skillDescription);
 
-        this.buyButton = new Phaser.GameObjects.Image(this.scene, innerWidth*0.775, innerHeight*0.9, 'buyButton').setScale(0.4).setOrigin(0.5);
+        //this.buyButton = new Phaser.GameObjects.Image(this.scene, innerWidth*0.775, innerHeight*0.9, 'buyButton').setScale(0.4).setOrigin(0.5);
+        this.backButton = new Phaser.GameObjects.Image(this.scene, 320, 870, 'arrow-next').setAngle(180);
+        this.addBackButton();
+        this.backButton.setVisible(false);
 
-        this.availableSkillPoints = SkillController.getInstance().getAvailableSkillPoints();
-        this.nextSkillPointPrice = SkillController.getInstance().getNextSkillPointPrice();
-
+        this.iconIsPressed = false;
         this.currentSkillIcons = this.addCurrentSkillIcons('main');
         this.addSkills(this.currentSkillIcons);
         this.scene.add.existing(this);
     }
 
     private addBackButton(): void {
-        const backButton = new Phaser.GameObjects.Image(this.scene, 320, 870, 'arrow-next');
-        backButton.angle = 180;
-
-        backButton.setInteractive()
+        this.backButton.setInteractive()
         .on('pointerover', () => {
-            backButton.scale = 1.2;
+            this.backButton.scale = 1.2;
         })
         .on('pointerout', () => {
-            backButton.scale = 1;
+            this.backButton.scale = 1;
         })
         .on('pointerdown', () => {
-            backButton.scale = 1;
+            this.backButton.scale = 1;
         })
         .on('pointerup', () => {
-            backButton.scale = 1.2;
+            this.backButton.scale = 1.2;
+            this.hideCurrentSkills();
             this.openMainTree();
-            backButton.destroy();
+            this.backButton.setVisible(false);
+            this.iconIsPressed = false;
         });
-        this.add(backButton);
-    }
-
-    public addBuyButton(key: string, skillTree: SkillTreeView): void {
-        this.buyButton.setInteractive()
-        .on('pointerover', () => {
-            this.buyButton.setTexture('buyButtonH');
-        })
-        .on('pointerout', () => {
-            this.buyButton.setTexture('buyButton');
-        })
-        .on('pointerdown', () => {
-            this.buyButton.setTexture('buyButtonP')
-        })
-        .on('pointerup', () => {
-            this.buyButton.setTexture('buyButtonA')
-            this.buyButton.removeInteractive();
-            this.activateSkill(key);
-        });
-        this.add(this.buyButton);
+        this.add(this.backButton);
     }
 
     public openSubtree(key: string, buttons: any): void {
         
         this.currentSkillIcons = buttons;
-        this.addBackButton();
+        this.backButton.setVisible(true);
         this.addSkills(buttons);
     }
 
     public openMainTree(): void {
-        this.removeCurrentSkills();
         this.currentSkillIcons = this.addCurrentSkillIcons('main');
         this.addSkills(this.currentSkillIcons);
         this.eraseDescription();
-        this.destroyBuyButton();
+        //Icon.buyButton.setVisible(false);
     }
 
     public addSkills(buttons: any): void {
@@ -117,16 +95,10 @@ export class SkillTreeView extends PopupWindow {
         }
     }
 
-    public removeCurrentSkills(): void {
-        for (let i = 0; i < this.currentSkillIcons.length; i++) {
-            this.currentSkillIcons[i].destroy();
-        }
-    }
-
-    public destroyBuyButton(): void {
-        if(this.getByName('buyButton') != null) {
-            this.getByName('buyButton').destroy();
-        }
+    public hideCurrentSkills(): void {
+        this.currentSkillIcons.forEach(element => {
+            element.setVisible(false);
+        });
     }
 
     public showDescription(key: string): void {
@@ -141,12 +113,11 @@ export class SkillTreeView extends PopupWindow {
         this.currentSkillIcons.forEach(icon => {
             if(icon instanceof Icon && icon.name == key) {
                 if(!(key == 'medical-treatment' || key == 'police-skill' || key == 'testing-skill' || key == 'lockdown-skill' || key == 'citizen')) {
-                    icon.setScale(1.2);
+                    icon.resetScale(0.4);
                 }
             }
         });
     }
-    
 
     public addCurrentSkillIcons(key: string): any[] {
         const title = new Phaser.GameObjects.Text(this.scene, innerWidth*0.35, innerHeight*0.1, 'Skill Tree', {

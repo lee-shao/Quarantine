@@ -299,7 +299,7 @@ export class UpgradeController implements TimeSubscriber {
      * Reduces the current budget by the given price
      * @param price Price of respective item
      */
-    private buyItem(price: number): void {
+    public buyItem(price: number): void {
         this.setBudget(this.getBudget() - price);
     }
 

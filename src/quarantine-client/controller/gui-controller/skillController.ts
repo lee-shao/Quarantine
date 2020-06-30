@@ -23,73 +23,28 @@ export class SkillController {
     /** Singleton instance of UpgradeController */
     private uC: UpgradeController;
 
-    /** Number of currently available skill points */
-    private availableSkillPoints: number; 
-
-    /** Purchase price of the next skill point */
-    private nextSkillPointPrice: number;
-
-    /** Maximum purchase price for a skill point */
-    private maximumSkillPointPrice: number;
-
     private constructor() {
         this.stats = Stats.getInstance();
         this.controller = Controller.getInstance();
         this.uC = UpgradeController.getInstance();
-
-        this.availableSkillPoints = 3; //could be outsourced to stats => see difficulty level
-        this.nextSkillPointPrice = 500_000_000;
-        this.maximumSkillPointPrice = 5_000_000_000;
     }
 
     // ----------------------------------------------------------------- GENERAL METHODS
 
     /**
-     * Buys skill point and calculates the price 
-     * for the next skill point. {@see skillController.ts#updateNextSkillPointPrice}
-     * @param sC - SkillController needed for closure {@see menu.ts#buildClosure}
-     * @returns false, if the player is not solvent
-     */
-    public buySkillPoint(sC: SkillController): boolean {
-        if (this.skillBuyable(sC) == false) return false;
-
-        sC.stats.budget -= sC.nextSkillPointPrice; //buy skill point
-        sC.availableSkillPoints++;
-
-        sC.updateNextSkillPointPrice();
-    }
-
-    /**
-     * test if player is solvent (edit: Shao)
-     */
-    public skillBuyable(sC: SkillController): boolean {
-        if(! (sC.stats.budget < sC.nextSkillPointPrice)) return false; //tests if player is solvent
-        else return true;
-    }
-
-    /** Calculates the purchase price for the next skill point. 
-     * The maximum price is determined by {@see maximumSkillPointPrice} 
-     */
-    private updateNextSkillPointPrice(): void {
-        this.nextSkillPointPrice = Math.floor(this.nextSkillPointPrice * 1.2);
-
-        if(this.nextSkillPointPrice >= this.maximumSkillPointPrice) this.nextSkillPointPrice = this.maximumSkillPointPrice;
-    }
-
-    /**
      * Checks whether the prerequsites for activating the skill are met and, in this case,
      * it invokes the passed skill function
-     * @param requiredSkillPoints Number of skill points which is required to activate the skill
+     * @param skillPointPrice Number of skill points which is required to activate the skill
      * @param requiredSkills Abilities which have to be skilled previously
      * @param skill Anonymous function which contains the actual skill logic
      * @returns if the activation was successful
      */
-    private activateSkill(requiredSkillPoints: number, requiredSkills: boolean[], skill: Function): boolean {
+    private activateSkill(skillPointPrice: number, requiredSkills: boolean[], skill: Function): boolean {
         //Checks if player has enough available skill points and if all required abilities are skilled
-        if( (requiredSkillPoints > this.availableSkillPoints) || (requiredSkills.filter(x => !x).length > 0) ) return false;
+        if( (this.uC.isSolvent(skillPointPrice)) || (requiredSkills.filter(x => !x).length > 0) ) return false;
 
         skill();
-        this.availableSkillPoints -= requiredSkillPoints;
+        this.uC.buyItem(skillPointPrice);
         return true;
     }
 
@@ -374,7 +329,7 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @returns wether the skill is activated successfully
      */
     public activateAdditionalTestKits(sC: SkillController): boolean {
-        return sC.activateSkill(1, [], () => {
+        return sC.activateSkill(1000000, [], () => {
             sC.additionalTestKits = true;
             sC.controller.distributeNewRoles(1000, Role.HEALTH_WORKER, true);
         })
@@ -389,7 +344,7 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @returns wether the skill is activated successfully
      */
     public activateUpgradeTestKitI(sC: SkillController): boolean {
-        return sC.activateSkill(1, [sC.additionalTestKits], () => {
+        return sC.activateSkill(1000000, [sC.additionalTestKits], () => {
             sC.upgradeTestKitI = true;
             sC.stats.currentPriceTestKit -= 5;
         })
@@ -434,7 +389,7 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @returns wether the skill is activated successfully
      */
     public activatednaRnaCodeSequence(sC: SkillController): boolean {
-        return sC.activateSkill(1, [sC.nationwideTesting], () => {
+        return sC.activateSkill(1000000, [sC.nationwideTesting], () => {
             sC.dnaRnaCodeSequence = true;
             const researchLvL = sC.uC.measures["research"]["current_level"];
             if(researchLvL == 9) { // Introduces alternative bonus
@@ -460,7 +415,7 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @returns wether the skill is activated successfully
      */
     public activateImmunityTests(sC: SkillController): boolean {
-        return sC.activateSkill(1, [sC.dnaRnaCodeSequence], () => {
+        return sC.activateSkill(1000000, [sC.dnaRnaCodeSequence], () => {
             sC.immunityTests = true;
             sC.stats.currentSalaryHW -= 5;
         })
@@ -478,7 +433,7 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @returns wether the skill is activated successfully
      */
     public activateLockdownStageI(sC: SkillController): boolean {
-        return sC.activateSkill(1, [], () => {
+        return sC.activateSkill(1000000, [], () => {
             sC.lockdownStageI = true;
             sC.stats.basicInteractionRate *= 0.9;
         })
@@ -496,7 +451,7 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @returns wether the skill is activated successfully
      */
     public activateLockdownStageII(sC: SkillController): boolean {
-        return sC.activateSkill(1, [sC.lockdownStageI], () => {
+        return sC.activateSkill(1000000, [sC.lockdownStageI], () => {
             sC.lockdownStageII = true;
             sC.stats.maxInteractionVariance *= 0.8;
         })
@@ -514,7 +469,7 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @returns wether the skill is activated successfully
      */
     public activateLockdownStageIII(sC: SkillController): boolean {
-        return sC.activateSkill(1, [sC.lockdownStageII], () => {
+        return sC.activateSkill(1000000, [sC.lockdownStageII], () => {
             sC.lockdownStageIII = true;
             this.stats.basicInteractionRate *= 0.9;
             this.stats.maxInteractionVariance *= 0.9;
@@ -532,7 +487,7 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @returns wether the skill is activated successfully
      */
     public activateLockdownStageIV(sC: SkillController): boolean {
-        return sC.activateSkill(1, [sC.lockdownStageIII, sC.militaryII], () => {
+        return sC.activateSkill(1000000, [sC.lockdownStageIII, sC.militaryII], () => {
             sC.lockdownStageIV = true;
             this.stats.basicInteractionRate *= 0.6;
             this.stats.maxInteractionVariance = 0;
@@ -550,7 +505,7 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @returns wether the skill is activated successfully
      */
     public activatePublicTransport(sC: SkillController): boolean {
-        return sC.activateSkill(1, [sC.lockdownStageI], () => {
+        return sC.activateSkill(1000000, [sC.lockdownStageI], () => {
             sC.publicTransport = true;
         })
     }
@@ -565,7 +520,7 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @returns wether the skill is activated successfully
      */
     public activateRestrictedTraffic(sC: SkillController): boolean {
-        return sC.activateSkill(1, [sC.publicTransport], () => {
+        return sC.activateSkill(1000000, [sC.publicTransport], () => {
             sC.restrictedTraffic = true;
         })
     }
@@ -581,7 +536,7 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @returns wether the skill is activated successfully
      */
     public activateFinancialSupportI(sC: SkillController): boolean {
-        return sC.activateSkill(2, [sC.publicTransport], () => {
+        return sC.activateSkill(2000000, [sC.publicTransport], () => {
             sC.financialSupportI = true;
             sC.stats.currentSalaryHW -= 10;
             sC.stats.currentSalaryPO -= 10;
@@ -599,7 +554,7 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @returns wether the skill is activated successfully
      */
     public activateFinancialSupportII(sC: SkillController): boolean {
-        return sC.activateSkill(3, [sC.financialSupportI], () => {
+        return sC.activateSkill(3000000, [sC.financialSupportI], () => {
             sC.financialSupportII = true;
             sC.stats.happinessRate += 2;
         })
@@ -618,7 +573,7 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @returns wether the skill is activated successfully
      */
     public activateExpertiseI(sC: SkillController): boolean {
-        return sC.activateSkill(1, [], () => {
+        return sC.activateSkill(1000000, [], () => {
             sC.expertiseI = true;
             sC.stats.happinessRate += 0.5;
         })
@@ -635,7 +590,7 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @returns wether the skill is activated successfully
      */
     public activateExpertiseII(sC: SkillController): boolean {
-        return sC.activateSkill(1, [sC.expertiseI], () => {
+        return sC.activateSkill(1000000, [sC.expertiseI], () => {
             sC.expertiseII = true;
             sC.stats.happinessRate += 0.5;
         })
@@ -653,7 +608,7 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @returns wether the skill is activated successfully
      */
     public activateExpertiseIII(sC: SkillController): boolean {
-        return sC.activateSkill(1, [sC.expertiseII, sC.additionalMedicalSuppliesI], () => {
+        return sC.activateSkill(1000000, [sC.expertiseII, sC.additionalMedicalSuppliesI], () => {
             sC.expertiseIII = true;
             sC.stats.maxInteractionVariance *= 0.5;
         })
@@ -666,7 +621,7 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @returns wether the skill is activated successfully
      */
     public activateTrackingAppI(sC: SkillController): boolean {
-        return sC.activateSkill(1, [sC.expertiseI], () => {
+        return sC.activateSkill(1000000, [sC.expertiseI], () => {
             sC.trackingAppI = true;
         })
     }
@@ -682,7 +637,7 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @returns wether the skill is activated successfully
      */
     public activateTrackingAppII(sC: SkillController): boolean {
-        return sC.activateSkill(1, [sC.trackingAppI, sC.trackingEncounters], () => {
+        return sC.activateSkill(1000000, [sC.trackingAppI, sC.trackingEncounters], () => {
             sC.trackingAppII = true;
         })
     }
@@ -696,11 +651,4 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
         if (!SkillController.instance) SkillController.instance = new SkillController();
             return SkillController.instance;
         }
-
-    /** @returns Number of currently available skill points */
-    public getAvailableSkillPoints(): number {return this.availableSkillPoints}
-
-    /** @returns Purchase price of the next skill point */
-    public getNextSkillPointPrice(): number {return this.nextSkillPointPrice}
-
 }
