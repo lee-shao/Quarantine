@@ -34,7 +34,7 @@ export class StatusBar extends GuiElement implements TimeSubscriber {
             fontSize: '22px',
             fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif'
         };
-        this.rValue = this.scene.add.text(500, 4, "R-Value: " + this.stats.getRValue(), style).setOrigin(0);
+        this.rValue = this.scene.add.text(500, 4, "R-Value: " + this.stats.getRValue().toLocaleString("de-DE"), style).setOrigin(0);
         this.infected = this.scene.add.text(720, 5, "Infected: " + this.stats.getInfectedString(), style).setOrigin(0);
         this.dailyIncome = this.scene.add.text(1000, 5, this.stats.getEarningsString(), style).setOrigin(0);
         this.budget = this.scene.add.text(1240, 5, this.stats.getBudgetString(), style).setOrigin(0);
@@ -48,7 +48,7 @@ export class StatusBar extends GuiElement implements TimeSubscriber {
     }
 
     notify(): void {
-        this.rValue.setText("R-Value: " + this.stats.getRValue());
+        this.rValue.setText("R-Value: " + this.stats.getRValue().toLocaleString("de-DE"));
         this.infected.setText("Infected: " + this.stats.getInfectedString());
     }
 

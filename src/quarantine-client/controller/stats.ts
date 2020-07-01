@@ -141,13 +141,13 @@ export class Stats {
 
         if (value >= 1_000_000_000) { // trillion
             if (invert) value = value * -1;
-            result = +(value / 1_000_000_000).toFixed(2) + " Trillion";
+            result = (+(value / 1_000_000_000).toFixed(2)).toLocaleString("de-DE") + " Trillion";
         } else if (value >= 1_000_000_000) { // billion
             if (invert) value = value * -1;
-            result = +(value / 1_000_000_000).toFixed(2) + " Mrd.";
+            result = (+(value / 1_000_000_000).toFixed(2)).toLocaleString("de-DE") + " Mrd.";
         } else if (value >= 1_000_000) { // millions
             if (invert) value = value * -1;
-            result = +(value / 1_000_000).toFixed(2) + " Mio."; // + before paranthesis clips 0 after the decimal
+            result = (+(value / 1_000_000).toFixed(2)).toLocaleString("de-DE") + " Mio."; // + before paranthesis clips 0 after the decimal
         } else {
             result = value.toLocaleString("de-DE");
         }
