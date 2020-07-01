@@ -1,7 +1,7 @@
 {
     "population": 1620000,
-    "portion_of_police": 0.05,
-    "portion_of_healthworkers": 0.05,
+    "portion_of_police": 0.005,
+    "portion_of_healthworkers": 0.005,
 
     "happiness": 95.00,
     "happinessRate": 0,
@@ -15,7 +15,7 @@
     "avgPriceTestKit": 55,
     "avgPriceVaccination": 64,
 
-    "budget": 1000000000,
-    "maxIncome": 600000000,
-    "income": 65000000
+    "budget": 750000000,
+    "maxIncome": 350000000,
+    "income": 7500000
 }
