@@ -20,7 +20,7 @@ export class EventButton extends GuiElement {
 
 
     public create(): EventButton {
-        this.eventNote = this.scene.add.image(1500, 850, 'event-note');
+        this.eventNote = this.scene.add.image(1600, 750, 'event-note'); // old position 1500 850
         this.eventNote.setInteractive();
         this.eventNote.scale = 0.5;
         

@@ -83,19 +83,19 @@ export class Event {
 
         };
         if(!this.eventTitle) {
-            GuiScene.instance.scene.scene.add.rectangle(1570, 700, 480, 100, 0xffffff);
-            this.eventTitle = GuiScene.instance.scene.scene.add.text(1340, 670, title, styleTitle);
-        } else {
-            this.eventTitle.destroy();
-            this.eventTitle = GuiScene.instance.scene.scene.add.text(1320, 670, title, styleTitle);
-        }
+            GuiScene.instance.scene.scene.add.rectangle(1670, 600, 480, 100, 0xffffff);
+            this.eventTitle = GuiScene.instance.scene.scene.add.text(1440, 570, title, styleTitle);
+        } //else {
+        //     this.eventTitle.destroy();
+        //     this.eventTitle = GuiScene.instance.scene.scene.add.text(1320, 670, title, styleTitle);
+        // }
         if(!this.eventDescription) {
-            GuiScene.instance.scene.scene.add.rectangle(1480, 890, 640, 150, 0xffffff);
-            this.eventDescription = GuiScene.instance.scene.scene.add.text(1200, 830, description, styleDesc);
-        } else {
-            this.eventDescription.destroy();
-            this.eventDescription = GuiScene.instance.scene.scene.add.text(1200, 830, description, styleDesc);
-        }
+            GuiScene.instance.scene.scene.add.rectangle(1580, 790, 640, 150, 0xffffff);
+            this.eventDescription = GuiScene.instance.scene.scene.add.text(1300, 730, description, styleDesc);
+        } //else {
+        //     this.eventDescription.destroy();
+        //     this.eventDescription = GuiScene.instance.scene.scene.add.text(1200, 830, description, styleDesc);
+        // }
     }
 
 }
