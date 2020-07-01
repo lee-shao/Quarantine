@@ -1,10 +1,6 @@
-import { MainScene } from "../scenes/main-scene";
-import { ChartScene } from "../tablet/chart-scene";
-import { MapScene } from "../tablet/map-scene";
 import { TimeController } from "../../controller/timeController";
 import { GuiElement } from "../guiElement";
 import { PopupWindow } from "../popupWindow";
-import { Tablet } from "../tablet/tablet";
 
 /**
  * Factory which generates the game speed buttons.
@@ -17,6 +13,9 @@ export class GameSpeedButtons extends GuiElement {
 
     private gameSpeedButtons: Phaser.GameObjects.Image[];
 
+    /** Only existing instance of the time controller singleton */
+    private timeController: TimeController;
+
     /**
      * Creates the following buttons and adds them to the GuiScene:  
      * * pause
@@ -26,19 +25,20 @@ export class GameSpeedButtons extends GuiElement {
      * * the fastest speed
      */
     public create(): GameSpeedButtons {
+        this.timeController = TimeController.getInstance();
+
         this.gameSpeedButtons = [this.addPauseButton(), 
         this.addButtonResume(),
         this.addSpeedButtonNormal(),
-        this.addSpeedButtonQuicker(),
-        this.addSpeedButtonQuickest()]
+        this.addSpeedButtonQuicker()]
         return this;
     }
 
     private addPauseButton(): Phaser.GameObjects.Image {
-        const pause = this.scene.add.image(this.scene.game.renderer.width / 2 + 150, 50, 'pause').setInteractive();
+        const pause = this.scene.add.image(this.scene.game.renderer.width / 2 + 500, 50, 'pause').setInteractive();
 
         pause.on('pointerover', () => {
-            pause.setScale(0.7);
+            pause.setScale(this.scaling);
         });
 
         pause.on('pointerout', () => {
@@ -47,13 +47,11 @@ export class GameSpeedButtons extends GuiElement {
 
         pause.on('pointerup', () => {
             if (!this.scene.mainSceneIsPaused) {
-                const main = this.scene.scene.get('MainScene') as MainScene;
-                const chart = this.scene.scene.get('ChartScene') as ChartScene;
-                const map = this.scene.scene.get('MapScene') as MapScene;
-                main.scene.pause();
-                chart.scene.pause();
-                map.scene.pause();
                 this.scene.mainSceneIsPaused = true;
+
+                this.exeucteClickAnimation(pause);
+                this.timeController.pauseGame();
+
                 if (this.scene.soundON) this.scene.buttonClickMusic.play();
             }
         });
@@ -62,10 +60,11 @@ export class GameSpeedButtons extends GuiElement {
     }
 
     private addButtonResume(): Phaser.GameObjects.Image {
-        const resume = this.scene.add.image(this.scene.game.renderer.width / 2 + 250, 50, 'resume-button').setInteractive();
+        const resume = this.scene.add.image(this.scene.game.renderer.width / 2 + 600, 50, 'speed1x').setInteractive();
+        resume.setScale(0.8);
 
         resume.on('pointerover', () => {
-            resume.setScale(0.7);
+            resume.setScale(this.scaling);
         });
 
         resume.on('pointerout', () => {
@@ -73,29 +72,25 @@ export class GameSpeedButtons extends GuiElement {
         });
 
         resume.on('pointerup', () => {
+            this.scene.gameSpeed = 0;
+            TimeController.getInstance().setGameSpeed(this.scene.gameSpeed);
+
             if (this.scene.mainSceneIsPaused) {
-                const chart = this.scene.scene.get('ChartScene') as ChartScene;
-                const map = this.scene.scene.get('MapScene') as MapScene;
-                const main = this.scene.scene.get('MainScene') as MainScene;
-                main.scene.resume();
-                chart.scene.resume();
-                map.scene.resume();
                 this.scene.showBtns();
+                this.timeController.resumeGame();
                 this.scene.mainSceneIsPaused = false;
-                /** Only wake up the scenes if they were prviously displayed in the tablet */
-                if (!Tablet.instance.getChartSceneIsSleeping()) chart.scene.wake();
-                if (!Tablet.instance.getMapSceneIsSleeping()) map.scene.wake();
                 if (this.scene.soundON) this.scene.buttonClickMusic.play();
             }
+            this.exeucteClickAnimation(resume);
         });
         return resume;
     }
 
     private addSpeedButtonNormal(): Phaser.GameObjects.Image {
-        const speed1x = this.scene.add.image(this.scene.game.renderer.width / 2 + 350, 50, 'speed1x').setInteractive();
+        const speed1x = this.scene.add.image(this.scene.game.renderer.width / 2 + 700, 50, 'speed2x').setInteractive();
 
         speed1x.on('pointerover', () => {
-            speed1x.setScale(0.7);
+            speed1x.setScale(this.scaling);
         });
 
         speed1x.on('pointerout', () => {
@@ -104,10 +99,13 @@ export class GameSpeedButtons extends GuiElement {
 
         speed1x.on('pointerup', () => {
             if(!this.scene.mainSceneIsPaused){
-                this.scene.gameSpeed = 1;
+                //this.scene.gameSpeed = 1;
+                this.scene.gameSpeed = 1.5;
                 TimeController.getInstance().setGameSpeed(this.scene.gameSpeed);
+
+                this.exeucteClickAnimation(speed1x);
                 if (this.scene.soundON) this.scene.buttonClickMusic.play();
-            }else{
+            } else {
                 const popupMss = new PopupWindow(this.scene, 0, 0, '', 1050, 400, false, [], false);
                 const blankNode = this.scene.add.image(this.scene.game.renderer.width / 2 + 50, this.scene.game.renderer.height / 2, 'blank-note').setDisplaySize(300, 200);
                 const content = new Phaser.GameObjects.Text(this.scene, this.scene.game.renderer.width / 2 - 50, this.scene.game.renderer.height / 2, 'The game is paused', { color: 'Black', fontSize: '20px', fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' });
@@ -119,10 +117,10 @@ export class GameSpeedButtons extends GuiElement {
     }
 
     private addSpeedButtonQuicker(): Phaser.GameObjects.Image {
-        const speed2x = this.scene.add.image(this.scene.game.renderer.width / 2 + 450, 50, 'speed2x').setInteractive();
+        const speed2x = this.scene.add.image(this.scene.game.renderer.width / 2 + 800, 50, 'speed3x').setInteractive();
 
         speed2x.on('pointerover', () => {
-            speed2x.setScale(0.7);
+            speed2x.setScale(this.scaling);
         });
 
         speed2x.on('pointerout', () => {
@@ -131,8 +129,10 @@ export class GameSpeedButtons extends GuiElement {
 
         speed2x.on('pointerup', () => {
             if(!this.scene.mainSceneIsPaused){
-                this.scene.gameSpeed = 1.5;
+                //this.scene.gameSpeed = 1.5;
+                this.scene.gameSpeed = 2;
                 TimeController.getInstance().setGameSpeed(this.scene.gameSpeed);
+                this.exeucteClickAnimation(speed2x);
                 if (this.scene.soundON) this.scene.buttonClickMusic.play();
             }else{
                 const popupMss = new PopupWindow(this.scene, 0, 0, '', 1050, 400, false, [], false);
@@ -145,33 +145,21 @@ export class GameSpeedButtons extends GuiElement {
         return speed2x;
     }
 
-    private addSpeedButtonQuickest(): Phaser.GameObjects.Image {
-        const speed3x = this.scene.add.image(this.scene.game.renderer.width / 2 + 550, 50, 'speed3x').setInteractive();
-
-        speed3x.on('pointerover', () => {
-            speed3x.setScale(0.7);
-        });
-
-        speed3x.on('pointerout', () => {
-            speed3x.setScale(1);
-        });
-
-        speed3x.on('pointerup', () => {
-            if(!this.scene.mainSceneIsPaused){
-                this.scene.gameSpeed = 2;
-                TimeController.getInstance().setGameSpeed(this.scene.gameSpeed);
-                if (this.scene.soundON) this.scene.buttonClickMusic.play();
-            }else{
-                const popupMss = new PopupWindow(this.scene, 0, 0, '', 1050, 400, false, [], false);
-                const blankNode = this.scene.add.image(this.scene.game.renderer.width / 2 + 50, this.scene.game.renderer.height / 2, 'blank-note').setDisplaySize(300, 200);
-                const content = new Phaser.GameObjects.Text(this.scene, this.scene.game.renderer.width / 2 - 50, this.scene.game.renderer.height / 2, 'The game is paused', { color: 'Black', fontSize: '20px', fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' });
-                popupMss.addGameObjects([blankNode, content]);
-                popupMss.createModal();
-            }
-        });
-        return speed3x;
-    }
-
     /** @returns Phaser.GameObjects.Image[] of game speed buttons */
     public getGameSpeedButtons(): Phaser.GameObjects.Image[] {return this.gameSpeedButtons}
+
+    /** Marks button as clicked and removes markings from all other buttons 
+     * @params image if null all markings of buttons are removed
+     */
+    private exeucteClickAnimation(image: Phaser.GameObjects.Image = null): void {
+        if(image) image.setScale(0.8);
+        
+        this.gameSpeedButtons.forEach(x => {
+            x.off('pointerover').off('pointerout'); //remove hovering animation
+            if(x !== image) {
+                x.setScale(1);
+                x.on('pointerover', () => x.setScale(0.7)).on('pointerout', () => x.setScale(1));
+            }
+        });
+    }
 }

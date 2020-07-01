@@ -3,12 +3,11 @@ import { TutorialView } from "../../views/tutorial/tutorialView";
 import { TutorialComponent } from "../../views/tutorial/tutorialComponent";
 import { TimedEvent } from "../entities/timedEvent";
 import { LogBookButton } from "../../views/log-book/logBookButton";
-import { MapScene } from "../../views/tablet/map-scene";
-import { ChartScene } from "../../views/tablet/chart-scene";
 import { ItemMenu } from "../../views/item-menu/menu";
 import { SkillTreeButton } from "../../views/skill-tree/skillTreeButton";
 import { GuiScene } from "../../views/scenes/gui-scene";
 import { Tablet } from "../../views/tablet/tablet";
+import { EventController } from "../eventController";
 
 /**
  * The tutorial which shows basic game introductions and
@@ -179,6 +178,7 @@ export class TutorialController {
                 ItemMenu.getInstance().activateComponent(); //has to be triggered this way
                 this.open(scene, 'researchAndSkills');
                 scene.removeSkipBtn();
+                EventController.getInstance();
             });
         } else {
             console.error("[WARNING] - THE PASSED COMPONENT IS NOT A REQUIRED TUTORIAL COMPONENT")

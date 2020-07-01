@@ -23,8 +23,8 @@ export class TimeController {
     /** Hours passed since game start */
     private hoursSinceGameStart = 0;
 
-    /** Last day played */
-    private lastDayPlayed = 0;
+    /** Wether the game is currently paused or not */
+    private gameIsPaused = false;
 
     /** All registered subscribers of this publisher (Pub/Sub) */
     private subscribers = [];
@@ -43,6 +43,7 @@ export class TimeController {
      * @see TimeSubscriber
      */
     public tic(): void {
+        if (this.gameIsPaused) return;
         this.ticAccumulator += 1;
         if (this.ticAccumulator % 10 == 0) this.hoursSinceGameStart += this.hoursPerTenTics;
         if (this.ticAccumulator >= this.ticsPerDay * 10) { //>= if player wants to speed up the game and ticAccumulator would be greater than (updated this.ticsPerDay)*10
@@ -95,6 +96,19 @@ export class TimeController {
     public removeAllTimedTutorialEvents(): void {
         if(this.getDaysSinceGameStart() <= 15) this.subscribers.filter(x => x instanceof TimedEvent).forEach(x => this.unsubscibe(x));
     }
+
+    /** Set the game to be paused (affects only the variable `gameIsPaused`) */
+    public pauseGame(): void {
+        this.gameIsPaused = true;
+    }
+
+    /** Set the game to no longer be paused (affects only the variable `gameIsPaused`) */
+    public resumeGame(): void {
+        this.gameIsPaused = false;
+    }
+
+    /** @returns wether the game is currently paused or not */
+    public isPaused(): boolean {return this.gameIsPaused;}
 
     // ----------------------------------------------------------------- GETTER-METHODS
     /** 
