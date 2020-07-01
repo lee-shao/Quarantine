@@ -90,7 +90,7 @@ export class RuleButton extends GuiElement {
         // The following x and y for test.
         // To rescale for the 3200x1600 pixel version (if needed) changes x and y as following x = this.game.redereer.width /2 +- number; y = this.game.redereer.height /2 +- number;
         const x = this.scene.game.renderer.width / 2 - 450;
-        const y = this.scene.game.renderer.height / 2 - 250 + ruleIndex * 170;
+        const y = this.scene.game.renderer.height / 2 - 250 + ruleIndex * 90;
         const pos1 = new Phaser.GameObjects.Image(this.scene, x, y, this.getTextures(rule.inputState1)).setOrigin(0);
         container.add(pos1);
 
