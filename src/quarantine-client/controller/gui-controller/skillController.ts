@@ -2,6 +2,7 @@ import { Stats } from "../stats";
 import { Controller } from "../controller"
 import { Role } from "../../models/util/enums/roles";
 import { UpgradeController } from "./upgradeController";
+import { SkillTreeView } from "../../views/skill-tree/skillTreeView";
 
 /**
  * Singleton controller which implements all skills of the skill tree.
@@ -23,6 +24,10 @@ export class SkillController {
     /** Singleton instance of UpgradeController */
     private uC: UpgradeController;
 
+    private sT: SkillTreeView;
+
+    public descriptions = require("./../../../../res/json/skill-descriptions.json");
+
     private constructor() {
         this.stats = Stats.getInstance();
         this.controller = Controller.getInstance();
@@ -39,9 +44,9 @@ export class SkillController {
      * @param skill Anonymous function which contains the actual skill logic
      * @returns if the activation was successful
      */
-    private activateSkill(skillPointPrice: number, requiredSkills: boolean[], skill: Function): boolean {
+    private activateSkill(skillPointPrice: number, requiredSkills: boolean[], key: string, skill: Function): boolean {
         //Checks if player has enough available skill points and if all required abilities are skilled
-        if( (this.uC.isSolvent(skillPointPrice)) || (requiredSkills.filter(x => !x).length > 0) ) return false;
+        if( !(this.uC.isSolvent(skillPointPrice)) || (requiredSkills.filter(x => !x).length > 0) ) return false;
 
         skill();
         this.uC.buyItem(skillPointPrice);
@@ -61,14 +66,14 @@ export class SkillController {
      * @param sC - SkillController needed for closure {@see menu.ts#buildClosure}
      * @returns wether the skill is activated successfully
      */
-    public activateAdditionalMedicalSuppliesI(sC: SkillController): boolean {
-        return sC.activateSkill(1, [], () => {
+    public activateAdditionalMedicalSuppliesI(sC: SkillController, key: string): boolean {
+        return sC.activateSkill(this.descriptions[key]['price'], [], key, () => {
             sC.additionalMedicalSuppliesI = true;
             sC.stats.currentPriceTestKit -= 5;
         })
     }
 
-    private additionalMedicalSuppliesI = false;
+    public additionalMedicalSuppliesI = false;
 
     /**
      * The government declares state of emergency. Large amounts 
@@ -77,13 +82,13 @@ export class SkillController {
      * @param sC - SkillController needed for closure {@see menu.ts#buildClosure}
      * @returns wether the skill is activated successfully
      */
-public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
-        return sC.activateSkill(1, [sC.additionalMedicalSuppliesI], () => {
+public activateAdditionalMedicalSuppliesII(sC: SkillController, key: string): boolean {
+        return sC.activateSkill(this.descriptions[key]['price'], [sC.additionalMedicalSuppliesI], key, () => {
             sC.additionalMedicalSuppliesII = true;
             sC.stats.currentPriceTestKit -= 10;
         })
     }
-    private additionalMedicalSuppliesII = false;
+    public additionalMedicalSuppliesII = false;
 
     
     /**
@@ -92,14 +97,14 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @param sC - SkillController needed for closure {@see menu.ts#buildClosure}
      * @returns wether the skill is activated successfully
      */
-    public activateUpgradeMedicalFacilitiesI(sC: SkillController): boolean {
-        return sC.activateSkill(2, [sC.additionalMedicalSuppliesI], () => {
+    public activateUpgradeMedicalFacilitiesI(sC: SkillController, key: string): boolean {
+        return sC.activateSkill(this.descriptions[key]['price'], [sC.additionalMedicalSuppliesI], key, () => {
             sC.upgradeMedicalFacilitiesI = true;
             sC.controller.distributeNewRoles(10000, Role.HEALTH_WORKER, true);
         })
     }
 
-    private upgradeMedicalFacilitiesI = false;
+    public upgradeMedicalFacilitiesI = false;
 
     /**
      * Hospitals will be upgraded with modern medical equipment. 
@@ -108,14 +113,14 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @param sC - SkillController needed for closure {@see menu.ts#buildClosure}
      * @returns wether the skill is activated successfully
      */
-    public activateUpgradeMedicalFacilitiesII(sC: SkillController): boolean {
-        return sC.activateSkill(2, [sC.upgradeMedicalFacilitiesI], () => {
+    public activateUpgradeMedicalFacilitiesII(sC: SkillController, key: string): boolean {
+        return sC.activateSkill(this.descriptions[key]['price'], [sC.upgradeMedicalFacilitiesI], key, () => {
             sC.upgradeMedicalFacilitiesII = true;
             sC.stats.currentPriceTestKit -= 5;
         })
     }
 
-    private upgradeMedicalFacilitiesII = false;
+    public upgradeMedicalFacilitiesII = false;
 
     /**
      * Large investments in all medical facilities. New hospitals built out of nothing. 
@@ -124,15 +129,15 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @param sC - SkillController needed for closure {@see menu.ts#buildClosure}
      * @returns wether the skill is activated successfully  
      */
-    public activateUpgradeMedicalFacilitiesIII(sC: SkillController): boolean {
-        return sC.activateSkill(3, [sC.upgradeMedicalFacilitiesII], () => {
+    public activateUpgradeMedicalFacilitiesIII(sC: SkillController, key: string): boolean {
+        return sC.activateSkill(this.descriptions[key]['price'], [sC.upgradeMedicalFacilitiesII], key, () => {
             sC.upgradeMedicalFacilitiesIII = true;
             sC.stats.currentPriceVaccination -= 10;
             sC.stats.currentSalaryHW -= 5;
         })
     }
 
-    private upgradeMedicalFacilitiesIII = false;
+    public upgradeMedicalFacilitiesIII = false;
 
     /**
      * A research institute discovered the effectiveness of a 
@@ -140,8 +145,8 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @param sC - SkillController needed for closure {@see menu.ts#buildClosure}
      * @returns wether the skill is activated successfully
      */
-    public activateMedicineI(sC: SkillController): boolean {
-        return sC.activateSkill(1, [sC.upgradeMedicalFacilitiesI], () => {
+    public activateMedicineI(sC: SkillController, key: string): boolean {
+        return sC.activateSkill(this.descriptions[key]['price'], [sC.upgradeMedicalFacilitiesI], key, () => {
             sC.medicineI = true;
             const researchLvL = sC.uC.measures["research"]["current_level"];
             if(researchLvL <= 5) { // Last 3 levels of research can not be bought this way
@@ -150,7 +155,7 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
         })
     }
 
-    private medicineI = false;
+    public medicineI = false;
 
 
     /**
@@ -161,8 +166,8 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @param sC - SkillController needed for closure {@see menu.ts#buildClosure}
      * @returns wether the skill is activated successfully
      */
-    public activateMedicineII(sC: SkillController): boolean {
-        return sC.activateSkill(1, [sC.medicineI, sC.dnaRnaCodeSequence], () => {
+    public activateMedicineII(sC: SkillController, key: string): boolean {
+        return sC.activateSkill(this.descriptions[key]['price'], [sC.medicineI, sC.dnaRnaCodeSequence], key, () => {
             sC.medicineII = true;
             const researchLvL = sC.uC.measures["research"]["current_level"];
             if(researchLvL <= 6) { // Last 3 levels of research can not be bought this way
@@ -171,7 +176,7 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
         })
     }
 
-    private medicineII = false;
+    public medicineII = false;
 
     /**
      * A highly effective medicine got developed, which can stop the 
@@ -180,8 +185,8 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @param sC - SkillController needed for closure {@see menu.ts#buildClosure}
      * @returns wether the skill is activated successfully
      */
-    public activateMedicineIII(sC: SkillController): boolean {
-        return sC.activateSkill(1, [sC.medicineII], () => {
+    public activateMedicineIII(sC: SkillController, key: string): boolean {
+        return sC.activateSkill(this.descriptions[key]['price'], [sC.medicineII], key, () => {
             sC.medicineIII = true;
 
             const researchLvL = sC.uC.measures["research"]["current_level"];
@@ -197,7 +202,7 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
         })
     }
 
-    private medicineIII = false;
+    public medicineIII = false;
 
     // ----------------------------------------------------------------- POLICE
 
@@ -208,14 +213,14 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @param sC - SkillController needed for closure {@see menu.ts#buildClosure}
      * @returns wether the skill is activated successfully
      */
-    public activateLearnExpertise(sC: SkillController): boolean {
-        return sC.activateSkill(1, [], () => {
+    public activateLearnExpertise(sC: SkillController, key: string): boolean {
+        return sC.activateSkill(this.descriptions[key]['price'], [], key, () => {
             sC.learnExpertise = true;
             sC.stats.happinessRate += 0.5;
         })
     }
 
-    private learnExpertise = false;
+    public learnExpertise = false;
 
     /**
      * Police forces will be provided extra safety equipment in which 
@@ -226,14 +231,14 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @param sC - SkillController needed for closure {@see menu.ts#buildClosure}
      * @returns wether the skill is activated successfully
      */
-    public activatePoliceEquipment(sC: SkillController): boolean {
-        return sC.activateSkill(1, [sC.learnExpertise, sC.additionalMedicalSuppliesI], () => {
+    public activatePoliceEquipment(sC: SkillController, key: string): boolean {
+        return sC.activateSkill(this.descriptions[key]['price'], [sC.learnExpertise, sC.additionalMedicalSuppliesI], key, () => {
             sC.policeEquipment = true;
             sC.stats.happinessRate += 0.5;
         })
     }
 
-    private policeEquipment = false;
+    public policeEquipment = false;
 
     /**
      * Police forces will be provided with test-kits and can test citizen, 
@@ -241,14 +246,14 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @param sC - SkillController needed for closure {@see menu.ts#buildClosure}
      * @returns wether the skill is activated successfully
      */
-    public activateTesting(sC: SkillController): boolean {
-        return sC.activateSkill(1, [sC.learnExpertise], () => {
+    public activateTesting(sC: SkillController, key: string): boolean {
+        return sC.activateSkill(this.descriptions[key]['price'], [sC.learnExpertise], key, () => {
             sC.testing = true;
             sC.controller.distributeNewRoles(100, Role.HEALTH_WORKER, true);
         })
     }
 
-    private testing = false;
+    public testing = false;
 
     /**
      * The police are now able to track the people, which might have encountered 
@@ -258,14 +263,14 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @param sC - SkillController needed for closure {@see menu.ts#buildClosure}
      * @returns wether the skill is activated successfully
      */
-    public activateTrackingEncounters(sC: SkillController): boolean {
-        return sC.activateSkill(1, [sC.testing, sC.nationwideTesting], () => {
+    public activateTrackingEncounters(sC: SkillController, key: string): boolean {
+        return sC.activateSkill(this.descriptions[key]['price'], [sC.testing, sC.nationwideTesting], key, () => {
             sC.trackingEncounters = true;
             sC.controller.distributeNewRoles(200, Role.HEALTH_WORKER, true);
         })
     }
 
-    private trackingEncounters = false;
+    public trackingEncounters = false;
 
     /**
      * The government deploy military troops in the major cities to provide 
@@ -274,15 +279,15 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @param sC - SkillController needed for closure {@see menu.ts#buildClosure}
      * @returns wether the skill is activated successfully
      */
-    public activateMilitaryI(sC: SkillController): boolean {
-        return sC.activateSkill(1, [sC.learnExpertise], () => {
+    public activateMilitaryI(sC: SkillController, key: string): boolean {
+        return sC.activateSkill(this.descriptions[key]['price'], [sC.learnExpertise], key, () => {
             sC.militaryI = true;
             sC.stats.maxInteractionVariance *= 0.9;
             sC.stats.basicInteractionRate *= 0.9;
         })
     }
 
-    private militaryI = false;
+    public militaryI = false;
 
     /**
      * All military forces are deployed around the whole country to provide 
@@ -292,15 +297,15 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @param sC - SkillController needed for closure {@see menu.ts#buildClosure}
      * @returns wether the skill is activated successfully
      */
-    public activateMilitaryII(sC: SkillController): boolean {
-        return sC.activateSkill(1, [sC.militaryI], () => {
+    public activateMilitaryII(sC: SkillController, key: string): boolean {
+        return sC.activateSkill(this.descriptions[key]['price'], [sC.militaryI], key, () => {
             sC.militaryII = true;
             sC.stats.maxInteractionVariance *= 0.8;
             sC.stats.basicInteractionRate *= 0.8;
         })
     }
 
-    private militaryII = false;
+    public militaryII = false;
 
     /**
      * All cities are under entry and exit ban. Major roads are blocked by 
@@ -309,8 +314,8 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @param sC - SkillController needed for closure {@see menu.ts#buildClosure}
      * @returns wether the skill is activated successfully
      */
-    public activateMilitaryIII(sC: SkillController): boolean {
-        return sC.activateSkill(1, [sC.militaryII], () => {
+    public activateMilitaryIII(sC: SkillController, key: string): boolean {
+        return sC.activateSkill(this.descriptions[key]['price'], [sC.militaryII], key, () => {
             sC.militaryIII = true;
             sC.stats.maxInteractionVariance *= 0.7;
             sC.stats.basicInteractionRate *= 0.7;
@@ -318,7 +323,7 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
         })
     }
 
-    private militaryIII = false;
+    public militaryIII = false;
 
     // ----------------------------------------------------------------- TESTING
 
@@ -328,14 +333,14 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @param sC - SkillController needed for closure {@see menu.ts#buildClosure}
      * @returns wether the skill is activated successfully
      */
-    public activateAdditionalTestKits(sC: SkillController): boolean {
-        return sC.activateSkill(1000000, [], () => {
+    public activateAdditionalTestKits(sC: SkillController, key: string): boolean {
+        return sC.activateSkill(this.descriptions[key]['price'], [], key, () => {
             sC.additionalTestKits = true;
             sC.controller.distributeNewRoles(1000, Role.HEALTH_WORKER, true);
         })
     }
 
-    private additionalTestKits = false;
+    public additionalTestKits = false;
 
     /**
      * A research institute developed a new method of testing which is more 
@@ -343,29 +348,29 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @param sC - SkillController needed for closure {@see menu.ts#buildClosure}
      * @returns wether the skill is activated successfully
      */
-    public activateUpgradeTestKitI(sC: SkillController): boolean {
-        return sC.activateSkill(1000000, [sC.additionalTestKits], () => {
+    public activateUpgradeTestKitI(sC: SkillController, key: string): boolean {
+        return sC.activateSkill(this.descriptions[key]['price'], [sC.additionalTestKits], key, () => {
             sC.upgradeTestKitI = true;
             sC.stats.currentPriceTestKit -= 5;
         })
     }
 
-    private upgradeTestKitI = false;
+    public upgradeTestKitI = false;
 
     /**
      * Testing is now faster and even more reliable.
      * @param sC - SkillController needed for closure {@see menu.ts#buildClosure}
      * @returns wether the skill is activated successfully
      */
-    public activateUpgradeTestKitII(sC: SkillController): boolean {
-        return sC.activateSkill(1, [sC.upgradeTestKitI], () => {
+    public activateUpgradeTestKitII(sC: SkillController, key: string): boolean {
+        return sC.activateSkill(this.descriptions[key]['price'], [sC.upgradeTestKitI], key, () => {
             sC.upgradeTestKitII = true;
             sC.stats.currentPriceTestKit -= 15;
             sC.stats.currentPriceVaccination -= 15;
         })
     }
 
-    private upgradeTestKitII = false;
+    public upgradeTestKitII = false;
 
     /**
      * The government declares to not only test the people with symptoms and 
@@ -373,14 +378,14 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @param sC - SkillController needed for closure {@see menu.ts#buildClosure}
      * @returns wether the skill is activated successfully
      */
-    public activateNationwideTesting(sC: SkillController): boolean {
-        return sC.activateSkill(1, [sC.additionalTestKits], () => {
+    public activateNationwideTesting(sC: SkillController, key: string): boolean {
+        return sC.activateSkill(this.descriptions[key]['price'], [sC.additionalTestKits], key, () => {
             sC.controller.distributeNewRoles(30000, Role.HEALTH_WORKER, true);
             sC.nationwideTesting = true;
         })
     }
 
-    private nationwideTesting = false;
+    public nationwideTesting = false;
 
     /**
      * A research institute analysed a code-sequence of the (virus). The new 
@@ -388,8 +393,8 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @param sC - SkillController needed for closure {@see menu.ts#buildClosure}
      * @returns wether the skill is activated successfully
      */
-    public activatednaRnaCodeSequence(sC: SkillController): boolean {
-        return sC.activateSkill(1000000, [sC.nationwideTesting], () => {
+    public activatednaRnaCodeSequence(sC: SkillController, key: string): boolean {
+        return sC.activateSkill(this.descriptions[key]['price'], [sC.nationwideTesting], key, () => {
             sC.dnaRnaCodeSequence = true;
             const researchLvL = sC.uC.measures["research"]["current_level"];
             if(researchLvL == 9) { // Introduces alternative bonus
@@ -406,7 +411,7 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
         })
     }
 
-    private dnaRnaCodeSequence = false;
+    public dnaRnaCodeSequence = false;
 
     /**
      * A new antibody test now allows fully reliable tests which 
@@ -414,14 +419,14 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @param sC - SkillController needed for closure {@see menu.ts#buildClosure}
      * @returns wether the skill is activated successfully
      */
-    public activateImmunityTests(sC: SkillController): boolean {
-        return sC.activateSkill(1000000, [sC.dnaRnaCodeSequence], () => {
+    public activateImmunityTests(sC: SkillController, key: string): boolean {
+        return sC.activateSkill(this.descriptions[key]['price'], [sC.dnaRnaCodeSequence], key, () => {
             sC.immunityTests = true;
             sC.stats.currentSalaryHW -= 5;
         })
     }
 
-    private immunityTests = false;
+    public immunityTests = false;
     
     // ----------------------------------------------------------------- LOCKDOWN
 
@@ -432,14 +437,14 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @param sC - SkillController needed for closure {@see menu.ts#buildClosure}
      * @returns wether the skill is activated successfully
      */
-    public activateLockdownStageI(sC: SkillController): boolean {
-        return sC.activateSkill(1000000, [], () => {
+    public activateLockdownStageI(sC: SkillController, key: string): boolean {
+        return sC.activateSkill(this.descriptions[key]['price'], [], key, () => {
             sC.lockdownStageI = true;
             sC.stats.basicInteractionRate *= 0.9;
         })
     }
 
-    private lockdownStageI = false;
+    public lockdownStageI = false;
 
     /** Events and Groups with more than 100 people are forbidden. 
      * Infected people are treated isolated if possible. Citizens are 
@@ -450,14 +455,14 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @param sC - SkillController needed for closure {@see menu.ts#buildClosure}
      * @returns wether the skill is activated successfully
      */
-    public activateLockdownStageII(sC: SkillController): boolean {
-        return sC.activateSkill(1000000, [sC.lockdownStageI], () => {
+    public activateLockdownStageII(sC: SkillController, key: string): boolean {
+        return sC.activateSkill(this.descriptions[key]['price'], [sC.lockdownStageI], key, () => {
             sC.lockdownStageII = true;
             sC.stats.maxInteractionVariance *= 0.8;
         })
     }
 
-    private lockdownStageII = false;
+    public lockdownStageII = false;
 
     /**
      * All public facilities (schools, churches, universities, etc.) are 
@@ -468,15 +473,15 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @param sC - SkillController needed for closure {@see menu.ts#buildClosure}
      * @returns wether the skill is activated successfully
      */
-    public activateLockdownStageIII(sC: SkillController): boolean {
-        return sC.activateSkill(1000000, [sC.lockdownStageII], () => {
+    public activateLockdownStageIII(sC: SkillController, key: string): boolean {
+        return sC.activateSkill(this.descriptions[key]['price'], [sC.lockdownStageII], key, () => {
             sC.lockdownStageIII = true;
             this.stats.basicInteractionRate *= 0.9;
             this.stats.maxInteractionVariance *= 0.9;
         })
     }
 
-    private lockdownStageIII = false;
+    public lockdownStageIII = false;
 
     /**
      * Full lockdown. No one is supposed to be outside of their houses. 
@@ -486,15 +491,15 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @param sC - SkillController needed for closure {@see menu.ts#buildClosure}
      * @returns wether the skill is activated successfully
      */
-    public activateLockdownStageIV(sC: SkillController): boolean {
-        return sC.activateSkill(1000000, [sC.lockdownStageIII, sC.militaryII], () => {
+    public activateLockdownStageIV(sC: SkillController, key: string): boolean {
+        return sC.activateSkill(this.descriptions[key]['price'], [sC.lockdownStageIII, sC.militaryII], key, () => {
             sC.lockdownStageIV = true;
             this.stats.basicInteractionRate *= 0.6;
             this.stats.maxInteractionVariance = 0;
         })
     }
 
-    private lockdownStageIV = false;
+    public lockdownStageIV = false;
 
 
     /**
@@ -504,13 +509,13 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @param sC - SkillController needed for closure {@see menu.ts#buildClosure}
      * @returns wether the skill is activated successfully
      */
-    public activatePublicTransport(sC: SkillController): boolean {
-        return sC.activateSkill(1000000, [sC.lockdownStageI], () => {
+    public activatePublicTransport(sC: SkillController, key: string): boolean {
+        return sC.activateSkill(this.descriptions[key]['price'], [sC.lockdownStageI], key, () => {
             sC.publicTransport = true;
         })
     }
 
-    private publicTransport = false;
+    public publicTransport = false;
 
     /**
      * No public transportation. Roadblocks prevent citizens from using their own car 
@@ -519,13 +524,13 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @param sC - SkillController needed for closure {@see menu.ts#buildClosure}
      * @returns wether the skill is activated successfully
      */
-    public activateRestrictedTraffic(sC: SkillController): boolean {
-        return sC.activateSkill(1000000, [sC.publicTransport], () => {
+    public activateRestrictedTraffic(sC: SkillController, key: string): boolean {
+        return sC.activateSkill(this.descriptions[key]['price'], [sC.publicTransport], key, () => {
             sC.restrictedTraffic = true;
         })
     }
 
-    private restrictedTraffic = false;
+    public restrictedTraffic = false;
 
     /**
      * The government honors the work of important jobs (health workers, doctors and 
@@ -535,8 +540,8 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @param sC - SkillController needed for closure {@see menu.ts#buildClosure}
      * @returns wether the skill is activated successfully
      */
-    public activateFinancialSupportI(sC: SkillController): boolean {
-        return sC.activateSkill(2000000, [sC.publicTransport], () => {
+    public activateFinancialSupportI(sC: SkillController, key: string): boolean {
+        return sC.activateSkill(this.descriptions[key]['price'], [sC.publicTransport], key, () => {
             sC.financialSupportI = true;
             sC.stats.currentSalaryHW -= 10;
             sC.stats.currentSalaryPO -= 10;
@@ -544,7 +549,7 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
         })
     }
 
-    private financialSupportI = false;
+    public financialSupportI = false;
 
     /**
      * To assure citizens will stay home and to prevent people from going bankrupt the 
@@ -553,14 +558,14 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @param sC - SkillController needed for closure {@see menu.ts#buildClosure}
      * @returns wether the skill is activated successfully
      */
-    public activateFinancialSupportII(sC: SkillController): boolean {
-        return sC.activateSkill(3000000, [sC.financialSupportI], () => {
+    public activateFinancialSupportII(sC: SkillController, key: string): boolean {
+        return sC.activateSkill(this.descriptions[key]['price'], [sC.financialSupportI], key, () => {
             sC.financialSupportII = true;
             sC.stats.happinessRate += 2;
         })
     }
 
-    private financialSupportII = false;
+    public financialSupportII = false;
 
     // ----------------------------------------------------------------- CITIZENS
 
@@ -572,14 +577,14 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @param sC - SkillController needed for closure {@see menu.ts#buildClosure}
      * @returns wether the skill is activated successfully
      */
-    public activateExpertiseI(sC: SkillController): boolean {
-        return sC.activateSkill(1000000, [], () => {
+    public activateExpertiseI(sC: SkillController, key: string): boolean {
+        return sC.activateSkill(this.descriptions[key]['price'], [], key, () => {
             sC.expertiseI = true;
             sC.stats.happinessRate += 0.5;
         })
     }
 
-    private expertiseI = false;
+    public expertiseI = false;
 
     /**
      * Officials working together with experts and influencers to help provide positive 
@@ -589,14 +594,14 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @param sC - SkillController needed for closure {@see menu.ts#buildClosure}
      * @returns wether the skill is activated successfully
      */
-    public activateExpertiseII(sC: SkillController): boolean {
-        return sC.activateSkill(1000000, [sC.expertiseI], () => {
+    public activateExpertiseII(sC: SkillController, key: string): boolean {
+        return sC.activateSkill(this.descriptions[key]['price'], [sC.expertiseI], key, () => {
             sC.expertiseII = true;
             sC.stats.happinessRate += 0.5;
         })
     }
 
-    private expertiseII = false;
+    public expertiseII = false;
 
     /**
      * Everyone strictly follows recommended behaviours. (excessive hand washing, very high 
@@ -607,26 +612,26 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @param sC - SkillController needed for closure {@see menu.ts#buildClosure}
      * @returns wether the skill is activated successfully
      */
-    public activateExpertiseIII(sC: SkillController): boolean {
-        return sC.activateSkill(1000000, [sC.expertiseII, sC.additionalMedicalSuppliesI], () => {
+    public activateExpertiseIII(sC: SkillController, key: string): boolean {
+        return sC.activateSkill(this.descriptions[key]['price'], [sC.expertiseII, sC.additionalMedicalSuppliesI], key, () => {
             sC.expertiseIII = true;
             sC.stats.maxInteractionVariance *= 0.5;
         })
     }
 
-    private expertiseIII = false;
+    public expertiseIII = false;
 
     /** The use of a tracking app based on voluntary basis is now available for citizens to use.
      * @param sC - SkillController needed for closure {@see menu.ts#buildClosure}
      * @returns wether the skill is activated successfully
      */
-    public activateTrackingAppI(sC: SkillController): boolean {
-        return sC.activateSkill(1000000, [sC.expertiseI], () => {
+    public activateTrackingAppI(sC: SkillController, key: string): boolean {
+        return sC.activateSkill(this.descriptions[key]['price'], [sC.expertiseI], key, () => {
             sC.trackingAppI = true;
         })
     }
 
-    private trackingAppI = false;
+    public trackingAppI = false;
 
     /**
      * The government overtake the tracking app. Every citizen must use the tracking app to enable 
@@ -636,13 +641,13 @@ public activateAdditionalMedicalSuppliesII(sC: SkillController): boolean {
      * @param sC - SkillController needed for closure {@see menu.ts#buildClosure}
      * @returns wether the skill is activated successfully
      */
-    public activateTrackingAppII(sC: SkillController): boolean {
-        return sC.activateSkill(1000000, [sC.trackingAppI, sC.trackingEncounters], () => {
+    public activateTrackingAppII(sC: SkillController, key: string): boolean {
+        return sC.activateSkill(this.descriptions[key]['price'], [sC.trackingAppI, sC.trackingEncounters], key, () => {
             sC.trackingAppII = true;
         })
     }
 
-    private trackingAppII = false;
+    public trackingAppII = false;
 
     // ========================================================================================================================= GETTER-METHODS
 

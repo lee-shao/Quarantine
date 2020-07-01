@@ -9,7 +9,7 @@ import { Icon } from "./icon";
 export class SkillTreeView extends PopupWindow {
 
     /** Instance of SkillTreeView */
-    private static instance: SkillTreeView;
+    //private static instance: SkillTreeView;
 
     public currentSkillIcons: any;
 
@@ -20,8 +20,6 @@ export class SkillTreeView extends PopupWindow {
     public skillDescription: Phaser.GameObjects.Text;
 
     public backButton: Phaser.GameObjects.Image;
-
-    //public buyButton: Phaser.GameObjects.Image;
     
     public descriptions = require("./../../../../res/json/skill-descriptions.json");
 
@@ -43,7 +41,6 @@ export class SkillTreeView extends PopupWindow {
         });
         this.add(this.skillDescription);
 
-        //this.buyButton = new Phaser.GameObjects.Image(this.scene, innerWidth*0.775, innerHeight*0.9, 'buyButton').setScale(0.4).setOrigin(0.5);
         this.backButton = new Phaser.GameObjects.Image(this.scene, 320, 870, 'arrow-next').setAngle(180);
         this.addBackButton();
         this.backButton.setVisible(false);
@@ -75,11 +72,11 @@ export class SkillTreeView extends PopupWindow {
         this.add(this.backButton);
     }
 
-    public openSubtree(key: string, buttons: any): void {
+    public openSubtree(key: string): void {
         
-        this.currentSkillIcons = buttons;
+        this.currentSkillIcons = this.addCurrentSkillIcons(key)
         this.backButton.setVisible(true);
-        this.addSkills(buttons);
+        this.addSkills(this.currentSkillIcons);
     }
 
     public openMainTree(): void {
@@ -102,7 +99,7 @@ export class SkillTreeView extends PopupWindow {
     }
 
     public showDescription(key: string): void {
-        this.skillDescription.setText(this.descriptions[key]['description']);
+        this.skillDescription.setText(this.descriptions[key]['name'] + '\n\n\n' + this.descriptions[key]['description'] + '\n\n\n\n\n Required skills: ' + this.descriptions[key]['required_skill'] + '\n\n\n\n Price: ' + this.descriptions[key]['price']);
     }
 
     public eraseDescription(): void {
@@ -119,6 +116,16 @@ export class SkillTreeView extends PopupWindow {
         });
     }
 
+    public hidePreviousBuyButton(key: string): void {
+        this.currentSkillIcons.forEach(icon => {
+            if(icon instanceof Icon && icon.name == key) {
+                if(icon.skillBought == true) {
+                    icon.buyButton.destroy();
+                }
+            }
+        });
+    }
+
     public addCurrentSkillIcons(key: string): any[] {
         const title = new Phaser.GameObjects.Text(this.scene, innerWidth*0.35, innerHeight*0.1, 'Skill Tree', {
             color: 'Black', 
@@ -127,11 +134,11 @@ export class SkillTreeView extends PopupWindow {
         }).setOrigin(0.5);
 
         const connections = new Phaser.GameObjects.Image(this.scene, innerWidth*0.35, innerHeight*0.5, 'connections');
-        const medicalTreatmentButton = new Icon(this.scene, innerWidth*0.35, innerHeight*0.275, 'medical-treatment', this, false);
-        const policeButton = new Icon(this.scene, innerWidth*0.465, innerHeight*0.45, 'police-skill', this, false);
-        const testingButton = new Icon(this.scene, innerWidth*0.425, innerHeight*0.725, 'testing-skill', this, false);
-        const lockdownButton = new Icon(this.scene, innerWidth*0.28, innerHeight*0.725, 'lockdown-skill', this, false);
-        const citizensButton = new Icon(this.scene, innerWidth*0.24, innerHeight*0.45, 'citizen', this, false);
+        const medicalTreatmentButton = new Icon(this.scene, innerWidth*0.35, innerHeight*0.275, 'medical-treatment', this, false, false);
+        const policeButton = new Icon(this.scene, innerWidth*0.465, innerHeight*0.45, 'police-skill', this, false, false);
+        const testingButton = new Icon(this.scene, innerWidth*0.425, innerHeight*0.725, 'testing-skill', this, false, false);
+        const lockdownButton = new Icon(this.scene, innerWidth*0.28, innerHeight*0.725, 'lockdown-skill', this, false, false);
+        const citizensButton = new Icon(this.scene, innerWidth*0.24, innerHeight*0.45, 'citizen', this, false, false);
         
         if(key == 'medical-treatment') {
             const title = new Phaser.GameObjects.Text(this.scene, innerWidth*0.35, innerHeight*0.1, 'Medical-Treatment', {
@@ -141,15 +148,15 @@ export class SkillTreeView extends PopupWindow {
             }).setOrigin(0.5);
 
             const connections = new Phaser.GameObjects.Image(this.scene, innerWidth*0.4, innerHeight*0.555, 'medical-treatment-connections');
-            const medicalTreatment = new Icon(this.scene, innerWidth*0.3525, innerHeight*0.25, 'medical-treatment', this, false);
-            const additionalMedicalSuppliesI = new Icon(this.scene, innerWidth*0.3525, innerHeight*0.45, 'additional-medical-supplies-1', this, false);
-            const additionalMedicalSuppliesII = new Icon(this.scene, innerWidth*0.25, innerHeight*0.55, 'additional-medical-supplies-2', this, false);
-            const upgradeMedicalFacilitiesI = new Icon(this.scene, innerWidth*0.455, innerHeight*0.55, 'upgrade-medical-facilities-1', this, false);
-            const upgradeMedicalFacilitiesII = new Icon(this.scene, innerWidth*0.345, innerHeight*0.65, 'upgrade-medical-facilities-2', this, false);
-            const upgradeMedicalFacilitiesIII = new Icon(this.scene, innerWidth*0.255, innerHeight*0.755, 'upgrade-medical-facilities-3', this, false);
-            const medicinI = new Icon(this.scene, innerWidth*0.535, innerHeight*0.65, 'medicine-1', this, false);
-            const medicinII = new Icon(this.scene, innerWidth*0.45, innerHeight*0.755, 'medicine-2', this, false);
-            const medicinIII = new Icon(this.scene, innerWidth*0.3525, innerHeight*0.875, 'medicine-3', this, false);
+            const medicalTreatment = new Icon(this.scene, innerWidth*0.3525, innerHeight*0.25, 'medical-treatment', this, false, false);
+            const additionalMedicalSuppliesI = new Icon(this.scene, innerWidth*0.3525, innerHeight*0.45, 'additional-medical-supplies-1', this, false, SkillController.getInstance().additionalMedicalSuppliesI);
+            const additionalMedicalSuppliesII = new Icon(this.scene, innerWidth*0.25, innerHeight*0.55, 'additional-medical-supplies-2', this, false, SkillController.getInstance().additionalMedicalSuppliesII);
+            const upgradeMedicalFacilitiesI = new Icon(this.scene, innerWidth*0.455, innerHeight*0.55, 'upgrade-medical-facilities-1', this, false, SkillController.getInstance().upgradeMedicalFacilitiesI);
+            const upgradeMedicalFacilitiesII = new Icon(this.scene, innerWidth*0.345, innerHeight*0.65, 'upgrade-medical-facilities-2', this, false, SkillController.getInstance().upgradeMedicalFacilitiesII);
+            const upgradeMedicalFacilitiesIII = new Icon(this.scene, innerWidth*0.255, innerHeight*0.755, 'upgrade-medical-facilities-3', this, false, SkillController.getInstance().upgradeMedicalFacilitiesIII);
+            const medicinI = new Icon(this.scene, innerWidth*0.535, innerHeight*0.65, 'medicine-1', this, false, SkillController.getInstance().medicineI);
+            const medicinII = new Icon(this.scene, innerWidth*0.45, innerHeight*0.755, 'medicine-2', this, false, SkillController.getInstance().medicineII);
+            const medicinIII = new Icon(this.scene, innerWidth*0.3525, innerHeight*0.875, 'medicine-3', this, false, SkillController.getInstance().medicineIII);
 
             return [title, connections, medicalTreatment, additionalMedicalSuppliesI, additionalMedicalSuppliesII, upgradeMedicalFacilitiesI, upgradeMedicalFacilitiesII, upgradeMedicalFacilitiesIII, medicinI, medicinII, medicinIII]
         }
@@ -161,14 +168,14 @@ export class SkillTreeView extends PopupWindow {
             }).setOrigin(0.5);
 
             const connections = new Phaser.GameObjects.Image(this.scene, innerWidth*0.35, innerHeight*0.5, 'police-connections');
-            const police = new Icon(this.scene, innerWidth*0.3475, innerHeight*0.25, 'police-skill', this, false);
-            const learnExpertise = new Icon(this.scene, innerWidth*0.3475, innerHeight*0.475, 'expertise', this, false);
-            const militaryI = new Icon(this.scene, innerWidth*0.2675, innerHeight*0.5785, 'military-1', this, false);
-            const militaryII = new Icon(this.scene, innerWidth*0.3455, innerHeight*0.675, 'military-2', this, false);
-            const militaryIII = new Icon(this.scene, innerWidth*0.4325, innerHeight*0.775, 'military-3', this, false);
-            const policeEquipment = new Icon(this.scene, innerWidth*0.1925, innerHeight*0.675, 'police-equipment', this, false);
-            const testing = new Icon(this.scene, innerWidth*0.4325, innerHeight*0.5725, 'testing', this, false); 
-            const trackingEncounters = new Icon(this.scene, innerWidth*0.51, innerHeight*0.675, 'tracking', this, false);
+            const police = new Icon(this.scene, innerWidth*0.3475, innerHeight*0.25, 'police-skill', this, false, false);
+            const learnExpertise = new Icon(this.scene, innerWidth*0.3475, innerHeight*0.475, 'expertise', this, false, SkillController.getInstance().learnExpertise);
+            const militaryI = new Icon(this.scene, innerWidth*0.2675, innerHeight*0.5785, 'military-1', this, false, SkillController.getInstance().militaryI);
+            const militaryII = new Icon(this.scene, innerWidth*0.3455, innerHeight*0.675, 'military-2', this, false, SkillController.getInstance().militaryII);
+            const militaryIII = new Icon(this.scene, innerWidth*0.4325, innerHeight*0.775, 'military-3', this, false, SkillController.getInstance().militaryIII);
+            const policeEquipment = new Icon(this.scene, innerWidth*0.1925, innerHeight*0.675, 'police-equipment', this, false, SkillController.getInstance().policeEquipment);
+            const testing = new Icon(this.scene, innerWidth*0.4325, innerHeight*0.5725, 'testing', this, false, SkillController.getInstance().testing); 
+            const trackingEncounters = new Icon(this.scene, innerWidth*0.51, innerHeight*0.675, 'tracking', this, false, SkillController.getInstance().trackingEncounters);
 
             return [title, connections, police, learnExpertise, militaryI, militaryII, militaryIII, policeEquipment, testing, trackingEncounters]
         }
@@ -181,13 +188,13 @@ export class SkillTreeView extends PopupWindow {
             }).setOrigin(0.5);
 
             const connections = new Phaser.GameObjects.Image(this.scene, innerWidth*0.3375, innerHeight*0.5, 'testing-connections');
-            const testing = new Icon(this.scene, innerWidth/3, innerHeight/4, 'testing', this, false);
-            const additionalTestKits = new Icon(this.scene, innerWidth*0.3325, innerHeight*0.47, 'additional-test-kits', this, false);
-            const upgradeTestKitsI = new Icon(this.scene, innerWidth*0.255, innerHeight*0.57, 'upgrade-test-kit-1', this, false);
-            const upgradeTestKitsII = new Icon(this.scene, innerWidth*0.1855, innerHeight*0.665, 'upgrade-test-kit-2', this, false);
-            const nationwideTesting = new Icon(this.scene, innerWidth*0.4155, innerHeight*0.57, 'nationwide-testing', this, false);
-            const dna = new Icon(this.scene, innerWidth*0.4875, innerHeight*0.68, 'dna', this, false);
-            const immunityTests = new Icon(this.scene, innerWidth*0.41, innerHeight*0.778, 'immunity-tests', this, false); 
+            const testing = new Icon(this.scene, innerWidth/3, innerHeight/4, 'testing-skill', this, false, false);
+            const additionalTestKits = new Icon(this.scene, innerWidth*0.3325, innerHeight*0.47, 'additional-test-kits', this, false, SkillController.getInstance().additionalTestKits);
+            const upgradeTestKitsI = new Icon(this.scene, innerWidth*0.255, innerHeight*0.57, 'upgrade-test-kit-1', this, false, SkillController.getInstance().upgradeTestKitI);
+            const upgradeTestKitsII = new Icon(this.scene, innerWidth*0.1855, innerHeight*0.665, 'upgrade-test-kit-2', this, false, SkillController.getInstance().upgradeTestKitII);
+            const nationwideTesting = new Icon(this.scene, innerWidth*0.4155, innerHeight*0.57, 'nationwide-testing', this, false, SkillController.getInstance().nationwideTesting);
+            const dna = new Icon(this.scene, innerWidth*0.4875, innerHeight*0.68, 'dna', this, false, SkillController.getInstance().dnaRnaCodeSequence);
+            const immunityTests = new Icon(this.scene, innerWidth*0.41, innerHeight*0.778, 'immunity-tests', this, false, SkillController.getInstance().immunityTests); 
 
             return [title, connections, testing, additionalTestKits, upgradeTestKitsI, upgradeTestKitsII, nationwideTesting, dna, immunityTests]
         }
@@ -200,15 +207,15 @@ export class SkillTreeView extends PopupWindow {
             }).setOrigin(0.5);
 
             const connections = new Phaser.GameObjects.Image(this.scene, innerWidth*0.35, innerHeight*0.5, 'lockdown-connections');
-            const lockdown = new Icon(this.scene, innerWidth*0.3475, innerHeight/4, 'lockdown-skill', this, false);
-            const lockdownStageI = new Icon(this.scene, innerWidth*0.35, innerHeight*0.4675, 'lockdown-stage-1', this, false);
-            const lockdownStageII = new Icon(this.scene, innerWidth*0.27, innerHeight*0.57, 'lockdown-stage-2', this, false);
-            const lockdownStageIII = new Icon(this.scene, innerWidth*0.195, innerHeight*0.67, 'lockdown-stage-3', this, false);
-            const lockdownStageIV = new Icon(this.scene, innerWidth*0.27, innerHeight*0.77, 'lockdown-stage-4', this, false);
-            const publicTransport = new Icon(this.scene, innerWidth*0.43, innerHeight*0.57, 'public-transport', this, false);
-            const restrictedTraffic = new Icon(this.scene, innerWidth*0.35, innerHeight*0.67, 'restricted-traffic', this, false); 
-            const fincancialSupportI = new Icon(this.scene, innerWidth*0.51, innerHeight*0.67, 'financial-support-1', this, false); 
-            const fincancialSupportII = new Icon(this.scene, innerWidth*0.43, innerHeight*0.77, 'financial-support-2', this, false);
+            const lockdown = new Icon(this.scene, innerWidth*0.3475, innerHeight/4, 'lockdown-skill', this, false, false);
+            const lockdownStageI = new Icon(this.scene, innerWidth*0.35, innerHeight*0.4675, 'lockdown-stage-1', this, false, SkillController.getInstance().lockdownStageI);
+            const lockdownStageII = new Icon(this.scene, innerWidth*0.27, innerHeight*0.57, 'lockdown-stage-2', this, false, SkillController.getInstance().lockdownStageII);
+            const lockdownStageIII = new Icon(this.scene, innerWidth*0.195, innerHeight*0.67, 'lockdown-stage-3', this, false, SkillController.getInstance().lockdownStageIII);
+            const lockdownStageIV = new Icon(this.scene, innerWidth*0.27, innerHeight*0.77, 'lockdown-stage-4', this, false, SkillController.getInstance().lockdownStageIV);
+            const publicTransport = new Icon(this.scene, innerWidth*0.43, innerHeight*0.57, 'public-transport', this, false, SkillController.getInstance().publicTransport);
+            const restrictedTraffic = new Icon(this.scene, innerWidth*0.35, innerHeight*0.67, 'restricted-traffic', this, false, SkillController.getInstance().restrictedTraffic); 
+            const fincancialSupportI = new Icon(this.scene, innerWidth*0.51, innerHeight*0.67, 'financial-support-1', this, false, SkillController.getInstance().financialSupportI); 
+            const fincancialSupportII = new Icon(this.scene, innerWidth*0.43, innerHeight*0.77, 'financial-support-2', this, false, SkillController.getInstance().financialSupportII);
 
             return [title, connections, lockdown, lockdownStageI, lockdownStageII, lockdownStageIII, lockdownStageIV, publicTransport, restrictedTraffic, fincancialSupportI, fincancialSupportII]
         }
@@ -221,125 +228,138 @@ export class SkillTreeView extends PopupWindow {
             }).setOrigin(0.5);
 
             const connections = new Phaser.GameObjects.Image(this.scene, innerWidth*0.3515, innerHeight*0.45, 'citizens-connections');
-            const citizens = new Icon(this.scene, innerWidth*0.35, innerHeight/4, 'citizen', this, false);
-            const expertiseI = new Icon(this.scene, innerWidth*0.35, innerHeight*0.475, 'expertise-1', this, false);
-            const expertiseII = new Icon(this.scene, innerWidth*0.27, innerHeight*0.575, 'expertise-2', this, false);
-            const expertiseIII = new Icon(this.scene, innerWidth*0.19, innerHeight*0.675, 'expertise-3', this, false);
-            const trackingAppI = new Icon(this.scene, innerWidth*0.43, innerHeight*0.575, 'tracking-1', this, false);
-            const trackingAppII = new Icon(this.scene, innerWidth*0.51, innerHeight*0.675, 'tracking-2', this, false);
+            const citizens = new Icon(this.scene, innerWidth*0.35, innerHeight/4, 'citizen', this, false, false);
+            const expertiseI = new Icon(this.scene, innerWidth*0.35, innerHeight*0.475, 'expertise-1', this, false, SkillController.getInstance().expertiseI);
+            const expertiseII = new Icon(this.scene, innerWidth*0.27, innerHeight*0.575, 'expertise-2', this, false, SkillController.getInstance().expertiseII);
+            const expertiseIII = new Icon(this.scene, innerWidth*0.19, innerHeight*0.675, 'expertise-3', this, false, SkillController.getInstance().expertiseIII);
+            const trackingAppI = new Icon(this.scene, innerWidth*0.43, innerHeight*0.575, 'tracking-1', this, false, SkillController.getInstance().trackingAppI);
+            const trackingAppII = new Icon(this.scene, innerWidth*0.51, innerHeight*0.675, 'tracking-2', this, false, SkillController.getInstance().trackingAppII);
 
             return [title, connections, citizens, expertiseI, expertiseII, expertiseIII, trackingAppI, trackingAppII]
         }
         return [title, connections, medicalTreatmentButton, policeButton, testingButton, lockdownButton, citizensButton]
     }
 
-    public activateSkill(key: string): void {
+    public activateSkill(key: string): boolean {
         this.getByName(key).disableInteractive();
         if(key == 'additional-medical-supplies-1') {
-            SkillController.getInstance().activateAdditionalMedicalSuppliesI(SkillController.getInstance());
+            return SkillController.getInstance().activateAdditionalMedicalSuppliesI(SkillController.getInstance(), key);
         }
         if(key == 'additional-medical-supplies-2') {
-            SkillController.getInstance().activateAdditionalMedicalSuppliesII(SkillController.getInstance());
+            return SkillController.getInstance().activateAdditionalMedicalSuppliesII(SkillController.getInstance(), key);
         }
         if(key == 'upgrade-medical-facilities-1') {
-            SkillController.getInstance().activateUpgradeMedicalFacilitiesI(SkillController.getInstance());
+            return SkillController.getInstance().activateUpgradeMedicalFacilitiesI(SkillController.getInstance(), key);
         }
         if(key == 'upgrade-medical-facilities-2') {
-            SkillController.getInstance().activateUpgradeMedicalFacilitiesII(SkillController.getInstance());
+            return SkillController.getInstance().activateUpgradeMedicalFacilitiesII(SkillController.getInstance(), key);
         }
         if(key == 'upgrade-medical-facilities-3') {
-            SkillController.getInstance().activateUpgradeMedicalFacilitiesIII(SkillController.getInstance());
+            return SkillController.getInstance().activateUpgradeMedicalFacilitiesIII(SkillController.getInstance(), key);
         }
         if(key == 'medicine-1') {
-            SkillController.getInstance().activateMedicineI(SkillController.getInstance());
+            return SkillController.getInstance().activateMedicineI(SkillController.getInstance(), key);
         }
         if(key == 'medicine-2') {
-            SkillController.getInstance().activateMedicineII(SkillController.getInstance());
+            return SkillController.getInstance().activateMedicineII(SkillController.getInstance(), key);
         }
         if(key == 'medicine-3') {
-            SkillController.getInstance().activateMedicineIII(SkillController.getInstance());
+            return SkillController.getInstance().activateMedicineIII(SkillController.getInstance(), key);
         }
 
         if(key == 'expertise') {
-            SkillController.getInstance().activateLearnExpertise(SkillController.getInstance());
+            return SkillController.getInstance().activateLearnExpertise(SkillController.getInstance(), key);
         }
         if(key == 'military-1') {
-            SkillController.getInstance().activateMilitaryI(SkillController.getInstance());
+            return SkillController.getInstance().activateMilitaryI(SkillController.getInstance(), key);
         }
         if(key == 'military-2') {
-            SkillController.getInstance().activateMilitaryII(SkillController.getInstance());
+            return SkillController.getInstance().activateMilitaryII(SkillController.getInstance(), key);
         }
         if(key == 'military-3') {
-            SkillController.getInstance().activateMilitaryIII(SkillController.getInstance());
+            return SkillController.getInstance().activateMilitaryIII(SkillController.getInstance(), key);
         }
         if(key == 'police-equipment') {
-            SkillController.getInstance().activatePoliceEquipment(SkillController.getInstance());
+            return SkillController.getInstance().activatePoliceEquipment(SkillController.getInstance(), key);
         }
         if(key == 'testing') {
-            SkillController.getInstance().activateTesting(SkillController.getInstance());
+            return SkillController.getInstance().activateTesting(SkillController.getInstance(), key);
         }
         if(key == 'tracking') {
-            SkillController.getInstance().activateTrackingEncounters(SkillController.getInstance());
+            return SkillController.getInstance().activateTrackingEncounters(SkillController.getInstance(), key);
         }
 
         if(key == 'additional-test-kits') {
-            SkillController.getInstance().activateAdditionalTestKits(SkillController.getInstance());
+            return SkillController.getInstance().activateAdditionalTestKits(SkillController.getInstance(), key);
         }
         if(key == 'upgrade-test-kit-1') {
-            SkillController.getInstance().activateUpgradeTestKitI(SkillController.getInstance());
+            return SkillController.getInstance().activateUpgradeTestKitI(SkillController.getInstance(), key);
         }
         if(key == 'upgrade-test-kit-2') {
-            SkillController.getInstance().activateUpgradeTestKitII(SkillController.getInstance());
+            return SkillController.getInstance().activateUpgradeTestKitII(SkillController.getInstance(), key);
         }
         if(key == 'nationwide-testing') {
-            SkillController.getInstance().activateNationwideTesting(SkillController.getInstance());
+            return SkillController.getInstance().activateNationwideTesting(SkillController.getInstance(), key);
         }
         if(key == 'dna') {
-            SkillController.getInstance().activatednaRnaCodeSequence(SkillController.getInstance());
+            return SkillController.getInstance().activatednaRnaCodeSequence(SkillController.getInstance(), key);
         }
         if(key == 'immunity-tests') {
-            SkillController.getInstance().activateImmunityTests(SkillController.getInstance());
+            return SkillController.getInstance().activateImmunityTests(SkillController.getInstance(), key);
         }
 
         if(key == 'lockdown-stage-1') {
-            SkillController.getInstance().activateLockdownStageI(SkillController.getInstance());
+            return SkillController.getInstance().activateLockdownStageI(SkillController.getInstance(), key);
         }
         if(key == 'lockdown-stage-2') {
-            SkillController.getInstance().activateLockdownStageII(SkillController.getInstance());
+            return SkillController.getInstance().activateLockdownStageII(SkillController.getInstance(), key);
         }
         if(key == 'lockdown-stage-3') {
-            SkillController.getInstance().activateLockdownStageIII(SkillController.getInstance());
+            return SkillController.getInstance().activateLockdownStageIII(SkillController.getInstance(), key);
         }
         if(key == 'lockdown-stage-4') {
-            SkillController.getInstance().activateLockdownStageIV(SkillController.getInstance());
+            return SkillController.getInstance().activateLockdownStageIV(SkillController.getInstance(), key);
         }
         if(key == 'public-transport') {
-            SkillController.getInstance().activatePublicTransport(SkillController.getInstance());
+            return SkillController.getInstance().activatePublicTransport(SkillController.getInstance(), key);
         }
         if(key == 'restricted-traffic') {
-            SkillController.getInstance().activateRestrictedTraffic(SkillController.getInstance());
+            return SkillController.getInstance().activateRestrictedTraffic(SkillController.getInstance(), key);
         }
         if(key == 'financial-support-1') {
-            SkillController.getInstance().activateFinancialSupportI(SkillController.getInstance());
+            return SkillController.getInstance().activateFinancialSupportI(SkillController.getInstance(), key);
         }
         if(key == 'financial-support-2') {
-            SkillController.getInstance().activateFinancialSupportI(SkillController.getInstance());
+            return SkillController.getInstance().activateFinancialSupportI(SkillController.getInstance(), key);
         }
 
         if(key == 'expertise-1') {
-            SkillController.getInstance().activateExpertiseI(SkillController.getInstance());
+            return SkillController.getInstance().activateExpertiseI(SkillController.getInstance(), key);
         }
         if(key == 'expertise-2') {
-            SkillController.getInstance().activateExpertiseII(SkillController.getInstance());
+            return SkillController.getInstance().activateExpertiseII(SkillController.getInstance(), key);
         }
         if(key == 'expertise-3') {
-            SkillController.getInstance().activateExpertiseIII(SkillController.getInstance());
+            return SkillController.getInstance().activateExpertiseIII(SkillController.getInstance(), key);
         }
         if(key == 'tracking-1') {
-            SkillController.getInstance().activateTrackingAppI(SkillController.getInstance());
+            return SkillController.getInstance().activateTrackingAppI(SkillController.getInstance(), key);
         }
         if(key == 'tracking-2') {
-            SkillController.getInstance().activateTrackingAppII(SkillController.getInstance());
+            return SkillController.getInstance().activateTrackingAppII(SkillController.getInstance(), key);
         }
+        return
+    }
+
+    public getIcon(key: string): Icon {
+        this.currentSkillIcons.forEach(icon => {
+            if(icon.name == key) {
+                if(!(key == 'medical-treatment' || key == 'police-skill' || key == 'testing-skill' || key == 'lockdown-skill' || key == 'citizen')) {
+                    return icon
+                }
+            }
+        });
+
+        return
     }
 }
