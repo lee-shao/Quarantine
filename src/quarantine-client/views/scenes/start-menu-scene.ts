@@ -4,6 +4,7 @@ import { ChartScene } from "../tablet/chart-scene";
 import { MapScene } from "../tablet/map-scene";
 import { Stats } from "../../controller/stats";
 import { DifficultyLevel } from "../../models/util/enums/difficultyLevels";
+import { Controller } from "../../controller/controller";
 
 /**
  * Menu scene at the start of the game.
@@ -233,6 +234,7 @@ export class StartMenuScene extends Phaser.Scene {
         .on('pointerup', () => {
             startButton.setTexture('StartH');
             Stats.getInstance(this.selectedDifficulty);
+            Controller.getInstance(); // IMPORTANT timed dependecy of controller before chart scene so the controller gets notified first from TimeController
             this.scene.setVisible(false);
             this.buttonClickMusic.play();
             this.loadScenes();
@@ -319,8 +321,8 @@ export class StartMenuScene extends Phaser.Scene {
         this.mainThemeMusic.stop();
         this.scene.add('MainScene', MainScene, true);
         this.scene.add('GuiScene', GuiScene, true);
-        this.scene.add('ChartScene', ChartScene, true);
         //this.scene.add('AgentScene', AgentScene, false);
         this.scene.add('MapScene', MapScene, true);
+        this.scene.add('ChartScene', ChartScene, true);
     }
 }

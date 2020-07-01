@@ -1,8 +1,10 @@
 import { GuiElement } from "../guiElement";
 import { GuiScene } from "../scenes/gui-scene";
 import { Stats } from "../../controller/stats";
+import { TimeSubscriber } from "../../models/util/timeSubscriber";
+import { TimeController } from "../../controller/timeController";
 
-export class StatusBar extends GuiElement{
+export class StatusBar extends GuiElement implements TimeSubscriber {
 
     private stats: Stats;
 
@@ -15,6 +17,7 @@ export class StatusBar extends GuiElement{
         super(scene);
 
         this.stats = Stats.getInstance();
+        TimeController.getInstance().subscribe(this);
     }
 
     private init(): void {
@@ -40,10 +43,13 @@ export class StatusBar extends GuiElement{
     }
 
     public update(): void {
-        this.rValue.setText("R-Value: " + this.stats.getRValue());
-        this.infected.setText("Infected: " + this.stats.getInfectedString());
         this.dailyIncome.setText(this.stats.getEarningsString());
         this.budget.setText(this.stats.getBudgetString());
+    }
+
+    notify(): void {
+        this.rValue.setText("R-Value: " + this.stats.getRValue());
+        this.infected.setText("Infected: " + this.stats.getInfectedString());
     }
 
 }
