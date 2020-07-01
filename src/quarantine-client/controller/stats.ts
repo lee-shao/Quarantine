@@ -307,7 +307,7 @@ export class Stats {
     public getRValue(): number { 
         // Number of suscetible agents
         const suscetible = this.population - this.infected - this.weeklyHW[TimeController.getInstance().getWeeksSinceGameStart()] - this.immune;
-        return this.basicInteractionRate * this.populationFactor * 4 * suscetible/ this.population;
+        return +(this.basicInteractionRate * this.populationFactor * 4 * suscetible/ this.population).toFixed(2);
     }
 
     /** @returns scale factor to multiply with population numbers to simulate real population numbers */
