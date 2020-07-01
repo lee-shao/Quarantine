@@ -3,9 +3,9 @@ import "chartjs-plugin-zoom";
 import "hammerjs";
 import { TimeSubscriber } from "../../models/util/timeSubscriber";
 import { TimeController } from "../../controller/timeController";
-import { UpgradeController } from "../../controller/gui-controller/upgradeController";
 import { Stats } from "../../controller/stats";
 import { TutorialComponent } from "../tutorial/tutorialComponent";
+import { UpgradeController } from "../../controller/gui-controller/upgradeController";
 
 /**
  * Scene for creating and updating the graphical
@@ -271,7 +271,7 @@ export class ChartScene extends Phaser.Scene implements TimeSubscriber, Tutorial
 
         /** Add the canvas to the scene */
         this.canvasDomElement = this.add.dom(95, 65, this.canvas);
-        this.canvasDomElement.setOrigin(-0.2, 0);
+        this.canvasDomElement.setOrigin(-0.25, 0);
 
         /** Create new chart */
         this.chart = new Chart(this.canvas, {

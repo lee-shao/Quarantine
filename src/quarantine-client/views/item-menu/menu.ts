@@ -3,6 +3,7 @@ import { GameObjects } from 'phaser';
 import { UpgradeController } from '../../controller/gui-controller/upgradeController';
 import { ButtonContainer } from './button-container';
 import { TutorialComponent } from '../tutorial/tutorialComponent';
+import { Stats } from '../../controller/stats';
 
 /**
  * Extends Phaser.GameObjects.Container and represents the ingame item menu.
@@ -20,7 +21,7 @@ export class ItemMenu extends Phaser.GameObjects.Container implements TutorialCo
     private income: number;
 
     /** Instance of upgradeController. Used to buy measures */
-    public upgradeContr: UpgradeController;
+    private upgradeContr: UpgradeController;
     
     /** Data of all measures @see measures.json */
     public measures = require("./../../../../res/json/measures.json");
@@ -65,7 +66,7 @@ export class ItemMenu extends Phaser.GameObjects.Container implements TutorialCo
     public updateItemMenu(): void {
         this.budget = this.upgradeContr.getBudget();
         this.income = this.upgradeContr.getIncome();
-        (this.getAt(1) as GameObjects.Text).setText(`Budget: ${this.budget}\nIncome: ${this.income}`);
+        (this.getAt(1) as GameObjects.Text).setText(`Budget: ${Stats.formatMoneyString(this.budget)}\nIncome: ${Stats.formatMoneyString(this.income)}`);
     }
 
     //-------------------------------------------------------------------------------------------------
