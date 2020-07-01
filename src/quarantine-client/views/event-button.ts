@@ -9,11 +9,13 @@ import { PopupWindow } from "./popupWindow";
 export class EventButton extends GuiElement {
 
     private eventNote: Phaser.GameObjects.Image;
-    private static instance: EventList;
+    // private static instance: EventButton;
 
-    private guiScene: GuiScene;
+    // private guiScene: GuiScene;
     private eventLog: EventLog;
-    private events: [string,string,string];
+
+    private eventTitle: Phaser.GameObjects.Text;
+    private eventDescription: Phaser.GameObjects.Text;
 
 
 
@@ -24,13 +26,12 @@ export class EventButton extends GuiElement {
         
         // this.guiScene = GuiScene.getInstance();
         this.eventLog = EventLog.getInstance();
-        this.events = this.eventLog.getLast();
 
-        this.eventNote.on('pointerover', () => { this.eventNote.scale = 0.3; });
-        this.eventNote.on('pointerout', () => { this.eventNote.scale = 0.2; });
+        this.eventNote.on('pointerover', () => { this.eventNote.scale = 0.55; });
+        this.eventNote.on('pointerout', () => { this.eventNote.scale = 0.5; });
         this.eventNote.on('pointerup', () => {
             if(!this.scene.mainSceneIsPaused){
-                // EventList.getInstance().open(this.scene); // open log book sub scene
+                // EventList.getInstance().open(this.scene);
                 console.log("hello biatch1");
                 const skillTree = new EventList(this.scene);
                 skillTree.createModal();
@@ -48,4 +49,36 @@ export class EventButton extends GuiElement {
     }
     /** @returns Phaser.GameObjects.Image of rule button */
     public getEventButton(): Phaser.GameObjects.Image {return this.eventNote}
+
+    public addLastEvent(title: string, description: string) {
+        debugger
+        const styleDesc = { // description style
+            color: 'Black',
+            fontSize: '25px',
+            fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif'
+        };
+        const styleTitle = { // title style
+            color: 'Black',
+            align: 'center',
+            fontSize: '30px',
+            fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif'
+        };
+        if(!this.eventTitle) {
+            this.eventTitle = this.scene.add.text(0, 90, title, styleTitle);
+        } else {
+            this.eventTitle.destroy();
+            this.eventTitle = this.scene.add.text(0, 90, title, styleTitle);
+        }
+        if(!this.eventDescription) {
+            this.eventDescription = this.scene.add.text(300, 350, description, styleDesc);
+        } else {
+            this.eventDescription.destroy();
+            this.eventDescription = this.scene.add.text(300, 350, description, styleDesc);
+        }
+    }
+
+    // public static getInstance(scene = null, x = 0, y = 0): EventButton {
+    //     if(!EventButton.instance) EventButton.instance = new EventButton(scene);
+    //     return EventButton.instance;
+    // }
 }

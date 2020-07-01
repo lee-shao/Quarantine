@@ -20,33 +20,62 @@ export class EventList extends PopupWindow {
     constructor(scene: Phaser.Scene) {
         super(scene, 0, 5, 'event-note', 1550, 50, true, 
         [
-            new Phaser.GameObjects.Text(scene, 820, 50, 'Last Events', { 
+            new Phaser.GameObjects.Text(scene, 820, 350, 'Last Events', { 
                 color: 'Black', 
                 fontSize: '70px',
                 fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif'
             })
         ], false);
 
-
+        console.log("CREATING SUPER");
+        this.addEvents();
         this.scene.add.existing(this);
     }
 
-
     public addEvents(): void {
+        console.log("CREATING EVENTS");
+        // debugger
         this.events = EventLog.getInstance().getLastFive();
+        const styleDesc = { // description style
+            color: 'Black',
+            fontSize: '25px',
+            fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
+            wordWrap: { width: 950 }
+        };
+        const styleTitle = { // title style
+            color: 'Black',
+            align: 'left',
+            fontSize: '30px',
+            fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
+            wordWrap: { width: 950 },
+            
+
+        };
+        let x = 650;
+        let y = 450;
         for (let i = 0; i < this.events.length; i++) {
+            // debugger
+            
             const element = this.events[i];
-            const text = new Phaser.GameObjects.Text(this.scene, this.x, this.y, 'TEXT', { fontFamily: '"Roboto Condensed"' });  //.setInteractive();            
+            console.log(element);
+
+            // const text = new Phaser.GameObjects.Text(this.scene, this.x + x, this.y + y, , styleTitle);  //.setInteractive();   
+            const title = new Phaser.GameObjects.Text(this.scene, this.x + x, this.y + y, `Event № ${i+1}: ${element[0]}`, styleTitle);
+            const description = new Phaser.GameObjects.Text(this.scene, this.x + x, this.y + y, "\n\n"+element[1], styleDesc);
+            // this.add(text);
+            this.add(title);
+            this.add(description);
+            y = y + 125;
         }
 
     }
 
 
-    public open(scene: Phaser.Scene): void {
-        this.scene = scene;
-        console.log("hello biatch");
-        // this.createLogBookView(TimeController.getInstance().getWeeksSinceGameStart()).createModal();
-    }
+    // public open(scene: Phaser.Scene): void {
+    //     this.scene = scene;
+    //     console.log("hello biatch");
+    //     // this.createLogBookView(TimeController.getInstance().getWeeksSinceGameStart()).createModal();
+    // }
 
     // private createLogBookView(week: number): LogBookView {
     //     const lbView = new LogBookView(this.scene, week);

@@ -28,7 +28,7 @@ export class GuiScene extends Phaser.Scene {
 
     private menu: ItemMenu;
     private skipTutorialBtn: SkipTutorialButton;
-    private eventList: EventList;
+    
 
     private statusBar: StatusBar;
     public mainSceneIsPaused = false;

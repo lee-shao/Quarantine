@@ -193,6 +193,9 @@ export class EventController implements TimeSubscriber {
     private callRandomEvent(eventRarity: string): void {
         const idx = this.getRandomIntInclusive(0, this.eventList[eventRarity].length - 1);
         const eventInfo = this.eventList[eventRarity][idx];
+        // debugger
+        console.log("im in callrandomevent");
+        
         new Event(
             EventController.eventFunctionList[eventRarity][idx],
             eventInfo["name"],
