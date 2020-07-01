@@ -770,6 +770,16 @@
         "type": "image",
         "key": "home-button",
         "url": "assets/sprites/main-scene/home-button.png"
+      },
+      {
+        "type": "image",
+        "key": "health-sign",
+        "url": "assets/sprites/health-sign.png"
+      },
+      {
+        "type": "image",
+        "key": "police-batch",
+        "url": "assets/sprites/police-batch.png"
       }
     ]
   }

@@ -3,6 +3,7 @@ import { GameObjects } from 'phaser';
 import { UpgradeController } from '../../controller/gui-controller/upgradeController';
 import { ButtonContainer } from './button-container';
 import { TutorialComponent } from '../tutorial/tutorialComponent';
+import { Stats } from '../../controller/stats';
 
 /**
  * Extends Phaser.GameObjects.Container and represents the ingame item menu.
@@ -20,7 +21,7 @@ export class ItemMenu extends Phaser.GameObjects.Container implements TutorialCo
     private income: number;
 
     /** Instance of upgradeController. Used to buy measures */
-    public upgradeContr: UpgradeController;
+    private upgradeContr: UpgradeController;
     
     /** Data of all measures @see measures.json */
     public measures = require("./../../../../res/json/measures.json");
@@ -45,8 +46,12 @@ export class ItemMenu extends Phaser.GameObjects.Container implements TutorialCo
         this.income = this.upgradeContr.getIncome();
         // Add background
         this.scene.add.image(this.x + 350 , this.y + 120, 'notebook').setScale(0.6);  //.setAlpha(0.5); //dont work
-        // Add menu bar
-        this.add(this.scene.add.image(this.x + 515 , 70, 'note-pink').setScale(0.6));
+        // Add sticky note
+        this.add(this.scene.add.image(this.x - 110 , -120, 'note-pink').setScale(0.6));
+        this.add(this.scene.add.image(450, -186, 'cash').setOrigin(0).setScale(0.7));
+        this.add(this.scene.add.image(450, -206, 'money').setOrigin(0).setScale(0.4));
+        this.add(this.scene.add.image(470, -130, 'police-batch').setOrigin(0).setScale(0.13));
+        this.add(this.scene.add.image(470, -110, 'health-sign').setOrigin(0).setScale(0.07));
 
         this.scene.add.existing(this);
 
@@ -55,7 +60,8 @@ export class ItemMenu extends Phaser.GameObjects.Container implements TutorialCo
 
     /** Creates the "profile". That means item menu relevant stats are visualized on the menu. */
     private addStatistics(): void {
-        this.add(this.scene.add.text(this.x + 425, 0,`Budget: ${this.budget}\nIncome: ${this.income}`,{ // \n for line break and then setLineSpacing
+        const stats = Stats.getInstance();
+        this.add(this.scene.add.text(this.x - 200, -200,`\t\t\t\t\t\t\t${stats.getBudgetString()}\n\t\t\t\t\t\t\t${stats.getEarningsString()}\n\nSalary:\n\t\t\t\t\t\t\t\t\t${stats.getPoliceSalaryString()}\n\t\t\t\t\t\t\t\t\t${stats.getHwSalaryString()}`,{ // \n for line break and then setLineSpacing
             fontFamily:'Arial',
             color:'#000000',
         }))
@@ -65,29 +71,24 @@ export class ItemMenu extends Phaser.GameObjects.Container implements TutorialCo
     public updateItemMenu(): void {
         this.budget = this.upgradeContr.getBudget();
         this.income = this.upgradeContr.getIncome();
-        (this.getAt(1) as GameObjects.Text).setText(`Budget: ${this.budget}\nIncome: ${this.income}`);
+        const stats = Stats.getInstance();
+        (this.getAt(5) as GameObjects.Text).setText(`\t\t\t\t\t\t\t${stats.getBudgetString()}\n\t\t\t\t\t\t\t${stats.getEarningsString()}\n\nSalary:\n\t\t\t\t\t\t\t\t\t${stats.getPoliceSalaryString()}\n\t\t\t\t\t\t\t\t\t${stats.getHwSalaryString()}`);
     }
 
     //-------------------------------------------------------------------------------------------------
-    /** */
-    private buildClosure(myFunction: Function): Function {
-        const contr = this.upgradeContr;
-        return function(): void {myFunction(contr)};
-    }
-
     /** Adds lockdown button to the menu */
     public unlockLockdownBtn(): void {
-        new ButtonContainer(this.scene, this.x + 25, 575, 'lockdown', this.measures['lockdown']['price'], this.buildClosure(this.upgradeContr.activateLockdown));
+        new ButtonContainer(this.scene, this.x + 25, 575, 'lockdown', this.measures['lockdown']['price'], () => this.upgradeContr.activateLockdown());
     }
 
     public activateComponent(): void {
         // Add/unlocks button container
         ++this.activationCounter;
         if( this.activationCounter == 1) {
-            new ButtonContainer(this.scene, this.x + 25, 675, 'police', this.measures['police']['price'], this.buildClosure(this.upgradeContr.buyPoliceOfficers));
-            new ButtonContainer(this.scene, this.x + 25, 775, 'healthworkers', this.measures['healthworkers']['price'], this.buildClosure(this.upgradeContr.buyHealthWorkers));
+            new ButtonContainer(this.scene, this.x + 25, 675, 'police', this.measures['police']['price']);
+            new ButtonContainer(this.scene, this.x + 25, 775, 'healthworkers', this.measures['healthworkers']['price']);
         } else {
-            new ButtonContainer(this.scene, this.x + 25, 475, 'research', this.measures['research']['prices'][0], this.buildClosure(this.upgradeContr.buyResearchLevel));
+            new ButtonContainer(this.scene, this.x + 25, 475, 'research', this.measures['research']['prices'][0], () => this.upgradeContr.buyResearchLevel());
         }
     }
 

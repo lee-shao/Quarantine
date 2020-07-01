@@ -155,7 +155,7 @@ export class EventController implements TimeSubscriber {
         this.calcRanTimeSpan(EventRarity.RARE);
         this.calcRanTimeSpan(EventRarity.VERY_RARE);
         this.calcRanTimeSpan(EventRarity.EPIC);
-        
+        this.calcRanTimeSpan(EventRarity.LEGENDARY);
     }
 
     /**
@@ -169,14 +169,19 @@ export class EventController implements TimeSubscriber {
         this.decreaseEventCounters();
         if (!this.timeSpanLegendary) {
             this.callRandomEvent(EventRarity.LEGENDARY);
+            console.log("legendary");
         } else if (!this.timeSpanEpic) {
             this.callRandomEvent(EventRarity.EPIC);
+            console.log("epic");
         } else if (!this.timeSpanVeryRare) {
             this.callRandomEvent(EventRarity.VERY_RARE);
+            console.log("very rare");
         } else if (!this.timeSpanRare) {
             this.callRandomEvent(EventRarity.RARE);
+            console.log("rare");
         } else if (!this.timeSpanCommon) {
             this.callRandomEvent(EventRarity.COMMON);
+            console.log("common");
         }
         this.resetTriggeredEventCounters();
 
@@ -200,7 +205,9 @@ export class EventController implements TimeSubscriber {
             EventController.eventFunctionList[eventRarity][idx],
             eventInfo["name"],
             eventInfo["description"],
-            eventInfo["image-path"]
+            eventInfo["image-path"],
+            eventInfo["ethos"],
+            eventInfo["summary"]
         );
         EventLog.getInstance().updateEventList( eventInfo["name"], eventInfo["description"], eventInfo["image-path"] );
     }
@@ -245,19 +252,19 @@ export class EventController implements TimeSubscriber {
     private calcRanTimeSpan(level: EventRarity): void {
         switch (level) {
             case EventRarity.COMMON:
-                this.timeSpanCommon = this.getRandomIntInclusive(3, 7);
+                this.timeSpanCommon = this.getRandomIntInclusive(7, 14);
                 break;
             case EventRarity.RARE:
-                this.timeSpanRare = this.getRandomIntInclusive(8, 13);
+                this.timeSpanRare = this.getRandomIntInclusive(20, 28);
                 break;
             case EventRarity.VERY_RARE:
-                this.timeSpanVeryRare = this.getRandomIntInclusive(14, 20);
+                this.timeSpanVeryRare = this.getRandomIntInclusive(30, 50);
                 break;
             case EventRarity.EPIC:
-                this.timeSpanEpic = this.getRandomIntInclusive(21, 30);
+                this.timeSpanEpic = this.getRandomIntInclusive(51, 80);
                 break;
             case EventRarity.LEGENDARY:
-                this.timeSpanLegendary = this.getRandomIntInclusive(31, 40);
+                this.timeSpanLegendary = this.getRandomIntInclusive(83, 90);
                 break;
             default:
                 throw new Error("Unknown EventRarity enum received. How did you do this?!?");

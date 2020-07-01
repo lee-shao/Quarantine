@@ -8,9 +8,9 @@ import { HealthWorker } from '../models/agents/healthWorker';
 import { TimeSubscriber } from '../models/util/timeSubscriber';
 import { TimeController } from './timeController';
 import { Stats } from './stats';
-import { UpgradeController } from './gui-controller/upgradeController';
 import { GuiScene } from '../views/scenes/gui-scene';
 import { PopupWindow } from '../views/popupWindow';
+import { UpgradeController } from './gui-controller/upgradeController';
 
 /**
  * Singleton controller which should only simulates the population protocol.

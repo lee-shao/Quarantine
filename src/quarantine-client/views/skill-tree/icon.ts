@@ -41,110 +41,110 @@ export class Icon extends Phaser.GameObjects.Image {
             skillTree.openSubtree(key);
             
             if(key == 'additional-medical-supplies-1') {
-                SkillController.getInstance().activateAdditionalMedicalSuppliesI(SkillController.getInstance());
+                SkillController.getInstance().activateAdditionalMedicalSuppliesI();
             }
             if(key == 'additional-medical-supplies-2') {
-                SkillController.getInstance().activateAdditionalMedicalSuppliesII(SkillController.getInstance());
+                SkillController.getInstance().activateAdditionalMedicalSuppliesII();
             }
             if(key == 'upgrade-medical-facilities-1') {
-                SkillController.getInstance().activateUpgradeMedicalFacilitiesI(SkillController.getInstance());
+                SkillController.getInstance().activateUpgradeMedicalFacilitiesI();
             }
             if(key == 'upgrade-medical-facilities-2') {
-                SkillController.getInstance().activateUpgradeMedicalFacilitiesII(SkillController.getInstance());
+                SkillController.getInstance().activateUpgradeMedicalFacilitiesII();
             }
             if(key == 'upgrade-medical-facilities-3') {
-                SkillController.getInstance().activateUpgradeMedicalFacilitiesIII(SkillController.getInstance());
+                SkillController.getInstance().activateUpgradeMedicalFacilitiesIII();
             }
             if(key == 'medicine-1') {
-                SkillController.getInstance().activateMedicineI(SkillController.getInstance());
+                SkillController.getInstance().activateMedicineI();
             }
             if(key == 'medicine-2') {
-                SkillController.getInstance().activateMedicineII(SkillController.getInstance());
+                SkillController.getInstance().activateMedicineII();
             }
             if(key == 'medicine-3') {
-                SkillController.getInstance().activateMedicineIII(SkillController.getInstance());
+                SkillController.getInstance().activateMedicineIII();
             }
 
             if(key == 'expertise') {
-                SkillController.getInstance().activateLearnExpertise(SkillController.getInstance());
+                SkillController.getInstance().activateLearnExpertise();
             }
             if(key == 'military-1') {
-                SkillController.getInstance().activateMilitaryI(SkillController.getInstance());
+                SkillController.getInstance().activateMilitaryI();
             }
             if(key == 'military-2') {
-                SkillController.getInstance().activateMilitaryII(SkillController.getInstance());
+                SkillController.getInstance().activateMilitaryII();
             }
             if(key == 'military-3') {
-                SkillController.getInstance().activateMilitaryIII(SkillController.getInstance());
+                SkillController.getInstance().activateMilitaryIII();
             }
             if(key == 'police-equipment') {
-                SkillController.getInstance().activatePoliceEquipment(SkillController.getInstance());
+                SkillController.getInstance().activatePoliceEquipment();
             }
             if(key == 'testing') {
-                SkillController.getInstance().activateTesting(SkillController.getInstance());
+                SkillController.getInstance().activateTesting();
             }
             if(key == 'tracking') {
-                SkillController.getInstance().activateTrackingEncounters(SkillController.getInstance());
+                SkillController.getInstance().activateTrackingEncounters();
             }
 
             if(key == 'additional-test-kits') {
-                SkillController.getInstance().activateAdditionalTestKits(SkillController.getInstance());
+                SkillController.getInstance().activateAdditionalTestKits();
             }
             if(key == 'upgrade-test-kit-1') {
-                SkillController.getInstance().activateUpgradeTestKitI(SkillController.getInstance());
+                SkillController.getInstance().activateUpgradeTestKitI();
             }
             if(key == 'upgrade-test-kit-2') {
-                SkillController.getInstance().activateUpgradeTestKitII(SkillController.getInstance());
+                SkillController.getInstance().activateUpgradeTestKitII();
             }
             if(key == 'nationwide-testing') {
-                SkillController.getInstance().activateNationwideTesting(SkillController.getInstance());
+                SkillController.getInstance().activateNationwideTesting();
             }
             if(key == 'dna') {
-                SkillController.getInstance().activatednaRnaCodeSequence(SkillController.getInstance());
+                SkillController.getInstance().activatednaRnaCodeSequence();
             }
             if(key == 'immunity-tests') {
-                SkillController.getInstance().activateImmunityTests(SkillController.getInstance());
+                SkillController.getInstance().activateImmunityTests();
             }
 
             if(key == 'lockdown-stage-1') {
-                SkillController.getInstance().activateLockdownStageI(SkillController.getInstance());
+                SkillController.getInstance().activateLockdownStageI();
             }
             if(key == 'lockdown-stage-2') {
-                SkillController.getInstance().activateLockdownStageII(SkillController.getInstance());
+                SkillController.getInstance().activateLockdownStageII();
             }
             if(key == 'lockdown-stage-3') {
-                SkillController.getInstance().activateLockdownStageIII(SkillController.getInstance());
+                SkillController.getInstance().activateLockdownStageIII();
             }
             if(key == 'lockdown-stage-4') {
-                SkillController.getInstance().activateLockdownStageIV(SkillController.getInstance());
+                SkillController.getInstance().activateLockdownStageIV();
             }
             if(key == 'public-transport') {
-                SkillController.getInstance().activatePublicTransport(SkillController.getInstance());
+                SkillController.getInstance().activatePublicTransport();
             }
             if(key == 'restricted-traffic') {
-                SkillController.getInstance().activateRestrictedTraffic(SkillController.getInstance());
+                SkillController.getInstance().activateRestrictedTraffic();
             }
             if(key == 'financial-support-1') {
-                SkillController.getInstance().activateFinancialSupportI(SkillController.getInstance());
+                SkillController.getInstance().activateFinancialSupportI();
             }
             if(key == 'financial-support-2') {
-                SkillController.getInstance().activateFinancialSupportI(SkillController.getInstance());
+                SkillController.getInstance().activateFinancialSupportI();
             }
 
             if(key == 'expertise-1') {
-                SkillController.getInstance().activateExpertiseI(SkillController.getInstance());
+                SkillController.getInstance().activateExpertiseI();
             }
             if(key == 'expertise-2') {
-                SkillController.getInstance().activateExpertiseII(SkillController.getInstance());
+                SkillController.getInstance().activateExpertiseII();
             }
             if(key == 'expertise-3') {
-                SkillController.getInstance().activateExpertiseIII(SkillController.getInstance());
+                SkillController.getInstance().activateExpertiseIII();
             }
             if(key == 'tracking-1') {
-                SkillController.getInstance().activateTrackingAppI(SkillController.getInstance());
+                SkillController.getInstance().activateTrackingAppI();
             }
             if(key == 'tracking-2') {
-                SkillController.getInstance().activateTrackingAppII(SkillController.getInstance());
+                SkillController.getInstance().activateTrackingAppII();
             }
 
             //skillTree.removeSkillButtons(key);
