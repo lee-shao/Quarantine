@@ -6,7 +6,6 @@ import { TimeController } from "../../controller/timeController";
 import { Stats } from "../../controller/stats";
 import { TutorialComponent } from "../tutorial/tutorialComponent";
 import { UpgradeController } from "../../controller/gui-controller/upgradeController";
-import { Controller } from "../../controller/controller";
 
 /**
  * Scene for creating and updating the graphical
