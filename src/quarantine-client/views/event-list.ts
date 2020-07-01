@@ -51,7 +51,7 @@ export class EventList extends PopupWindow {
             
 
         };
-        let x = 650;
+        const x = 650;
         let y = 450;
         for (let i = 0; i < this.events.length; i++) {
             // debugger
