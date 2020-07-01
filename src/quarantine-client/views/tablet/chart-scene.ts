@@ -62,7 +62,6 @@ export class ChartScene extends Phaser.Scene implements TimeSubscriber, Tutorial
             key: 'ChartScene',
             active: false
         });
-        TimeController.getInstance().subscribe(this);
     }
 
     preload(): void {
@@ -98,6 +97,8 @@ export class ChartScene extends Phaser.Scene implements TimeSubscriber, Tutorial
         this.createForm();
 
         this.hideComponent();
+
+        TimeController.getInstance().subscribe(this);
     }
 
     /** 

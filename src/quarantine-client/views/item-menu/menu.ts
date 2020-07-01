@@ -48,6 +48,10 @@ export class ItemMenu extends Phaser.GameObjects.Container implements TutorialCo
         this.scene.add.image(this.x + 350 , this.y + 120, 'notebook').setScale(0.6);  //.setAlpha(0.5); //dont work
         // Add sticky note
         this.add(this.scene.add.image(this.x - 110 , -120, 'note-pink').setScale(0.6));
+        this.add(this.scene.add.image(450, -186, 'cash').setOrigin(0).setScale(0.7));
+        this.add(this.scene.add.image(450, -206, 'money').setOrigin(0).setScale(0.4));
+        this.add(this.scene.add.image(470, -130, 'police-batch').setOrigin(0).setScale(0.13));
+        this.add(this.scene.add.image(470, -110, 'health-sign').setOrigin(0).setScale(0.07));
 
         this.scene.add.existing(this);
 
@@ -56,7 +60,8 @@ export class ItemMenu extends Phaser.GameObjects.Container implements TutorialCo
 
     /** Creates the "profile". That means item menu relevant stats are visualized on the menu. */
     private addStatistics(): void {
-        this.add(this.scene.add.text(this.x - 180, -150,`Budget: ${this.budget}\nIncome: ${this.income}`,{ // \n for line break and then setLineSpacing
+        const stats = Stats.getInstance();
+        this.add(this.scene.add.text(this.x - 200, -200,`\t\t\t\t\t\t\t${stats.getBudgetString()}\n\t\t\t\t\t\t\t${stats.getEarningsString()}\n\nSalary:\n\t\t\t\t\t\t\t\t\t${stats.getPoliceSalaryString()}\n\t\t\t\t\t\t\t\t\t${stats.getHwSalaryString()}`,{ // \n for line break and then setLineSpacing
             fontFamily:'Arial',
             color:'#000000',
         }))
@@ -66,7 +71,8 @@ export class ItemMenu extends Phaser.GameObjects.Container implements TutorialCo
     public updateItemMenu(): void {
         this.budget = this.upgradeContr.getBudget();
         this.income = this.upgradeContr.getIncome();
-        (this.getAt(1) as GameObjects.Text).setText(`Budget: ${Stats.formatMoneyString(this.budget)}\nIncome: ${Stats.formatMoneyString(this.income)}`);
+        const stats = Stats.getInstance();
+        (this.getAt(5) as GameObjects.Text).setText(`\t\t\t\t\t\t\t${stats.getBudgetString()}\n\t\t\t\t\t\t\t${stats.getEarningsString()}\n\nSalary:\n\t\t\t\t\t\t\t\t\t${stats.getPoliceSalaryString()}\n\t\t\t\t\t\t\t\t\t${stats.getHwSalaryString()}`);
     }
 
     //-------------------------------------------------------------------------------------------------
