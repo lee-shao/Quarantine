@@ -9,11 +9,8 @@ import { SoundButtons } from '../general-gui-buttons/soundButtons';
 import { SkipTutorialButton } from '../tutorial/skipTutorialButton';
 import { StatusBar } from '../status-bar/statusBar';
 import { Tablet } from '../tablet/tablet';
-<<<<<<< HEAD
 import { NewsPaper } from '../tablet/newspaper';
-=======
 import { PetriInfoButton } from '../general-gui-buttons/petriInfoButton';
->>>>>>> master
 
 /** Scene for user interface elements. */
 export class GuiScene extends Phaser.Scene {
@@ -68,14 +65,10 @@ export class GuiScene extends Phaser.Scene {
 
     create(): void {
         // Creates Itemmenu and it to this scene
-<<<<<<< HEAD
-        this.menu = ItemMenu.getInstance(this, 0, 750);
-        this.newspaper = NewsPaper.getInstance(this, 1200, 875);
+        this.menu = ItemMenu.getInstance(this, 650, 750);
+        this.newspaper = NewsPaper.getInstance(this, 0, 875);
         // this.load.scene.add.image(1200, 875, 'news');
         
-=======
-        this.menu = ItemMenu.getInstance(this, 650, 750);
->>>>>>> master
 
         //** create sound objects */
         this.inGameMusic = this.sound.add("game_theme_music");

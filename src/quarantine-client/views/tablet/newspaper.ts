@@ -26,28 +26,28 @@ export class NewsPaper extends Phaser.GameObjects.Container {
     public constructor(scene: Phaser.Scene, x: number, y: number) {
         super(scene, x, y);
         this.stats = Stats.getInstance();
-        this.scene.add.image(1200, 875, 'news');
-        this.newspaperImage = this.scene.add.image(this.x - 250, this.y + 125, 'flu-virus').setScale(0.75);
-        this.scene.add.text(this.x, this.y + 200, `Happiness Report:`, {
+        this.scene.add.image(300, 875, 'news').setScale(0.75);
+        this.newspaperImage = this.scene.add.image(this.x+150, this.y + 125, 'flu-virus').setScale(0.5);
+        this.scene.add.text(this.x +300, this.y+100, `Happiness Report:`, {
+            fontFamily:'Arial',
+            color:'#000000',
+            fontSize: '30px',
+            fontWeight: '700'
+        });
+        this.happinessStateText = this.scene.add.text(this.x + 300, this.y + 100, `\nNewest surveys uncover\n${this.happinessState} results: \n${this.happiness} % of people happy.`, {
+            fontFamily:'Arial',
+            color:'#000000',
+            fontSize: '25px',
+        });
+        this.totalInfectionsText = this.scene.add.text(this.x+100, this.y - 100, `Infections pass ${this.totalCases} cases` , {
             fontFamily:'Arial',
             color:'#000000',
             fontSize: '40px',
-            fontWeight: '700'
         });
-        this.happinessStateText = this.scene.add.text(this.x, this.y + 210, `\nNewest surveys uncover\n${this.happinessState} results: \n${this.happiness} % of people happy.`, {
+        this.mainText = this.scene.add.text(this.x+300, this.y - 50, `Within a week, \n${this.infected} new infections, \n${this.dead} new death and \n${this.cured} cured cases \nhave been confirmed`, {
             fontFamily:'Arial',
             color:'#000000',
-            fontSize: '30px',
-        });
-        this.totalInfectionsText = this.scene.add.text(this.x - 420, this.y - 150, `Infections pass ${this.totalCases} cases` , {
-            fontFamily:'Arial',
-            color:'#000000',
-            fontSize: '60px',
-        });
-        this.mainText = this.scene.add.text(this.x, this.y, `Within a week, \n${this.infected} new infections, \n${this.dead} new death and \n${this.cured} cured cases \nhave been confirmed`, {
-            fontFamily:'Arial',
-            color:'#000000',
-            fontSize: '30px',
+            fontSize: '25px',
         });
         this.updateHappinessReport();
         this.updateHeadline(0);

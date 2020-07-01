@@ -5,12 +5,9 @@ import { TimeSubscriber } from "../../models/util/timeSubscriber";
 import { TimeController } from "../../controller/timeController";
 import { Stats } from "../../controller/stats";
 import { TutorialComponent } from "../tutorial/tutorialComponent";
-<<<<<<< HEAD
 import { NewsPaper } from "./newspaper";
 import { GuiScene } from "../scenes/gui-scene";
-=======
 import { UpgradeController } from "../../controller/gui-controller/upgradeController";
->>>>>>> master
 
 /**
  * Scene for creating and updating the graphical
