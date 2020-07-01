@@ -387,7 +387,7 @@ export class ChartScene extends Phaser.Scene implements TimeSubscriber, Tutorial
     }
 
     public getTotalCases(): number {
-        let totalCases = this.dataTotalCases[this.day];
+        const totalCases = this.dataTotalCases[this.day];
         return totalCases;
     }
 }

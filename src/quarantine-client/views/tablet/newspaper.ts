@@ -76,7 +76,7 @@ export class NewsPaper extends Phaser.GameObjects.Container {
     }
 
     public updateHeadline(totalInfections: number) {
-        let week = TimeController.getInstance().getWeeksSinceGameStart();
+        const week = TimeController.getInstance().getWeeksSinceGameStart();
         this.cases = Stats.getInstance().getWeeklyStats(week);
         this.infected = this.cases[0];
         this.cured = this.cases[1];
