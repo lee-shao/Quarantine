@@ -4,6 +4,7 @@ import { GuiScene } from "./scenes/gui-scene";
 import { ChartScene } from "./tablet/chart-scene";
 import { MapScene } from "./tablet/map-scene";
 import { Tablet } from "./tablet/tablet";
+import { TimeController } from "../controller/timeController";
 
 
 /**
@@ -95,10 +96,7 @@ export class PopupWindow extends Phaser.GameObjects.Container {
 
         //if this popup windows not a child, wake up the chart scene.
         if(!this.isChild){
-            const chart = this.scene.scene.get('ChartScene') as ChartScene;
-            const map = this.scene.scene.get('MapScene') as MapScene;
             const gui = this.scene.scene.get('GuiScene') as GuiScene;
-            const main = this.scene.scene.get('MainScene') as MainScene;
 
             /** Only wake up the scenes if they were prviously displayed in the tablet */
             if (!Tablet.instance.getChartSceneIsSleeping()) this.chartScene.scene.wake();
@@ -106,13 +104,10 @@ export class PopupWindow extends Phaser.GameObjects.Container {
             
             // resume the game if game was paused.    
             if(this.pause){                     
-                main.scene.resume();
-                chart.scene.resume();
-                map.scene.resume();
                 gui.showBtns();
                 gui.mainSceneIsPaused = false;
+                TimeController.getInstance().resumeGame();
             }
-            
         }
         //this.each(x => x. destroy());
         this.destroy();
@@ -128,19 +123,14 @@ export class PopupWindow extends Phaser.GameObjects.Container {
     public createModal(): void {
         if(!this.isChild){
             // send the scenes to back
-            const main = this.scene.scene.get('MainScene') as MainScene;
-            const chart = this.scene.scene.get('ChartScene') as ChartScene;
-            const map = this.scene.scene.get('MapScene') as MapScene;
             const gui = this.scene.scene.get('GuiScene') as GuiScene;
             this.chartScene.scene.sleep();
             this.mapScene.scene.sleep();
 
             if(this.pause){
-                main.scene.pause();
-                chart.scene.pause();
-                map.scene.pause();
                 gui.hideBtns();
                 gui.mainSceneIsPaused = true;
+                TimeController.getInstance().pauseGame();
             }
         }
 

@@ -15,7 +15,7 @@ import { PopupWindow } from "../popupWindow";
 
         //Change the button textures on hover, press, etc.
         this.petriInfoBtn.on('pointerover', () => {
-            this.petriInfoBtn.setScale(0.7);
+            this.petriInfoBtn.setScale(this.scaling);
         });
         this.petriInfoBtn.on('pointerout', () => {
             this.petriInfoBtn.setScale(1);

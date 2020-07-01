@@ -27,7 +27,7 @@ export class StartMenuScene extends Phaser.Scene {
     public normal = require('../../../../res/json/difficulty-levels/normal.json');
     public hard = require('../../../../res/json/difficulty-levels/hard.json');
 
-    private selectedDifficulty = DifficultyLevel.NORMAL; 
+    private selectedDifficulty = DifficultyLevel.NORMAL;
 
     constructor() {
         super({

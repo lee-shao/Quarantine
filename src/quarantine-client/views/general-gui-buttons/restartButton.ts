@@ -25,7 +25,7 @@ export class RestartButton extends GuiElement {
 
         // hover, click event etc.
         this.restartBtn.on('pointerover', () => {
-            this.restartBtn.setScale(0.7);
+            this.restartBtn.setScale(this.scaling);
         });
 
         this.restartBtn.on('pointerout', () => {
@@ -55,18 +55,8 @@ export class RestartButton extends GuiElement {
 
                     //do restart the game when btn were clicked
                     restartOKBtn.on('pointerup', () => {
-                    const main = this.scene.scene.get('MainScene') as MainScene;
-                    const chart = this.scene.scene.get('ChartScene') as ChartScene;
-                    const map = this.scene.scene.get('MapScene') as MapScene;
-
-                    main.scene.restart();
-                    chart.scene.restart();
-                    map.scene.restart();
-
-                    //close modal
-                    popupMss.closeModal();
-                    if (this.scene.soundON) this.scene.buttonClickMusic.play();
-                });
+                        location.reload();
+                    });
 
                     //add confirm to object container and show the popup
                     popupMss.addGameObjects([blankNode, content, restartOKBtn]);

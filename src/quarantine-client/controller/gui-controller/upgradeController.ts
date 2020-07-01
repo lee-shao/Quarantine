@@ -46,9 +46,9 @@ export class UpgradeController implements TimeSubscriber {
      * This method is required to call before the buyHealthWorkers-method. Otherwise the agents array
      * will have health workers but they won't do anything. (Because the transition rules are not yet
      * defined.)
-     * @returns Boolean if the operation was successful, false if there are not enough people left to become health workers
+     * @returns Boolean if the operation was sthiscessful, false if there are not enough people left to become health workers
      */
-    private introduceCure(): void {
+    private introdthiseCure(): void {
         const numberOfNewAgents = this.measures["research"]["number_of_new_health_workers"];
 
         this.contr.getRules().push(new Rule(State.HEALTHY, State.CURE, State.IMMUNE, State.CURE, () => {
@@ -78,28 +78,26 @@ export class UpgradeController implements TimeSubscriber {
 
     /**
      * Insert a number of police officers into the agents array
-     * @param uC UpgradeController needed for closure {@see menu.ts#buildClosure}
      */
-    public buyPoliceOfficers(uC: UpgradeController, amt: number, price: number): boolean {
+    public buyPoliceOfficers(amt: number, price: number): boolean {
         //const amt = 100_000;
         //const price = amt * 5_000; // = 500_000_000
-        if(uC.isSolvent(price) && uC.contr.distributeNewRoles(amt, Role.POLICE)) {
-            uC.buyItem(price);
-            uC.stats.increasePoliceOfficers(amt);
+        if(this.isSolvent(price) && this.contr.distributeNewRoles(amt, Role.POLICE)) {
+            this.buyItem(price);
+            this.stats.increasePoliceOfficers(amt);
             return true;
         } else return false;
     }
 
     /**
      * Insert a number of health workers into the agents array
-     * @param uC UpgradeController needed for closure {@see menu.ts#buildClosure}
      */
-    public buyHealthWorkers(uC: UpgradeController, amt: number, price: number): boolean {
+    public buyHealthWorkers(amt: number, price: number): boolean {
         //const amt = 100_000;
         //const price = amt * 5_000; // = 500_000_000
-        if(uC.isSolvent(price) && uC.contr.distributeNewRoles(amt, Role.HEALTH_WORKER)) {
-            uC.buyItem(price);
-            uC.stats.increaseHealthWorkers(amt);
+        if(this.isSolvent(price) && this.contr.distributeNewRoles(amt, Role.HEALTH_WORKER)) {
+            this.buyItem(price);
+            this.stats.increaseHealthWorkers(amt);
             return true;
         } else return false;
     }
@@ -107,43 +105,40 @@ export class UpgradeController implements TimeSubscriber {
     /**
      * Insert a number of health workers into the agents array with the state
      * TEST_KIT to allow detection of UNKNOWINGLY_INFECTED agents.
-     * @param uC UpgradeController needed for closure {@see menu.ts#buildClosure}
      */
-    public buyTestKitHWs(uC: UpgradeController): boolean {
+    public buyTestKitHWs(): boolean {
         const amt = 100_000;
         const price = amt * 5_000; // = 500_000_000
-        if(uC.isSolvent(price) && uC.contr.distributeNewRoles(amt, Role.HEALTH_WORKER, true)) {
-            uC.buyItem(price);
-            uC.stats.increaseHealthWorkers(amt);
+        if(this.isSolvent(price) && this.contr.distributeNewRoles(amt, Role.HEALTH_WORKER, true)) {
+            this.buyItem(price);
+            this.stats.increaseHealthWorkers(amt);
             return true;
         } else return false;
     }
 
     /**
      * Wrapper for activating/deactivating "lockdown" measure. {@see upgradeController.ts#activateMeasure}
-     * @param uC UpgradeController needed for closure {@see menu.ts#buildClosure}
-     * @returns if "lockdown" was activated/deactivated successfully
+     * @returns if "lockdown" was activated/deactivated sthiscessfully
      */
-    public activateLockdown(uC: UpgradeController): boolean { 
-        return uC.activateMeasure("lockdown");
+    public activateLockdown(): boolean { 
+        return this.activateMeasure("lockdown");
     }
 
     /**
      * Wrapper for activating/deactivating "social distancing" measure. {@see upgradeController.ts#activateMeasure}
-     * @param uC UpgradeController needed for closure {@see menu.ts#buildClosure}
-     * @returns if "lockdown" was activated/deactivated successfully
+     * @returns if "lockdown" was activated/deactivated sthiscessfully
      */
-    public activateSocialDistancing(uC: UpgradeController): boolean {
-        return uC.activateMeasure("sd")
+    public activateSocialDistancing(): boolean {
+        return this.activateMeasure("sd")
     }
 
     /**
      * Activates the specified measure and changes all affiliated game variables (@see measures.json). 
      * A second invokation of this method causes the deactivation! Before the measure is activated, 
      * it is checked whether the player is able to pay the daily costs of the measure (at least for the next day).
-     * There is a cooldown of 1 (ingame) day before the method can be executed successfully again. 
+     * There is a cooldown of 1 (ingame) day before the method can be executed sthiscessfully again. 
      * @param measure Measure code of measure.json
-     * @returns if measure was activated/deactivated sucessfully
+     * @returns if measure was activated/deactivated sthisessfully
      */
     private activateMeasure(measure: string): boolean {
         const activationDay = this.tC.getDaysSinceGameStart();
@@ -171,21 +166,20 @@ export class UpgradeController implements TimeSubscriber {
     }
 
     /**
-     * Buys the next research level. When the maximum is reached, the method {@see UpgradeController#introduceCure }
+     * Buys the next research level. When the maximum is reached, the method {@see UpgradeController#introdthiseCure }
      * gets called.
-     * @param uC UpgradeController instance
-     * @returns Wether the research level reached level 10, the upgrade can be bought or the upgrade was successful
+     * @returns Wether the research level reached level 10, the upgrade can be bought or the upgrade was sthiscessful
      */
-    public buyResearchLevel(uC: UpgradeController): boolean {
-        const currLv = uC.measures["research"]["current_level"];
-        const price = uC.measures["research"]["prices"][currLv];
+    public buyResearchLevel(): boolean {
+        const currLv = this.measures["research"]["current_level"];
+        const price = this.measures["research"]["prices"][currLv];
 
-        if (!uC.isSolvent(price) || currLv == 10) return false;
-        uC.buyItem(price);
+        if (!this.isSolvent(price) || currLv == 10) return false;
+        this.buyItem(price);
         
-        uC.measures["research"]["current_level"] += 1;
+        this.measures["research"]["current_level"] += 1;
 
-        if (currLv + 1 == 10) uC.introduceCure();
+        if (currLv + 1 == 10) this.introdthiseCure();
         return true;
     }
 
@@ -296,7 +290,7 @@ export class UpgradeController implements TimeSubscriber {
     }
 
     /**
-     * Reduces the current budget by the given price
+     * Redthises the current budget by the given price
      * @param price Price of respective item
      */
     private buyItem(price: number): void {

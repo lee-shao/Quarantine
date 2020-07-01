@@ -22,7 +22,7 @@ export class RuleButton extends GuiElement {
 
         // Change the button textures on hover, press, etc.
         this.ruleBtn.on('pointerover', () => {
-            this.ruleBtn.setScale(0.7);
+            this.ruleBtn.setScale(this.scaling);
         });
         this.ruleBtn.on('pointerout', () => {
             this.ruleBtn.setScale(0.6);
