@@ -63,7 +63,7 @@ export class GuiScene extends Phaser.Scene {
 
     create(): void {
         // Creates Itemmenu and it to this scene
-        this.menu = ItemMenu.getInstance(this, 0, 750);
+        this.menu = ItemMenu.getInstance(this, 650, 750);
 
         //** create sound objects */
         this.inGameMusic = this.sound.add("game_theme_music");

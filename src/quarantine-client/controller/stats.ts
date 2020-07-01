@@ -2,6 +2,7 @@ import { TimeController } from "./timeController";
 import { UpgradeController } from "./gui-controller/upgradeController";
 import { DifficultyLevel} from "../models/util/enums/difficultyLevels";
 import { IncomeStatement } from "./entities/incomeStatement";
+import { ResourceController } from "./resourceController";
 
 /**
  * Singleton controller which contains game variables (e.g. budget, population size)
@@ -354,7 +355,7 @@ export class Stats {
 
     /** @returns the difference of the income and all epxenses as a formatted string */
     public getEarningsString(): string {
-        const is = UpgradeController.getInstance().getIncomeStatementToday();
+        const is = ResourceController.getInstance().getIncomeStatementToday();
         return Stats.formatMoneyString(is.getEarningsTotal());
     }
 

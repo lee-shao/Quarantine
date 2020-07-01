@@ -234,7 +234,7 @@ export class ButtonContainer implements TimeSubscriber {
     public updateText(): void {
         const currLv = this.measures['research']['current_level'];
         const currPrice = this.measures['research']['prices'][currLv];
-        this.priceText.setText(`${Stats.formatLargerNumber(currPrice)} €`);
+        if(currPrice != undefined) this.priceText.setText(`${Stats.formatLargerNumber(currPrice)} €`);
         this.percentText.setText(`${this.percent}%`);
     }
 

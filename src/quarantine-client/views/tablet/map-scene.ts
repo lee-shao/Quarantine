@@ -49,7 +49,7 @@ export class MapScene extends Phaser.Scene implements TutorialComponent{
 
     create(): void {
         /** Add the map to the scene */
-        this.map = this.add.sprite(105, 72, 'usaMap');
+        this.map = this.add.sprite(160, 72, 'usaMap');
         this.map.setScale(0.35, 0.30);
         this.map.setOrigin(0, 0);
 

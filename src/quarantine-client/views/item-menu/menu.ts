@@ -3,6 +3,7 @@ import { GameObjects } from 'phaser';
 import { UpgradeController } from '../../controller/gui-controller/upgradeController';
 import { ButtonContainer } from './button-container';
 import { TutorialComponent } from '../tutorial/tutorialComponent';
+import { Stats } from '../../controller/stats';
 
 /**
  * Extends Phaser.GameObjects.Container and represents the ingame item menu.
@@ -20,7 +21,7 @@ export class ItemMenu extends Phaser.GameObjects.Container implements TutorialCo
     private income: number;
 
     /** Instance of upgradeController. Used to buy measures */
-    public upgradeContr: UpgradeController;
+    private upgradeContr: UpgradeController;
     
     /** Data of all measures @see measures.json */
     public measures = require("./../../../../res/json/measures.json");
@@ -45,8 +46,8 @@ export class ItemMenu extends Phaser.GameObjects.Container implements TutorialCo
         this.income = this.upgradeContr.getIncome();
         // Add background
         this.scene.add.image(this.x + 350 , this.y + 120, 'notebook').setScale(0.6);  //.setAlpha(0.5); //dont work
-        // Add menu bar
-        this.add(this.scene.add.image(this.x + 515 , 70, 'note-pink').setScale(0.6));
+        // Add sticky note
+        this.add(this.scene.add.image(this.x - 110 , -120, 'note-pink').setScale(0.6));
 
         this.scene.add.existing(this);
 
@@ -55,7 +56,7 @@ export class ItemMenu extends Phaser.GameObjects.Container implements TutorialCo
 
     /** Creates the "profile". That means item menu relevant stats are visualized on the menu. */
     private addStatistics(): void {
-        this.add(this.scene.add.text(this.x + 425, 0,`Budget: ${this.budget}\nIncome: ${this.income}`,{ // \n for line break and then setLineSpacing
+        this.add(this.scene.add.text(this.x - 180, -150,`Budget: ${this.budget}\nIncome: ${this.income}`,{ // \n for line break and then setLineSpacing
             fontFamily:'Arial',
             color:'#000000',
         }))
@@ -65,7 +66,7 @@ export class ItemMenu extends Phaser.GameObjects.Container implements TutorialCo
     public updateItemMenu(): void {
         this.budget = this.upgradeContr.getBudget();
         this.income = this.upgradeContr.getIncome();
-        (this.getAt(1) as GameObjects.Text).setText(`Budget: ${this.budget}\nIncome: ${this.income}`);
+        (this.getAt(1) as GameObjects.Text).setText(`Budget: ${Stats.formatMoneyString(this.budget)}\nIncome: ${Stats.formatMoneyString(this.income)}`);
     }
 
     //-------------------------------------------------------------------------------------------------
