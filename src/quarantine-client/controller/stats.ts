@@ -366,6 +366,16 @@ export class Stats {
         } else return ((this.infected / this.population) * this.populationFactor).toFixed(2) + " %";
     }
 
+    /** @returns the current salary for health workers as a formated string */
+    public getHwSalaryString(): string {
+        return Stats.formatMoneyString(this.getHWSalary());
+    }
+
+    /** @returns the current salary for police officers as a formated string */
+    public getPoliceSalaryString(): string {
+        return Stats.formatMoneyString(this.getPOSalary());
+    }
+
 
     // ------------------------------------------------------------------ SETTER-METHODS
     /** Increase deceased counter by one and decrease infected and population counter by one */

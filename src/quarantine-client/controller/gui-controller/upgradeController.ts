@@ -4,6 +4,7 @@ import { Rule } from "../entities/rule";
 import { Role } from "../../models/util/enums/roles";
 import { Stats } from "../stats";
 import { TimeController } from "../timeController";
+import { ResourceController } from "../resourceController";
 
 
 /**
@@ -220,7 +221,7 @@ export class UpgradeController {
     public getBudget(): number {return this.stats.budget;}
 
     /** @returns Current income per tic */
-    public getIncome(): number {return this.stats.income;}
+    public getIncome(): number {return ResourceController.getInstance().getIncomeStatementToday().getEarningsTotal();}
 
     /** @returns Current research level */
     public getCurrentResearchLevel(): number {return this.measures["research"]["current_level"];}

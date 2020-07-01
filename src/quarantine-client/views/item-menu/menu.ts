@@ -56,7 +56,8 @@ export class ItemMenu extends Phaser.GameObjects.Container implements TutorialCo
 
     /** Creates the "profile". That means item menu relevant stats are visualized on the menu. */
     private addStatistics(): void {
-        this.add(this.scene.add.text(this.x - 180, -150,`Budget: ${this.budget}\nIncome: ${this.income}`,{ // \n for line break and then setLineSpacing
+        const stats = Stats.getInstance();
+        this.add(this.scene.add.text(this.x - 200, -200,`Budget: ${stats.getBudgetString()}\nIncome: ${stats.getEarningsString()}\n\nSalary:\n\t\tPolice: ${stats.getPoliceSalaryString()}\n\t\tMedics: ${stats.getHwSalaryString()}`,{ // \n for line break and then setLineSpacing
             fontFamily:'Arial',
             color:'#000000',
         }))
@@ -66,7 +67,8 @@ export class ItemMenu extends Phaser.GameObjects.Container implements TutorialCo
     public updateItemMenu(): void {
         this.budget = this.upgradeContr.getBudget();
         this.income = this.upgradeContr.getIncome();
-        (this.getAt(1) as GameObjects.Text).setText(`Budget: ${Stats.formatMoneyString(this.budget)}\nIncome: ${Stats.formatMoneyString(this.income)}`);
+        const stats = Stats.getInstance();
+        (this.getAt(1) as GameObjects.Text).setText(`Budget: ${stats.getBudgetString()}\nIncome: ${stats.getEarningsString()}\n\nSalary:\n\t\tPolice: ${stats.getPoliceSalaryString()}\n\t\tMedics: ${stats.getHwSalaryString()}`);
     }
 
     //-------------------------------------------------------------------------------------------------
