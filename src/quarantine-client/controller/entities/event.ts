@@ -53,20 +53,15 @@ export class Event {
         ppTitle.setX((1920 / 2) - ppTitle.width / 2);
         const ppDescription = new Phaser.GameObjects.Text(GuiScene.instance, 300, 350, description, styleDesc);
         ppDescription.setWordWrapWidth(1300);
-        // const popup = new PopupWindow(GuiScene.instance, 0, 0, 'event-note', 1600, 80, true, [img, ppTitle, ppDescription], false);
         this.addLastEvent(title, description);
         const ppSummary = new Phaser.GameObjects.Text(GuiScene.instance, 300, 700, summary, styleSummary);
         ppSummary.setWordWrapWidth(1100);
         const popup = new PopupWindow(GuiScene.instance, 0, 0, 'event-note', 1600, 80, true, [img, ppTitle, ppDescription, ppSummary], false);
 
         executeEventFunction();
-        // const guiScene = new GuiScene();
-        // new EventButton(GuiScene.instance).create().addLastEvent(title, description);
-        // popup.createModal();
     }
 
     public addLastEvent(title: string, description: string) {
-        // debugger
         const styleDesc = { // description style
             color: 'Black',
             fontSize: '25px',

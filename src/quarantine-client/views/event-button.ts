@@ -9,13 +9,8 @@ import { PopupWindow } from "./popupWindow";
 export class EventButton extends GuiElement {
 
     private eventNote: Phaser.GameObjects.Image;
-    // private static instance: EventButton;
-
-    // private guiScene: GuiScene;
-    private eventLog: EventLog;
-
-    private eventTitle: Phaser.GameObjects.Text;
-    private eventDescription: Phaser.GameObjects.Text;
+    
+    // private eventLog: EventLog;
 
 
 
@@ -24,14 +19,12 @@ export class EventButton extends GuiElement {
         this.eventNote.setInteractive();
         this.eventNote.scale = 0.5;
         
-        // this.guiScene = GuiScene.getInstance();
-        this.eventLog = EventLog.getInstance();
+        // this.eventLog = EventLog.getInstance();
 
         this.eventNote.on('pointerover', () => { this.eventNote.scale = 0.55; });
         this.eventNote.on('pointerout', () => { this.eventNote.scale = 0.5; });
         this.eventNote.on('pointerup', () => {
             if(!this.scene.mainSceneIsPaused){
-                // EventList.getInstance().open(this.scene);
                 console.log("hello biatch1");
                 const skillTree = new EventList(this.scene);
                 skillTree.createModal();
