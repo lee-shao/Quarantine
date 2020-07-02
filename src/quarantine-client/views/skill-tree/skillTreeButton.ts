@@ -17,12 +17,12 @@ export class SkillTreeButton extends GuiElement implements TutorialComponent {
 
     /** Create and add a skill tree button to the GuiScene */
     public create(): SkillTreeButton {
-        this.yourSkills = this.scene.add.sprite(innerWidth*0.95, innerHeight*0.6, 'your_skills').setInteractive()
+        this.yourSkills = this.scene.add.sprite(innerWidth*0.025, innerHeight*0.25, 'your_skills').setInteractive()
             .on('pointerover', () => {
-                this.yourSkills.setScale(0.6);
+                this.yourSkills.setScale(0.7);
             })
             .on('pointerout', () => {
-                this.yourSkills.setScale(0.7);
+                this.yourSkills.setScale(0.6);
             })
             .on('pointerdown', () => {
                 this.yourSkills.setScale(0.55);
