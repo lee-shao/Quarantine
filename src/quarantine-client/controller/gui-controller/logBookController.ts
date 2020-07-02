@@ -85,7 +85,7 @@ export class LogBookController {
         this.textStatPosY = 155;
         const arr = [];
         arr.push(this.getStatTextEl("Infected", Number(info[0])));
-        arr.push(this.getStatTextEl("Cured", Number(info[1])));
+        arr.push(this.getStatTextEl("Immune", Number(info[1])));
         arr.push(this.getStatTextEl("Death", Number(info[2])));
         arr.push(this.getStatTextEl("Health Workers", Number(info[3])));
         arr.push(this.getStatTextEl("Police Officers", Number(info[4])));

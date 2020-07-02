@@ -8,6 +8,7 @@ import { SkillTreeButton } from "../../views/skill-tree/skillTreeButton";
 import { GuiScene } from "../../views/scenes/gui-scene";
 import { Tablet } from "../../views/tablet/tablet";
 import { EventController } from "../eventController";
+import { NewsPaper } from "../../views/tablet/newspaper";
 
 /**
  * The tutorial which shows basic game introductions and
@@ -136,9 +137,6 @@ export class TutorialController {
         new TimedEvent(3, () => {
             this.open(scene, 'status-bar');
         });
-        new TimedEvent(5, () => {
-            this.open(scene, 'newspaper');
-        });
         tutorialComponents.forEach(x => this.createComponentTutorial(x, scene)); //create tutorials for each component
         this.open(scene, 'start'); //the start tutorial
     }
@@ -149,8 +147,12 @@ export class TutorialController {
      * @param scene GuiScene
      */
     private createComponentTutorial(component: TutorialComponent, scene: GuiScene): void {
-        //
-        if (component instanceof Tablet){
+        if (component instanceof NewsPaper) {
+            new TimedEvent(5, () => { // display newspaper
+                component.activateComponent();
+                this.open(scene, 'newspaper');
+            });
+        } else if (component instanceof Tablet){
             new TimedEvent(7, () => { // display map
                 component.activateComponent();
             });
