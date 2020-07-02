@@ -32,11 +32,12 @@ export class Controller implements TimeSubscriber {
     private rules: Rule[] = [];
 
     private constructor() {
-        TimeController.getInstance().subscribe(this);
         this.stats = Stats.getInstance();
 
         this.initiateRules();
         this.initiatePopulation();
+
+        TimeController.getInstance().subscribe(this);
 
         this.distributeRandomlyInfected(1_000);
         this.stats.unknowinglyInfected = 1_000;
