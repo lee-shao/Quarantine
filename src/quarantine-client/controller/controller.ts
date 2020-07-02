@@ -136,9 +136,9 @@ export class Controller implements TimeSubscriber {
 
                     if (testKit) this.agents[idx] = new HealthWorker(State.TEST_KIT);
                     else this.agents[idx] = new HealthWorker(State.CURE);
+                    this.stats.increaseHealthWorkers(1);
                     i++;
                 }
-                this.stats.increaseHealthWorkers(amt);
                 break;
             }
             case Role.POLICE: {
@@ -149,9 +149,9 @@ export class Controller implements TimeSubscriber {
 
                     const tmp = this.agents[idx].getHealthState(); // infected agents can become police officers
                     this.agents[idx] = new Police(tmp);
+                    this.stats.increasePoliceOfficers(1);
                     i++;
                 }
-                this.stats.increasePoliceOfficers(amt);
                 break;
             }
             default: {

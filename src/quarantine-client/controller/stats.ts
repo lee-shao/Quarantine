@@ -93,7 +93,6 @@ export class Stats {
             this.weeklyDead.push(0);
             this.weeklyInfected.push(0);
             this.weeklyCured.push(0);
-            this.weeklyCured[currWeek + 1] = this.immune;
             this.weeklyHW.push(0);
             this.weeklyHW[currWeek + 1] = this.weeklyHW[currWeek];
             this.weeklyPolice.push(0);
@@ -400,10 +399,8 @@ export class Stats {
         this.vaccineUsed();
     }
 
-    /** Increase infected counter by one and consume one vaccine */
     public cureHealthy(): void {
-        this.immune++;
-        this.vaccineUsed();
+        // TODO
     }
 
     /** Increase unknowingly infected counter by one */

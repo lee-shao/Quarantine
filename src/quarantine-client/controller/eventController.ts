@@ -169,14 +169,19 @@ export class EventController implements TimeSubscriber {
         this.decreaseEventCounters();
         if (!this.timeSpanLegendary) {
             this.callRandomEvent(EventRarity.LEGENDARY);
+            console.log("legendary");
         } else if (!this.timeSpanEpic) {
             this.callRandomEvent(EventRarity.EPIC);
+            console.log("epic");
         } else if (!this.timeSpanVeryRare) {
             this.callRandomEvent(EventRarity.VERY_RARE);
+            console.log("very rare");
         } else if (!this.timeSpanRare) {
             this.callRandomEvent(EventRarity.RARE);
+            console.log("rare");
         } else if (!this.timeSpanCommon) {
             this.callRandomEvent(EventRarity.COMMON);
+            console.log("common");
         }
         this.resetTriggeredEventCounters();
 
