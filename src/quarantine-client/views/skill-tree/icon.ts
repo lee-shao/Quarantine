@@ -30,13 +30,13 @@ export class Icon extends Phaser.GameObjects.Container {
         this.addButtonAnimations(skillTree, texture);
         this.buyButton = new Phaser.GameObjects.Image(this.scene, innerWidth*0.775 - this.x, innerHeight*0.9 - this.y, 'buyButton').setScale(0.4).setOrigin(0.5);
 
-        this.addBuyButton(skillTree);
+        this.addBuyButton(texture, skillTree);
         this.buyButton.setVisible(false);
         this.setName(texture);
         this.remainState();
     }
 
-    public addBuyButton(skillTree: SkillTreeView): void {
+    public addBuyButton(key: string, skillTree: SkillTreeView): void {
         if(!(this.ringColor.name == 'red')) {
             this.buyButton.setInteractive()
             .on('pointerover', () => {
@@ -49,11 +49,11 @@ export class Icon extends Phaser.GameObjects.Container {
                 this.buyButton.setTexture('buyButtonP')
             })
             .on('pointerup', () => {
-                if(skillTree.activateSkill(skillTree.previousSkill) == true) {
+                if(skillTree.activateSkill(key) == true) {
                     skillTree.iconIsPressed = false;
                     this.skillIsActive = true;
                     this.skillBought = true;
-                    this.ringColor = this.addRingColor(this.descriptions[skillTree.previousSkill]['price'], skillTree.previousSkill, skillTree).setScale(0.4);
+                    this.ringColor = this.addRingColor(this.descriptions[key]['price'], key, skillTree).setScale(0.4);
                     this.remainState();
                 }
             });
