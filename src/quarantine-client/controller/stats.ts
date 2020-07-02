@@ -142,7 +142,7 @@ export class Stats {
 
         if (value >= 1_000_000_000) { // trillion
             if (invert) value = value * -1;
-            result = (+(value / 1_000_000_000).toFixed(2)).toLocaleString("de-DE") + " Trillion";
+            result = (+(value / 1_000_000_000).toFixed(2)).toLocaleString("de-DE") + "  Billion";
         } else if (value >= 1_000_000_000) { // billion
             if (invert) value = value * -1;
             result = (+(value / 1_000_000_000).toFixed(2)).toLocaleString("de-DE") + " Mrd.";
@@ -278,6 +278,12 @@ export class Stats {
      * @returns Number of currently infected people
      */
     public getInfected(): number {return this.infected * this.populationFactor;}
+
+    /** @returns Number of immune people */
+    public getImmune(): number {return this.immune * this.populationFactor;}
+
+    /** @returns Number of healthy people */
+    public getHealthy(): number {return (this.population - this.infected - this.unknowinglyInfected) * this.populationFactor;}
 
     /** @returns Number of police officers */
     public getNumberOfPolice(): number {return this.weeklyPolice[TimeController.getInstance().getWeeksSinceGameStart()] * this.populationFactor;}

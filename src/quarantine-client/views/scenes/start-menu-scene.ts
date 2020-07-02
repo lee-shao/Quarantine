@@ -5,6 +5,7 @@ import { MapScene } from "../tablet/map-scene";
 import { Stats } from "../../controller/stats";
 import { DifficultyLevel } from "../../models/util/enums/difficultyLevels";
 import { Controller } from "../../controller/controller";
+import { PetriNetScene } from "./petri-net-scene";
 
 /**
  * Menu scene at the start of the game.
@@ -332,5 +333,6 @@ export class StartMenuScene extends Phaser.Scene {
         //this.scene.add('AgentScene', AgentScene, false);
         this.scene.add('MapScene', MapScene, true);
         this.scene.add('ChartScene', ChartScene, true);
+        this.scene.add('PetriNetScene', PetriNetScene, true);
     }
 }
