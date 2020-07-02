@@ -29,11 +29,7 @@ export class GuiScene extends Phaser.Scene {
 
     private menu: ItemMenu;
     private skipTutorialBtn: SkipTutorialButton;
-<<<<<<< HEAD
-    
-=======
     private newspaper: NewsPaper;
->>>>>>> master
 
     private statusBar: StatusBar;
     public mainSceneIsPaused = false;
