@@ -103,7 +103,7 @@ export class SkillTreeView extends PopupWindow {
             const element = this.descriptions[key]['required_skills'][i];
             concatDescription += '      ' + (i+1) + '. ' + element + '\n\n';
         }
-        this.skillDescription.setText(this.descriptions[key]['name'] + '\n\n\n' + this.descriptions[key]['description'] + '\n\n\n\n Required skills: ' + concatDescription + '\n\n\n Price: ' + this.descriptions[key]['price']);
+        this.skillDescription.setText(this.descriptions[key]['name'] + '\n\n\n' + this.descriptions[key]['description'] + '\n\n\n\n Required skills: ' + concatDescription + '\n\n\n Price: ' + this.descriptions[key]['price'].toLocaleString() + ' €');
     }
 
     public eraseDescription(): void {
