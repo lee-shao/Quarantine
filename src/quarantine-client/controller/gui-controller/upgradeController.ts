@@ -3,18 +3,17 @@ import { State } from "../../models/util/enums/healthStates";
 import { Rule } from "../entities/rule";
 import { Role } from "../../models/util/enums/roles";
 import { Stats } from "../stats";
-import { TimeSubscriber } from "../../models/util/timeSubscriber";
 import { TimeController } from "../timeController";
-import { IncomeStatement } from "../entities/incomeStatement";
+import { ResourceController } from "../resourceController";
 
 
 /**
- * Singleton controller to manage application logic which is linked to upgrades
- * and financial tasks.
+ * Singleton controller which provides application logic for upgrades (@see menu.ts)
+ * and general functionalities for buying something.
  * @author Marvin Kruber
  * @author Sebastian Führ
  */
-export class UpgradeController implements TimeSubscriber {
+export class UpgradeController {
 
     /** Singleton instance which holds game variables */
     private stats: Stats;
@@ -23,8 +22,6 @@ export class UpgradeController implements TimeSubscriber {
     private static instance: UpgradeController;
     /** Instance of central singleton controller */
     private contr: Controller;
-    /** Instance of singleton time controller */
-    private tC: TimeController;
 
     /**
      * Array of all available measures <name of measure> [<dictionary key of measure>]:
@@ -36,8 +33,6 @@ export class UpgradeController implements TimeSubscriber {
     private constructor() {
         this.stats = Stats.getInstance();
         this.contr = Controller.getInstance();
-
-        this.tC = TimeController.getInstance().subscribe(this);
     }
 
     // ----------------------------------------------------------------- UPGRADE - PUBLIC
@@ -141,7 +136,7 @@ export class UpgradeController implements TimeSubscriber {
      * @returns if measure was activated/deactivated sthisessfully
      */
     private activateMeasure(measure: string): boolean {
-        const activationDay = this.tC.getDaysSinceGameStart();
+        const activationDay = TimeController.getInstance().getDaysSinceGameStart();
 
         //Could only be activated if the player has enough budget to finance this measure for at least one day
         if((!this.isSolvent(this.measures[measure]["daily_cost"]) && !this.measures[measure]["active"]) || 
@@ -183,118 +178,12 @@ export class UpgradeController implements TimeSubscriber {
         return true;
     }
 
-    /** @returns Wether the research is maxed out */
-    public researchExists(): boolean {
-        return this.measures["research"]["current_level"] == 9;
-    }
-
-    /** @see TimeSubscriber */
-    public notify(): void {
-        this.updateHappiness();
-        this.updateCompliance();
-        this.updateBudget(this.calculateIncome(), this.calculateExpenses());
-
-        this.stats.updateWeek(this.getIncomeStatementToday());
-    }
-
-    /** 
-     * ---
-     * __Example usage:__  
-     * Acces to the money spend for the salary of police officers through 
-     * `getIncomeStatement().expenses.salaries.police;`
-     * 
-     * ---
-     * @returns an income statement for the current day
-     * @see #calculateMeasureExpenses()
-     */
-    public getIncomeStatementToday(): IncomeStatement {
-        return new IncomeStatement(
-            this.stats.income,
-            this.stats.getPOSalary(),
-            this.stats.getHWSalary(),
-            this.stats.getDailyTestKitsExpense(),
-            this.stats.getDailyVaccinesExpense(),
-            this.calculateMeasureExpenses()
-        );
-    }
-
-
-    // ----------------------------------------------------------------- UPGRADE - PRIVATE
-    /**
-     * Calculate the compliance depending on the populations happiness
-     * 
-     * | Happiness | Compliance|  
-     * | ----- | ----- |
-     * |       100 |       100 |  
-     * |        50 |      45.4 |  
-     * |         0 |        10 |
-     */
-    private updateCompliance(): void {
-        this.stats.compliance = 19/4950 * Math.pow(this.stats.happiness, 2) + 511/990 * this.stats.happiness + 10;
-    }
-
-    /**
-     * Calculate happiness based on the currrent happiness rate
-     */
-    private updateHappiness(): void {
-        const result = this.stats.happiness + this.stats.happinessRate;
-        if(result >= 100) this.stats.happiness = 100;
-        else if(result <= 0) this.stats.happiness = 0;
-        else this.stats.happiness = result;
-    }
-
-    /**
-     * Calculate the income depending on the population compliance.
-     * When the compliance sinks below 20% the state generates 0 income,
-     * while above 70% 100% of the income are generated.
-     * @returns earnings in EURO
-     */
-    private calculateIncome(): number {
-        if (this.stats.compliance > 70) this.stats.income = 1 * this.stats.maxIncome;
-        else if (this.stats.compliance < 20) this.stats.income = 0;
-        else {
-            this.stats.income = Math.floor((this.stats.compliance - 20) * 2 * this.stats.maxIncome /100); //TODO
-        }
-        return this.stats.income;
-    }
-
-    /**
-     * Calculate the sum of all expenses of the day
-     * @returns expenses in EURO
-     */
-    private calculateExpenses(): number {
-        const sals = this.stats.getHWSalary() + this.stats.getPOSalary()
-        const consumption = this.stats.getDailyTestKitsExpense() + this.stats.getDailyVaccinesExpense();
-        return sals + consumption + this.calculateMeasureExpenses();
-    }
-
-    /** @returns sum of all active measure expenses (daily costs) */
-    private calculateMeasureExpenses(): number {
-        let result = 0;
-        for (const key in this.measures) {
-            const value = this.measures[key];
-            if (value["active"]) result += value["daily_cost"];
-        }
-        return result;
-    }
-
-    /**
-     * Budget = Budget + Income - Expenses
-     * @param income
-     * @param expenses
-     * @see #calculateIncome
-     * @see #calculateExpenses
-     */
-    private updateBudget(income: number, expenses: number): void {
-        this.stats.budget += (income - expenses);
-    }
-
     /**
      * Redthises the current budget by the given price
      * @param price Price of respective item
      */
-    private buyItem(price: number): void {
-        this.setBudget(this.getBudget() - price);
+    public buyItem(price: number): void {
+        this.setBudget(this.stats.budget - price);
     }
 
     /**
@@ -303,6 +192,21 @@ export class UpgradeController implements TimeSubscriber {
     */
     public isSolvent(price: number): boolean {
         return this.getBudget() >= price;
+    }
+
+    /** @returns Wether the research is maxed out */
+    public researchExists(): boolean {
+        return this.measures["research"]["current_level"] == 9;
+    }
+    
+    /** @returns sum of all active measure expenses (daily costs) */
+    public calculateMeasureExpenses(): number {
+        let result = 0;
+        for (const key in this.measures) {
+            const value = this.measures[key];
+            if (value["active"]) result += value["daily_cost"];
+        }
+        return result;
     }
 
     // ----------------------------------------------------------------- GETTER-METHODS
@@ -317,13 +221,11 @@ export class UpgradeController implements TimeSubscriber {
     public getBudget(): number {return this.stats.budget;}
 
     /** @returns Current income per tic */
-    public getIncome(): number {return this.stats.income;}
+    public getIncome(): number {return ResourceController.getInstance().getIncomeStatementToday().getEarningsTotal();}
 
     /** @returns Current research level */
     public getCurrentResearchLevel(): number {return this.measures["research"]["current_level"];}
-
-    /** @returns Time Controller instance */
-    public getTimeController(): TimeController {return this.tC;}
+    
     // ------------------------------------------------------------------ SETTER-METHODS
     // allows encapsulation of application logic
     // private setIncome(amt: number) {}
@@ -332,5 +234,4 @@ export class UpgradeController implements TimeSubscriber {
     private setBudget(newBudget: number): void {
         this.stats.budget = newBudget;
     }
-
 }
