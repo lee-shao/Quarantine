@@ -98,12 +98,12 @@ export class SkillTreeView extends PopupWindow {
     }
 
     public showDescription(key: string): void {
-        var concatDescription = '\n\n';
+        let concatDescription = '\n\n';
         for (let i = 0; i < this.descriptions[key]['required_skills'].length; i++) {
             const element = this.descriptions[key]['required_skills'][i];
             concatDescription += '      ' + (i+1) + '. ' + element + '\n\n';
         }
-        this.skillDescription.setText(this.descriptions[key]['name'] + '\n\n\n' + this.descriptions[key]['description'] + '\n\n\n\n\n Required skills: ' + concatDescription + '\n\n\n\n Price: ' + this.descriptions[key]['price']);
+        this.skillDescription.setText(this.descriptions[key]['name'] + '\n\n\n' + this.descriptions[key]['description'] + '\n\n\n\n Required skills: ' + concatDescription + '\n\n\n Price: ' + this.descriptions[key]['price']);
     }
 
     public eraseDescription(): void {
@@ -247,110 +247,110 @@ export class SkillTreeView extends PopupWindow {
     public activateSkill(key: string): boolean {
         this.getByName(key).disableInteractive();
         if(key == 'additional-medical-supplies-1') {
-            return SkillController.getInstance().activateAdditionalMedicalSuppliesI(SkillController.getInstance(), key);
+            return SkillController.getInstance().activateAdditionalMedicalSuppliesI(key);
         }
         if(key == 'additional-medical-supplies-2') {
-            return SkillController.getInstance().activateAdditionalMedicalSuppliesII(SkillController.getInstance(), key);
+            return SkillController.getInstance().activateAdditionalMedicalSuppliesII(key);
         }
         if(key == 'upgrade-medical-facilities-1') {
-            return SkillController.getInstance().activateUpgradeMedicalFacilitiesI(SkillController.getInstance(), key);
+            return SkillController.getInstance().activateUpgradeMedicalFacilitiesI(key);
         }
         if(key == 'upgrade-medical-facilities-2') {
-            return SkillController.getInstance().activateUpgradeMedicalFacilitiesII(SkillController.getInstance(), key);
+            return SkillController.getInstance().activateUpgradeMedicalFacilitiesII(key);
         }
         if(key == 'upgrade-medical-facilities-3') {
-            return SkillController.getInstance().activateUpgradeMedicalFacilitiesIII(SkillController.getInstance(), key);
+            return SkillController.getInstance().activateUpgradeMedicalFacilitiesIII(key);
         }
         if(key == 'medicine-1') {
-            return SkillController.getInstance().activateMedicineI(SkillController.getInstance(), key);
+            return SkillController.getInstance().activateMedicineI(key);
         }
         if(key == 'medicine-2') {
-            return SkillController.getInstance().activateMedicineII(SkillController.getInstance(), key);
+            return SkillController.getInstance().activateMedicineII(key);
         }
         if(key == 'medicine-3') {
-            return SkillController.getInstance().activateMedicineIII(SkillController.getInstance(), key);
+            return SkillController.getInstance().activateMedicineIII(key);
         }
 
         if(key == 'expertise') {
-            return SkillController.getInstance().activateLearnExpertise(SkillController.getInstance(), key);
+            return SkillController.getInstance().activateLearnExpertise(key);
         }
         if(key == 'military-1') {
-            return SkillController.getInstance().activateMilitaryI(SkillController.getInstance(), key);
+            return SkillController.getInstance().activateMilitaryI(key);
         }
         if(key == 'military-2') {
-            return SkillController.getInstance().activateMilitaryII(SkillController.getInstance(), key);
+            return SkillController.getInstance().activateMilitaryII(key);
         }
         if(key == 'military-3') {
-            return SkillController.getInstance().activateMilitaryIII(SkillController.getInstance(), key);
+            return SkillController.getInstance().activateMilitaryIII(key);
         }
         if(key == 'police-equipment') {
-            return SkillController.getInstance().activatePoliceEquipment(SkillController.getInstance(), key);
+            return SkillController.getInstance().activatePoliceEquipment(key);
         }
         if(key == 'testing') {
-            return SkillController.getInstance().activateTesting(SkillController.getInstance(), key);
+            return SkillController.getInstance().activateTesting(key);
         }
         if(key == 'tracking') {
-            return SkillController.getInstance().activateTrackingEncounters(SkillController.getInstance(), key);
+            return SkillController.getInstance().activateTrackingEncounters(key);
         }
 
         if(key == 'additional-test-kits') {
-            return SkillController.getInstance().activateAdditionalTestKits(SkillController.getInstance(), key);
+            return SkillController.getInstance().activateAdditionalTestKits(key);
         }
         if(key == 'upgrade-test-kit-1') {
-            return SkillController.getInstance().activateUpgradeTestKitI(SkillController.getInstance(), key);
+            return SkillController.getInstance().activateUpgradeTestKitI(key);
         }
         if(key == 'upgrade-test-kit-2') {
-            return SkillController.getInstance().activateUpgradeTestKitII(SkillController.getInstance(), key);
+            return SkillController.getInstance().activateUpgradeTestKitII(key);
         }
         if(key == 'nationwide-testing') {
-            return SkillController.getInstance().activateNationwideTesting(SkillController.getInstance(), key);
+            return SkillController.getInstance().activateNationwideTesting(key);
         }
         if(key == 'dna') {
-            return SkillController.getInstance().activatednaRnaCodeSequence(SkillController.getInstance(), key);
+            return SkillController.getInstance().activatednaRnaCodeSequence(key);
         }
         if(key == 'immunity-tests') {
-            return SkillController.getInstance().activateImmunityTests(SkillController.getInstance(), key);
+            return SkillController.getInstance().activateImmunityTests(key);
         }
 
         if(key == 'lockdown-stage-1') {
-            return SkillController.getInstance().activateLockdownStageI(SkillController.getInstance(), key);
+            return SkillController.getInstance().activateLockdownStageI(key);
         }
         if(key == 'lockdown-stage-2') {
-            return SkillController.getInstance().activateLockdownStageII(SkillController.getInstance(), key);
+            return SkillController.getInstance().activateLockdownStageII(key);
         }
         if(key == 'lockdown-stage-3') {
-            return SkillController.getInstance().activateLockdownStageIII(SkillController.getInstance(), key);
+            return SkillController.getInstance().activateLockdownStageIII(key);
         }
         if(key == 'lockdown-stage-4') {
-            return SkillController.getInstance().activateLockdownStageIV(SkillController.getInstance(), key);
+            return SkillController.getInstance().activateLockdownStageIV(key);
         }
         if(key == 'public-transport') {
-            return SkillController.getInstance().activatePublicTransport(SkillController.getInstance(), key);
+            return SkillController.getInstance().activatePublicTransport(key);
         }
         if(key == 'restricted-traffic') {
-            return SkillController.getInstance().activateRestrictedTraffic(SkillController.getInstance(), key);
+            return SkillController.getInstance().activateRestrictedTraffic(key);
         }
         if(key == 'financial-support-1') {
-            return SkillController.getInstance().activateFinancialSupportI(SkillController.getInstance(), key);
+            return SkillController.getInstance().activateFinancialSupportI(key);
         }
         if(key == 'financial-support-2') {
-            return SkillController.getInstance().activateFinancialSupportII(SkillController.getInstance(), key);
+            return SkillController.getInstance().activateFinancialSupportII(key);
         }
 
         if(key == 'expertise-1') {
-            return SkillController.getInstance().activateExpertiseI(SkillController.getInstance(), key);
+            return SkillController.getInstance().activateExpertiseI(key);
         }
         if(key == 'expertise-2') {
-            return SkillController.getInstance().activateExpertiseII(SkillController.getInstance(), key);
+            return SkillController.getInstance().activateExpertiseII(key);
         }
         if(key == 'expertise-3') {
-            return SkillController.getInstance().activateExpertiseIII(SkillController.getInstance(), key);
+            return SkillController.getInstance().activateExpertiseIII(key);
         }
         if(key == 'tracking-1') {
-            return SkillController.getInstance().activateTrackingAppI(SkillController.getInstance(), key);
+            return SkillController.getInstance().activateTrackingAppI(key);
         }
         if(key == 'tracking-2') {
-            return SkillController.getInstance().activateTrackingAppII(SkillController.getInstance(), key);
+            return SkillController.getInstance().activateTrackingAppII(key);
         }
         return
     }

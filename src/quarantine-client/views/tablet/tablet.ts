@@ -40,7 +40,7 @@ export class Tablet extends GuiElement implements TutorialComponent {
 
         /** Position the tablet */
         this.tablet = this.scene.add.image(35, 20, 'tablet').setInteractive();
-        this.tablet.setOrigin(0, 0);
+        this.tablet.setOrigin(-0.09, 0);
         this.tablet.scaleX = 0.57;
         this.tablet.scaleY = 0.7;
 

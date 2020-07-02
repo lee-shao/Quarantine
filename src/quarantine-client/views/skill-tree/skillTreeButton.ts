@@ -22,10 +22,10 @@ export class SkillTreeButton extends GuiElement implements TutorialComponent {
                 this.yourSkills.setScale(0.6);
             })
             .on('pointerout', () => {
-                this.yourSkills.setScale(0.5);
+                this.yourSkills.setScale(0.7);
             })
             .on('pointerdown', () => {
-                this.yourSkills.setScale(0.5);
+                this.yourSkills.setScale(0.55);
             })
             .on('pointerup', () => {
                 if(!this.scene.mainSceneIsPaused){
@@ -40,7 +40,7 @@ export class SkillTreeButton extends GuiElement implements TutorialComponent {
                     popupMss.addGameObjects([blankNode, content]);
                     popupMss.createModal();
                 }
-            }).setScale(0.5);
+            }).setScale(0.7);
 
             this.hideComponent();
             return this;

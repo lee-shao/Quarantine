@@ -3,9 +3,9 @@ import "chartjs-plugin-zoom";
 import "hammerjs";
 import { TimeSubscriber } from "../../models/util/timeSubscriber";
 import { TimeController } from "../../controller/timeController";
-import { UpgradeController } from "../../controller/gui-controller/upgradeController";
 import { Stats } from "../../controller/stats";
 import { TutorialComponent } from "../tutorial/tutorialComponent";
+import { UpgradeController } from "../../controller/gui-controller/upgradeController";
 
 /**
  * Scene for creating and updating the graphical
@@ -62,7 +62,6 @@ export class ChartScene extends Phaser.Scene implements TimeSubscriber, Tutorial
             key: 'ChartScene',
             active: false
         });
-        TimeController.getInstance().subscribe(this);
     }
 
     preload(): void {
@@ -98,6 +97,8 @@ export class ChartScene extends Phaser.Scene implements TimeSubscriber, Tutorial
         this.createForm();
 
         this.hideComponent();
+
+        TimeController.getInstance().subscribe(this);
     }
 
     /** 
@@ -240,8 +241,8 @@ export class ChartScene extends Phaser.Scene implements TimeSubscriber, Tutorial
         document.head.appendChild(style);
 
         /** Add the form to the scene */
-        const formDomElement = this.add.dom(this.canvasDomElement.x + 10, this.canvasDomElement.y + this.canvas.clientHeight - 2, this.formContainer);
-        formDomElement.setOrigin(0, 0);
+        const formDomElement = this.add.dom(this.canvasDomElement.x + 100, this.canvasDomElement.y + this.canvas.clientHeight - 2, this.formContainer);
+        formDomElement.setOrigin(5, 0);
 
         /** Append the form to the container in index.html, otherwise the form will not be displayed */
         document.getElementById('form-container').appendChild(this.formContainer);
@@ -271,7 +272,7 @@ export class ChartScene extends Phaser.Scene implements TimeSubscriber, Tutorial
 
         /** Add the canvas to the scene */
         this.canvasDomElement = this.add.dom(95, 65, this.canvas);
-        this.canvasDomElement.setOrigin(0, 0);
+        this.canvasDomElement.setOrigin(-0.25, 0);
 
         /** Create new chart */
         this.chart = new Chart(this.canvas, {

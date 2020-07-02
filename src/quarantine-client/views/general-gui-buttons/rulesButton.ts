@@ -17,18 +17,18 @@ export class RuleButton extends GuiElement {
 
     /** Create and add a rules button to the GuiScene */
     public create(): RuleButton {
-        this.ruleBtn = this.scene.add.image(this.scene.game.renderer.width - 100, this.scene.game.renderer.height - 250, 'rules');
-        this.ruleBtn.setInteractive();
+        this.ruleBtn = this.scene.add.image(50, 100, 'rules');
+        this.ruleBtn.setInteractive().setScale(1);
 
         // Change the button textures on hover, press, etc.
         this.ruleBtn.on('pointerover', () => {
-            this.ruleBtn.setScale(0.7);
+            this.ruleBtn.setScale(this.scaling);
         });
         this.ruleBtn.on('pointerout', () => {
-            this.ruleBtn.setScale(1);
+            this.ruleBtn.setScale(0.6);
         });
         this.ruleBtn.on('pointerdown', () => {
-            this.ruleBtn.setScale(1);
+            this.ruleBtn.setScale(0.6);
         });
         this.ruleBtn.on('pointerup', () => {
             if(!this.scene.mainSceneIsPaused){
@@ -81,7 +81,7 @@ export class RuleButton extends GuiElement {
                 popupMss.addGameObjects([blankNode, content]);
                 popupMss.createModal();
             }
-        });
+        }).setScale(0.7);
 
         return this;
     }
@@ -90,7 +90,7 @@ export class RuleButton extends GuiElement {
         // The following x and y for test.
         // To rescale for the 3200x1600 pixel version (if needed) changes x and y as following x = this.game.redereer.width /2 +- number; y = this.game.redereer.height /2 +- number;
         const x = this.scene.game.renderer.width / 2 - 450;
-        const y = this.scene.game.renderer.height / 2 - 250 + ruleIndex * 170;
+        const y = this.scene.game.renderer.height / 2 - 250 + ruleIndex * 90;
         const pos1 = new Phaser.GameObjects.Image(this.scene, x, y, this.getTextures(rule.inputState1)).setOrigin(0);
         container.add(pos1);
 

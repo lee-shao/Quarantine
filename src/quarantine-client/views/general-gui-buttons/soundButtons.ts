@@ -14,11 +14,11 @@ export class SoundButtons extends GuiElement {
 
     /** Create and add the sound and music buttons to the GuiScene */
     public create(): SoundButtons {
-        const musicOn = this.scene.add.image(this.scene.game.renderer.width - 100, 250, 'music_on').setInteractive();
-        const soundOn = this.scene.add.image(this.scene.game.renderer.width - 100, 350, 'sound_on').setInteractive();
+        const musicOn = this.scene.add.image(this.scene.game.renderer.width - 50, 250, 'music_on').setInteractive();
+        const soundOn = this.scene.add.image(this.scene.game.renderer.width - 50, 350, 'sound_on').setInteractive();
 
         musicOn.on('pointerover', () => {
-            musicOn.setScale(0.7);
+            musicOn.setScale(this.scaling);
         });
 
         musicOn.on('pointerout', () => {
@@ -26,7 +26,7 @@ export class SoundButtons extends GuiElement {
         });
 
         soundOn.on('pointerover', () => {
-            soundOn.setScale(0.7);
+            soundOn.setScale(this.scaling);
         });
 
         soundOn.on('pointerout', () => {

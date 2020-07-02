@@ -10,12 +10,12 @@ import { PopupWindow } from "../popupWindow";
  export class PetriInfoButton extends GuiElement{
     private petriInfoBtn: Phaser.GameObjects.Sprite;
     public create(): PetriInfoButton {
-        this.petriInfoBtn = this.scene.add.sprite(this.scene.game.renderer.width - 100, 50, 'information');
+        this.petriInfoBtn = this.scene.add.sprite(this.scene.game.renderer.width - 50, 50, 'information');
         this.petriInfoBtn.setInteractive();
 
         //Change the button textures on hover, press, etc.
         this.petriInfoBtn.on('pointerover', () => {
-            this.petriInfoBtn.setScale(0.7);
+            this.petriInfoBtn.setScale(this.scaling);
         });
         this.petriInfoBtn.on('pointerout', () => {
             this.petriInfoBtn.setScale(1);

@@ -2,6 +2,7 @@ import { TimeController } from "./timeController";
 import { UpgradeController } from "./gui-controller/upgradeController";
 import { DifficultyLevel} from "../models/util/enums/difficultyLevels";
 import { IncomeStatement } from "./entities/incomeStatement";
+import { ResourceController } from "./resourceController";
 
 /**
  * Singleton controller which contains game variables (e.g. budget, population size)
@@ -129,7 +130,7 @@ export class Stats {
      * represents the number.
      * @param value to be formatted
      */
-    public formatLargerNumber(value: number): string {
+    public static formatLargerNumber(value: number): string {
         let invert = false;
         let result = "";
 
@@ -140,13 +141,13 @@ export class Stats {
 
         if (value >= 1_000_000_000) { // trillion
             if (invert) value = value * -1;
-            result = +(value / 1_000_000_000).toFixed(2) + " Trillion";
+            result = (+(value / 1_000_000_000).toFixed(2)).toLocaleString("de-DE") + " Trillion";
         } else if (value >= 1_000_000_000) { // billion
             if (invert) value = value * -1;
-            result = +(value / 1_000_000_000).toFixed(2) + " Mrd.";
+            result = (+(value / 1_000_000_000).toFixed(2)).toLocaleString("de-DE") + " Mrd.";
         } else if (value >= 1_000_000) { // millions
             if (invert) value = value * -1;
-            result = +(value / 1_000_000).toFixed(2) + " Mio."; // + before paranthesis clips 0 after the decimal
+            result = (+(value / 1_000_000).toFixed(2)).toLocaleString("de-DE") + " Mio."; // + before paranthesis clips 0 after the decimal
         } else {
             result = value.toLocaleString("de-DE");
         }
@@ -159,8 +160,8 @@ export class Stats {
      * @param value to be formatted
      * @see #formatLargeNumber
      */
-    public formatMoneyString(value: number): string {
-        return this.formatLargerNumber(value) + " " + this.currency;
+    public static formatMoneyString(value: number): string {
+        return this.formatLargerNumber(value) + " " + Stats.currency;
     }
 
     
@@ -239,7 +240,7 @@ export class Stats {
     /** Current income per tic */
     public income: number;
     /** The in-game currency */
-    public currency = '€';
+    public static readonly currency = '€';
 
     // ----------------------------------------------------------------------- WEEKLY LOGS
     /** Number of infected people each week */
@@ -306,8 +307,11 @@ export class Stats {
     public getRValue(): number { 
         // Number of suscetible agents
         const suscetible = this.population - this.infected - this.weeklyHW[TimeController.getInstance().getWeeksSinceGameStart()] - this.immune;
-        return this.basicInteractionRate * this.populationFactor * 4 * suscetible/ this.population;
+        return +(this.basicInteractionRate * this.populationFactor * 4 * suscetible/ this.population).toFixed(2);
     }
+
+    /** @returns scale factor to multiply with population numbers to simulate real population numbers */
+    public getPopulationFactor(): number {return this.populationFactor;}
 
     /**
      * Returns an array of all weekly stats for the given week in the following order:  
@@ -346,20 +350,30 @@ export class Stats {
     // --------------------- GETTER STRING METHODS -------------------------------- //
     /** @returns the budget as a formatted string */
     public getBudgetString(): string {
-        return this.formatMoneyString(this.budget);
+        return Stats.formatMoneyString(this.budget);
     }
 
     /** @returns the difference of the income and all epxenses as a formatted string */
     public getEarningsString(): string {
-        const is = UpgradeController.getInstance().getIncomeStatementToday();
-        return this.formatMoneyString(is.getEarningsTotal());
+        const is = ResourceController.getInstance().getIncomeStatementToday();
+        return Stats.formatMoneyString(is.getEarningsTotal());
     }
 
     /** @returns the current percentage of infected people, e.g. 45 % */
     public getInfectedString(): string {
         if (this.infected * this.populationFactor < 1_000_000) {
-            return this.formatLargerNumber(this.infected * this.populationFactor);
+            return Stats.formatLargerNumber(this.infected * this.populationFactor);
         } else return ((this.infected / this.population) * this.populationFactor).toFixed(2) + " %";
+    }
+
+    /** @returns the current salary for health workers as a formated string */
+    public getHwSalaryString(): string {
+        return Stats.formatMoneyString(this.getHWSalary());
+    }
+
+    /** @returns the current salary for police officers as a formated string */
+    public getPoliceSalaryString(): string {
+        return Stats.formatMoneyString(this.getPOSalary());
     }
 
 

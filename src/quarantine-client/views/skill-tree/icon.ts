@@ -142,7 +142,6 @@ export class Icon extends Phaser.GameObjects.Container {
     }
 
     public addRingColor(price: number, key: string, skillTree: SkillTreeView): Phaser.GameObjects.Image {
-        console.log('required_skills: ' + this.descriptions[key]['required_skills']);
         if(UpgradeController.getInstance().isSolvent(price) == true) {
             this.ringColor.setTexture('circle-orange').setName('orange');       
         } else {

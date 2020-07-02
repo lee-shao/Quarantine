@@ -1,6 +1,6 @@
 import { Controller } from "../../controller/controller";
 import { TimeController } from "../../controller/timeController";
-import { EventController } from "../../controller/eventController";
+import { ResourceController } from "../../controller/resourceController";
 
 /**
  * Main phaser scene which manages the other game scene
@@ -11,6 +11,9 @@ export class MainScene extends Phaser.Scene {
     private controller: Controller;
     /** Instance of the central time coordinator */
     private timeController: TimeController;
+
+    /** Instance of the central resource managment unit */
+    private resourceController: ResourceController
 
     constructor() {
         super({
@@ -32,7 +35,7 @@ export class MainScene extends Phaser.Scene {
 
         this.timeController = TimeController.getInstance();
         this.controller = Controller.getInstance();
-        EventController.getInstance();
+        this.resourceController = ResourceController.getInstance();
     }
 
     update(): void {
