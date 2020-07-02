@@ -17,5 +17,7 @@
 
     "budget": 20000000000,
     "maxIncome": 1000000000,
-    "income": 300000000
+    "income": 300000000,
+
+    "winLossCondition": "(You win if there are no active cases left.\nYou lose when the last survivor dies.)\nGood Luck, have fun!"
 }
