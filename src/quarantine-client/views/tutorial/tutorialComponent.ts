@@ -5,8 +5,8 @@
  */
 export interface TutorialComponent {
     /** Activates/displays the component. */
-    activateComponent();
+    activateComponent(): void;
 
     /** Hides the component. */
-    hideComponent();
+    hideComponent(): void;
 }

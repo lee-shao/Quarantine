@@ -1,10 +1,13 @@
 import { Stats } from "../../controller/stats";
 import { TimeController } from "../../controller/timeController";
 import { TimeSubscriber } from "../../models/util/timeSubscriber";
+import { TutorialComponent } from "../tutorial/tutorialComponent";
+import { GuiElement } from "../guiElement";
 
-export class NewsPaper extends Phaser.GameObjects.Container implements TimeSubscriber {
-
+export class NewsPaper extends GuiElement implements TimeSubscriber, TutorialComponent {
+    
     private newspaperImage: Phaser.GameObjects.Image;
+    private backgroundImage: Phaser.GameObjects.Image;
     private stats: Stats;
     private happiness: number;
     private totalCases: number;
@@ -19,47 +22,43 @@ export class NewsPaper extends Phaser.GameObjects.Container implements TimeSubsc
     private mainText: Phaser.GameObjects.Text;
     private totalInfectionsText: Phaser.GameObjects.Text
 
+    private x: number;
+    private y: number;
+
     /** The only existing instance of time controller */
     private tC: TimeController;
 
-    public constructor(scene: Phaser.Scene, x: number, y: number) {
-        super(scene, x, y);
+    public create(): NewsPaper {
         this.stats = Stats.getInstance();
 
         this.tC = TimeController.getInstance();
         this.tC.subscribe(this);
 
-        this.scene.add.image(300, 780, 'news').setScale(0.75);
-        this.newspaperImage = this.scene.add.image(this.x+150, this.y + 125, 'flu-virus').setScale(0.5);
-        this.scene.add.text(this.x +300, this.y+100, `Happiness Report:`, {
-            fontFamily:'Arial',
-            color:'#000000',
-            fontSize: '30px',
-            fontWeight: '700'
-        });
-        this.happinessStateText = this.scene.add.text(this.x + 300, this.y + 100, `\nNewest surveys uncover\n${this.happinessState} results: \n${this.happiness} % of people happy.`, {
+        this.x = 0;
+        this.y = 780;
+
+        this.backgroundImage = this.scene.add.image(this.x + 300, this.y, 'news').setScale(0.75);
+        this.newspaperImage = this.scene.add.image(this.x + 150, this.y + 125, 'flu-virus').setScale(0.5);
+        this.happinessStateText = this.scene.add.text(this.x + 300, this.y + 100, `Happiness Report:\nNewest surveys uncover\n${this.happinessState} results: \n${this.happiness} % of people happy.`, {
             fontFamily:'Arial',
             color:'#000000',
             fontSize: '25px',
         });
-        this.totalInfectionsText = this.scene.add.text(this.x+100, this.y - 100, `Infections pass ${this.totalCases} cases` , {
+        this.totalInfectionsText = this.scene.add.text(this.x + 150, this.y - 100, `Infections pass ${this.totalCases} cases` , {
             fontFamily:'Arial',
             color:'#000000',
             fontSize: '40px',
         });
-        this.mainText = this.scene.add.text(this.x+300, this.y - 50, `Within a week, \n${this.infected} new infections, \n${this.dead} new death and \n${this.cured} cured cases \nhave been confirmed`, {
+        this.mainText = this.scene.add.text(this.x + 300, this.y - 50, `Within a week, \n${this.infected} new infections, \n${this.dead} new death and \n${this.cured} cured cases \nhave been confirmed`, {
             fontFamily:'Arial',
             color:'#000000',
             fontSize: '25px',
         });
         this.updateHappinessReport();
         this.updateHeadline(0);
-        this.scene.add.existing(this);
-    }
+        this.hideComponent();
 
-    public static getInstance(scene = null, x = 0, y = 0): NewsPaper {
-        if(!NewsPaper.instance) NewsPaper.instance = new NewsPaper(scene, x, y);
-        return NewsPaper.instance;
+        return this;
     }
 
     public updateHappinessReport(): void {
@@ -91,6 +90,22 @@ export class NewsPaper extends Phaser.GameObjects.Container implements TimeSubsc
         
         this.totalInfectionsText.setText(`Infections pass ${totalInfections} cases`);
         this.mainText.setText(`Within a week, \n${this.infected} new infections, \n${this.dead} new death and \n${this.cured} cured cases \nhave been confirmed`);
+    }
+
+    public activateComponent(): void {
+        this.totalInfectionsText.visible = true;
+        this.happinessStateText.visible = true;
+        this.mainText.visible = true;
+        this.newspaperImage.visible = true;
+        this.backgroundImage.visible = true;
+    }
+
+    public hideComponent(): void {
+        this.totalInfectionsText.visible = false;
+        this.happinessStateText.visible = false;
+        this.mainText.visible = false;
+        this.newspaperImage.visible = false;
+        this.backgroundImage.visible = false;
     }
 
     notify(): void {

@@ -399,6 +399,10 @@ export class Stats {
         this.vaccineUsed();
     }
 
+    public cureHealthy(): void {
+        // TODO
+    }
+
     /** Increase unknowingly infected counter by one */
     public addUnknowinglyInfected(): void {
         this.unknowinglyInfected++;
