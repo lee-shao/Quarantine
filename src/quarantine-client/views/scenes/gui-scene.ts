@@ -80,9 +80,6 @@ export class GuiScene extends Phaser.Scene {
     create(): void {
         // Creates Itemmenu and it to this scene
         this.menu = ItemMenu.getInstance(this, 650, 750);
-        this.newspaper = NewsPaper.getInstance(this, 0, 875);
-        // this.load.scene.add.image(1200, 875, 'news');
-        
 
         //** create sound objects */
         this.inGameMusic = this.sound.add("game_theme_music");
@@ -129,16 +126,15 @@ export class GuiScene extends Phaser.Scene {
         new SoundButtons(this).create().getSoundButtons().forEach(b => {
             this.buttons.push(b);
         });
-        const tablet = new Tablet(this).create();
         // add the tablet
-        //this.buttons.push(new Tablet(this).create().getHomeButton());
+        const tablet = new Tablet(this).create();
+        // add the newspaper
+        const newspaper = new NewsPaper(this).create();
         // add the status bar
-        this.statusBar = new StatusBar(this);
-        this.statusBar.create();
+        this.statusBar = new StatusBar(this).create();
 
         // -------------------------------------------------------------------- TUTORIAL SET UP
-
-        const tutComponents = [tablet, logBookBtn, this.menu, skillTreeBtn];
+        const tutComponents = [tablet, logBookBtn, this.menu, skillTreeBtn, newspaper];
         // adds skip tutorial button
         this.skipTutorialBtn = new SkipTutorialButton(this, tutComponents).create();
         // start tutorial

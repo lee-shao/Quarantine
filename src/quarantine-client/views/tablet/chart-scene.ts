@@ -5,8 +5,6 @@ import { TimeSubscriber } from "../../models/util/timeSubscriber";
 import { TimeController } from "../../controller/timeController";
 import { Stats } from "../../controller/stats";
 import { TutorialComponent } from "../tutorial/tutorialComponent";
-import { NewsPaper } from "./newspaper";
-import { GuiScene } from "../scenes/gui-scene";
 import { UpgradeController } from "../../controller/gui-controller/upgradeController";
 
 /**
@@ -59,9 +57,6 @@ export class ChartScene extends Phaser.Scene implements TimeSubscriber, Tutorial
     /** Dom element to add the chart to the scene */
     private canvasDomElement: Phaser.GameObjects.DOMElement;
 
-    /** newspaper instance */
-    private newspaper: NewsPaper;
-
     constructor() {
         super({
             key: 'ChartScene',
@@ -83,7 +78,6 @@ export class ChartScene extends Phaser.Scene implements TimeSubscriber, Tutorial
 
         this.stats = Stats.getInstance();
         this.upgradeController = UpgradeController.getInstance();
-        // this.newspaper = NewsPaper.getInstance();
 
         this.initialMoney = this.upgradeController.getBudget();
         this.initialInfected = 0;
@@ -132,11 +126,6 @@ export class ChartScene extends Phaser.Scene implements TimeSubscriber, Tutorial
         this.chart.data.datasets.forEach((dataset) => {
             dataset.data = (dataset.label == 'Total Cases') ? this.dataTotalCases.slice(this.timeframe) : this.dataNewCases.slice(this.timeframe);
         });
-        if(this.day % 7 == 0) {
-            this.newspaper = NewsPaper.getInstance();
-            this.newspaper.updateHappinessReport();
-            this.newspaper.updateHeadline(this.getTotalCases());
-        }
         /** Render the new chart in index.html */
         this.chart.update();
     }
@@ -386,8 +375,4 @@ export class ChartScene extends Phaser.Scene implements TimeSubscriber, Tutorial
         this.formContainer.style.visibility = "visible";
     }
 
-    public getTotalCases(): number {
-        const totalCases = this.dataTotalCases[this.day];
-        return totalCases;
-    }
 }

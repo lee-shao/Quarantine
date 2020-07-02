@@ -49,7 +49,7 @@ export class UpgradeController {
 
         this.contr.getRules().push(new Rule(State.HEALTHY, State.CURE, State.IMMUNE, State.CURE, () => {
             if (this.isSolvent(this.stats.currentPriceVaccination)) {
-                this.stats.vaccineUsed();
+                this.stats.cureHealthy();
                 return true;
             } else return false;
         }));
