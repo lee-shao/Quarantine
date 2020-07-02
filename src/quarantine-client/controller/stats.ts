@@ -89,22 +89,32 @@ export class Stats {
         const currWeek = TimeController.getInstance().getWeeksSinceGameStart();
         this.weeklyResearch[currWeek] = UpgradeController.getInstance().getCurrentResearchLevel();
         
-        if (TimeController.getInstance().getDaysSinceGameStart() % 7 == 1) { // one week has passed
-            this.weeklyDead.push(0);
-            this.weeklyInfected.push(0);
-            this.weeklyCured.push(0);
-            this.weeklyCured[currWeek + 1] = this.immune;
-            this.weeklyHW.push(0);
-            this.weeklyHW[currWeek + 1] = this.weeklyHW[currWeek];
-            this.weeklyPolice.push(0);
-            this.weeklyPolice[currWeek + 1] = this.weeklyPolice[currWeek];
-            this.weeklyResearch.push(0);
-            this.weeklyResearch[currWeek + 1] = UpgradeController.getInstance().getCurrentResearchLevel();
-            this.weeklyTestKits.push(0);
-            this.weeklyVaccines.push(0);
+        const days = TimeController.getInstance().getDaysSinceGameStart();
+        if (days % 7 == 0 && days > 6) { // one week has passed
+            this.weeklyDead[currWeek] = 0;
+            this.weeklyInfected[currWeek] = 0;
+            this.weeklyCured[currWeek] = 0;
+            this.weeklyCured[currWeek] = this.immune;
+            this.weeklyHW[currWeek] = 0;
+            this.weeklyHW[currWeek] = this.weeklyHW[currWeek - 1];
+            this.weeklyPolice[currWeek] = 0;
+            this.weeklyPolice[currWeek] = this.weeklyPolice[currWeek - 1];
+            this.weeklyResearch[currWeek] = 0;
+            this.weeklyResearch[currWeek] = UpgradeController.getInstance().getCurrentResearchLevel();
+            this.weeklyTestKits[currWeek] = 0;
+            this.weeklyVaccines[currWeek] = 0;
 
             this.weeklyIncomeStatements.push(new IncomeStatement(0,0,0,0,0,0));
         }
+        /*
+        console.log("w: " + currWeek + "; d:" + days);
+        console.log("Infected: " + this.weeklyInfected);
+        console.log("Immune: " + this.weeklyCured);
+        console.log("Death: " + this.weeklyDead);
+        console.log("HW: " + this.weeklyHW);
+        console.log("TestKits: " + this.weeklyTestKits);
+        */
+        console.log(this);
         
         this.resetConsumptionCounters();
         this.addIncomeStatementToArray(incomeStatement);
