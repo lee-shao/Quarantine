@@ -264,7 +264,6 @@ export class Stats {
     /** When this lower bound is reached, the game should be lost */
     public lowerBoundBankruptcy: number;
 
-
     // -------------------------------------------------------------------- GETTER-METHODS
     /** @returns Current population number */
     public getPopulation(): number {return this.population * this.populationFactor;}
