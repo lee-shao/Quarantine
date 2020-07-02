@@ -93,6 +93,7 @@ export class Stats {
             this.weeklyDead.push(0);
             this.weeklyInfected.push(0);
             this.weeklyCured.push(0);
+            this.weeklyCured[currWeek + 1] = this.immune;
             this.weeklyHW.push(0);
             this.weeklyHW[currWeek + 1] = this.weeklyHW[currWeek];
             this.weeklyPolice.push(0);
@@ -264,7 +265,6 @@ export class Stats {
     /** When this lower bound is reached, the game should be lost */
     public lowerBoundBankruptcy: number;
 
-
     // -------------------------------------------------------------------- GETTER-METHODS
     /** @returns Current population number */
     public getPopulation(): number {return this.population * this.populationFactor;}
@@ -396,6 +396,12 @@ export class Stats {
     /** Decrease infected counter by one and consume one vaccine */
     public cureInfected(): void {
         this.infected--;
+        this.immune++;
+        this.vaccineUsed();
+    }
+
+    /** Increase infected counter by one and consume one vaccine */
+    public cureHealthy(): void {
         this.immune++;
         this.vaccineUsed();
     }

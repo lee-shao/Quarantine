@@ -126,7 +126,6 @@ export class ChartScene extends Phaser.Scene implements TimeSubscriber, Tutorial
         this.chart.data.datasets.forEach((dataset) => {
             dataset.data = (dataset.label == 'Total Cases') ? this.dataTotalCases.slice(this.timeframe) : this.dataNewCases.slice(this.timeframe);
         });
-        
         /** Render the new chart in index.html */
         this.chart.update();
     }
@@ -375,4 +374,5 @@ export class ChartScene extends Phaser.Scene implements TimeSubscriber, Tutorial
         this.chartContainer.style.visibility = "visible"; //make HTML-Elements visible
         this.formContainer.style.visibility = "visible";
     }
+
 }

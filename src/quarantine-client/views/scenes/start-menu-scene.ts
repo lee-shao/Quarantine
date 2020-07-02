@@ -23,6 +23,7 @@ export class StartMenuScene extends Phaser.Scene {
     private budget: Phaser.GameObjects.Text;
     private income: Phaser.GameObjects.Text;
     private interactions: Phaser.GameObjects.Text;
+    private winLossConditions: Phaser.GameObjects.Text;
 
     public easy = require('../../../../res/json/difficulty-levels/easy.json');
     public normal = require('../../../../res/json/difficulty-levels/normal.json');
@@ -275,6 +276,12 @@ export class StartMenuScene extends Phaser.Scene {
             fontSize: '40px', 
             color: '#000000'
         });
+        // Win Loss Condition
+        this.winLossConditions = this.add.text(innerWidth*0.53, innerHeight*0.815, difficulty['winLossCondition'], {
+            fontFamily: 'Arial',
+            fontSize: '30px', 
+            color: '#000000'
+        })
         // Using 3 images to show the current selected difficulty 
         this.sticker1 = this.add.image(innerWidth*0.75, innerHeight*0.4, 'Sticker').setScale(0.25).setVisible(true);
         this.sticker2 = this.add.image(innerWidth*0.80, innerHeight*0.41, 'Sticker').setScale(0.25).setRotation(12).setVisible(true);
@@ -289,6 +296,7 @@ export class StartMenuScene extends Phaser.Scene {
         this.budget.setText('START BUDGET:             ' + difficulty['budget'].toLocaleString() + '€');
         this.income.setText('DAILY INCOME:                 ' + difficulty['income'].toLocaleString() + '€');
         this.interactions.setText('BASIC INTERACTION RATE: ' + difficulty['basicInteractionRate'].toLocaleString());
+        this.winLossConditions.setText(difficulty['winLossCondition']);
         this.showDifficultyStickers(difficulty);
     }
 

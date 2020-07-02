@@ -838,6 +838,16 @@
       },
       {
         "type": "image",
+        "key": "flu-virus",
+        "url": "assets/sprites/main-scene/flu-virus.png"
+      },
+      {
+        "type": "image",
+        "key": "ambulance",
+        "url": "assets/sprites/main-scene/ambulance.png"
+      },
+      {
+        "type": "image",
         "key": "health-sign",
         "url": "assets/sprites/health-sign.png"
       },

@@ -9,6 +9,7 @@ import { SoundButtons } from '../general-gui-buttons/soundButtons';
 import { SkipTutorialButton } from '../tutorial/skipTutorialButton';
 import { StatusBar } from '../status-bar/statusBar';
 import { Tablet } from '../tablet/tablet';
+import { NewsPaper } from '../tablet/newspaper';
 import { PetriInfoButton } from '../general-gui-buttons/petriInfoButton';
 
 /** Scene for user interface elements. */
@@ -26,6 +27,7 @@ export class GuiScene extends Phaser.Scene {
 
     private menu: ItemMenu;
     private skipTutorialBtn: SkipTutorialButton;
+    private newspaper: NewsPaper;
 
     private statusBar: StatusBar;
     public mainSceneIsPaused = false;
@@ -101,16 +103,15 @@ export class GuiScene extends Phaser.Scene {
         new SoundButtons(this).create().getSoundButtons().forEach(b => {
             this.buttons.push(b);
         });
-        const tablet = new Tablet(this).create();
         // add the tablet
-        //this.buttons.push(new Tablet(this).create().getHomeButton());
+        const tablet = new Tablet(this).create();
+        // add the newspaper
+        const newspaper = new NewsPaper(this).create();
         // add the status bar
-        this.statusBar = new StatusBar(this);
-        this.statusBar.create();
+        this.statusBar = new StatusBar(this).create();
 
         // -------------------------------------------------------------------- TUTORIAL SET UP
-
-        const tutComponents = [tablet, logBookBtn, this.menu, skillTreeBtn];
+        const tutComponents = [tablet, logBookBtn, this.menu, skillTreeBtn, newspaper];
         // adds skip tutorial button
         this.skipTutorialBtn = new SkipTutorialButton(this, tutComponents).create();
         // start tutorial
