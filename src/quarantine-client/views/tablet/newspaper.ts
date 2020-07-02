@@ -1,10 +1,8 @@
-import { GuiElement } from "../guiElement";
 import { Stats } from "../../controller/stats";
-import { ChartScene } from "./chart-scene";
 import { TimeController } from "../../controller/timeController";
-import { GuiScene } from "../scenes/gui-scene";
+import { TimeSubscriber } from "../../models/util/timeSubscriber";
 
-export class NewsPaper extends Phaser.GameObjects.Container {
+export class NewsPaper extends Phaser.GameObjects.Container implements TimeSubscriber {
 
     private newspaperImage: Phaser.GameObjects.Image;
     private stats: Stats;
@@ -16,17 +14,22 @@ export class NewsPaper extends Phaser.GameObjects.Container {
     private cases: number[];
     private static instance: NewsPaper;
     private happinessState: string;
-    
 
     private happinessStateText: Phaser.GameObjects.Text;
     private mainText: Phaser.GameObjects.Text;
     private totalInfectionsText: Phaser.GameObjects.Text
 
+    /** The only existing instance of time controller */
+    private tC: TimeController;
 
     public constructor(scene: Phaser.Scene, x: number, y: number) {
         super(scene, x, y);
         this.stats = Stats.getInstance();
-        this.scene.add.image(300, 875, 'news').setScale(0.75);
+
+        this.tC = TimeController.getInstance();
+        this.tC.subscribe(this);
+
+        this.scene.add.image(300, 780, 'news').setScale(0.75);
         this.newspaperImage = this.scene.add.image(this.x+150, this.y + 125, 'flu-virus').setScale(0.5);
         this.scene.add.text(this.x +300, this.y+100, `Happiness Report:`, {
             fontFamily:'Arial',
@@ -59,7 +62,7 @@ export class NewsPaper extends Phaser.GameObjects.Container {
         return NewsPaper.instance;
     }
 
-    public updateHappinessReport() {
+    public updateHappinessReport(): void {
         this.happiness = this.stats.happiness;
         if(this.happiness < 25) {
             this.happinessState = "devastating";
@@ -75,7 +78,7 @@ export class NewsPaper extends Phaser.GameObjects.Container {
         this.happinessStateText.setText(`\nNewest surveys uncover\n${this.happinessState} results: \n${this.happiness} % of people happy.`);
     }
 
-    public updateHeadline(totalInfections: number) {
+    public updateHeadline(totalInfections: number): void {
         const week = TimeController.getInstance().getWeeksSinceGameStart();
         this.cases = Stats.getInstance().getWeeklyStats(week);
         this.infected = this.cases[0];
@@ -88,5 +91,12 @@ export class NewsPaper extends Phaser.GameObjects.Container {
         
         this.totalInfectionsText.setText(`Infections pass ${totalInfections} cases`);
         this.mainText.setText(`Within a week, \n${this.infected} new infections, \n${this.dead} new death and \n${this.cured} cured cases \nhave been confirmed`);
+    }
+
+    notify(): void {
+        if (TimeController.getInstance().getDaysSinceGameStart() % 7 == 0) {
+            this.updateHappinessReport();
+            this.updateHeadline(this.stats.getInfected());
+        }
     }
 }

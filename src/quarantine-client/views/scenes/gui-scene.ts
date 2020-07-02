@@ -66,7 +66,7 @@ export class GuiScene extends Phaser.Scene {
     create(): void {
         // Creates Itemmenu and it to this scene
         this.menu = ItemMenu.getInstance(this, 650, 750);
-        this.newspaper = NewsPaper.getInstance(this, 0, 875);
+        this.newspaper = NewsPaper.getInstance(this, 0, 780);
         // this.load.scene.add.image(1200, 875, 'news');
         
 
