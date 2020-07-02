@@ -73,6 +73,7 @@ export class GuiScene extends Phaser.Scene {
     }
 
     public randomSound(): Phaser.Sound.BaseSound {
+        //** Returns an integer random number between min (0) (included) and max (this.randomBoughtSound.length - 1) (included): */
         const randomIndex = Math.floor(Math.random() * ((this.randomBoughtSound.length - 1) - 0 + 1) + 0);
         return this.itemBoughtSound = this.randomBoughtSound[randomIndex];
     }
@@ -92,7 +93,7 @@ export class GuiScene extends Phaser.Scene {
         this.randomBoughtSound.push(this.sound.add("money_notes_x3_sound"));
         this.randomBoughtSound.push(this.sound.add("50_and_20_pence_peice_sound"));
 
-        //** Returns an integer random number between min (0) (included) and max (this.randomBoughtSound.length - 1) (included): */
+        
         
         
 
