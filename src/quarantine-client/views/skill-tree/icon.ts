@@ -1,8 +1,6 @@
-import { SkillController } from "../../controller/gui-controller/skillController";
 import { SkillTreeView } from "./skillTreeView";
 import { UpgradeController } from "../../controller/gui-controller/upgradeController";
-import { textSpanIntersectsWithTextSpan } from "typescript";
-
+import { SkillController } from "../../controller/gui-controller/skillController";
 /**
  * 
  * @author Shao
@@ -28,7 +26,7 @@ export class Icon extends Phaser.GameObjects.Container {
         this.skillBought = bought;
 
         this.ringColor = new Phaser.GameObjects.Image(this.scene, 0, 0, '');
-        this.ringColor = this.addRingColor(this.descriptions[texture]['price']).setScale(0.4);
+        this.ringColor = this.addRingColor(this.descriptions[texture]['price'], texture, skillTree).setScale(0.4);
         this.addButtonAnimations(skillTree, texture);
         this.buyButton = new Phaser.GameObjects.Image(this.scene, innerWidth*0.775 - this.x, innerHeight*0.9 - this.y, 'buyButton').setScale(0.4).setOrigin(0.5);
 
@@ -55,7 +53,7 @@ export class Icon extends Phaser.GameObjects.Container {
                     skillTree.iconIsPressed = false;
                     this.skillIsActive = true;
                     this.skillBought = true;
-                    this.ringColor = this.addRingColor(this.descriptions[skillTree.previousSkill]['price']).setScale(0.4);
+                    this.ringColor = this.addRingColor(this.descriptions[skillTree.previousSkill]['price'], skillTree.previousSkill, skillTree).setScale(0.4);
                     this.remainState();
                 }
             });
@@ -78,6 +76,7 @@ export class Icon extends Phaser.GameObjects.Container {
                 skillTree.showDescription(key);
                 this.buyButton.setVisible(true);
             }
+            skillTree.hidePreviousBuyButton(skillTree.previousSkill);
         })
         .on('pointerout', () => {
             if(key == 'medical-treatment' || key == 'police-skill' || key == 'testing-skill' || key == 'lockdown-skill' || key == 'citizen') {
@@ -92,7 +91,6 @@ export class Icon extends Phaser.GameObjects.Container {
                 skillTree.eraseDescription();
                 this.buyButton.setVisible(false);
             }
-            skillTree.hidePreviousBuyButton(skillTree.previousSkill);
         })
         .on('pointerdown', () => {
             if(key == 'medical-treatment' || key == 'police-skill' || key == 'testing-skill' || key == 'lockdown-skill' || key == 'citizen') {
@@ -108,14 +106,12 @@ export class Icon extends Phaser.GameObjects.Container {
                 if(this.skillIsActive == false) {
                     skillTree.hideCurrentSkills();
                     skillTree.openSubtree(key);
-                    console.log('openSubtree');
                     this.skillIsActive = true;
                 } else if(this.skillIsActive == true) {
                     skillTree.backButton.setVisible(false);
                     skillTree.hideCurrentSkills();
                     skillTree.openMainTree();
                     this.skillIsActive = false;
-                    console.log('openMainTree');
                 }
             } else if(skillTree.iconIsPressed == false && this.skillBought == false) {
                 skillTree.eraseDescription();
@@ -145,10 +141,10 @@ export class Icon extends Phaser.GameObjects.Container {
         this.add(this.ringColor);
     }
 
-    public addRingColor(price: number): Phaser.GameObjects.Image {
-        //this.ringColor = new Phaser.GameObjects.Image(this.scene, 0, 0, '');
+    public addRingColor(price: number, key: string, skillTree: SkillTreeView): Phaser.GameObjects.Image {
+        console.log('required_skills: ' + this.descriptions[key]['required_skills']);
         if(UpgradeController.getInstance().isSolvent(price) == true) {
-            this.ringColor.setTexture('circle-orange').setName('orange');
+            this.ringColor.setTexture('circle-orange').setName('orange');       
         } else {
             this.ringColor.setTexture('circle-red').setName('red');
         }

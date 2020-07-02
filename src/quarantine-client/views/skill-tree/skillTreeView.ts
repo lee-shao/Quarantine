@@ -83,7 +83,6 @@ export class SkillTreeView extends PopupWindow {
         this.currentSkillIcons = this.addCurrentSkillIcons('main');
         this.addSkills(this.currentSkillIcons);
         this.eraseDescription();
-        //Icon.buyButton.setVisible(false);
     }
 
     public addSkills(buttons: any): void {
@@ -99,7 +98,12 @@ export class SkillTreeView extends PopupWindow {
     }
 
     public showDescription(key: string): void {
-        this.skillDescription.setText(this.descriptions[key]['name'] + '\n\n\n' + this.descriptions[key]['description'] + '\n\n\n\n\n Required skills: ' + this.descriptions[key]['required_skill'] + '\n\n\n\n Price: ' + this.descriptions[key]['price']);
+        var concatDescription = '\n\n';
+        for (let i = 0; i < this.descriptions[key]['required_skills'].length; i++) {
+            const element = this.descriptions[key]['required_skills'][i];
+            concatDescription += '      ' + (i+1) + '. ' + element + '\n\n';
+        }
+        this.skillDescription.setText(this.descriptions[key]['name'] + '\n\n\n' + this.descriptions[key]['description'] + '\n\n\n\n\n Required skills: ' + concatDescription + '\n\n\n\n Price: ' + this.descriptions[key]['price']);
     }
 
     public eraseDescription(): void {
@@ -330,7 +334,7 @@ export class SkillTreeView extends PopupWindow {
             return SkillController.getInstance().activateFinancialSupportI(SkillController.getInstance(), key);
         }
         if(key == 'financial-support-2') {
-            return SkillController.getInstance().activateFinancialSupportI(SkillController.getInstance(), key);
+            return SkillController.getInstance().activateFinancialSupportII(SkillController.getInstance(), key);
         }
 
         if(key == 'expertise-1') {
@@ -348,18 +352,6 @@ export class SkillTreeView extends PopupWindow {
         if(key == 'tracking-2') {
             return SkillController.getInstance().activateTrackingAppII(SkillController.getInstance(), key);
         }
-        return
-    }
-
-    public getIcon(key: string): Icon {
-        this.currentSkillIcons.forEach(icon => {
-            if(icon.name == key) {
-                if(!(key == 'medical-treatment' || key == 'police-skill' || key == 'testing-skill' || key == 'lockdown-skill' || key == 'citizen')) {
-                    return icon
-                }
-            }
-        });
-
         return
     }
 }
