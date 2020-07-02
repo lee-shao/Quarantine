@@ -19,7 +19,6 @@ export class NewsPaper extends GuiElement implements TimeSubscriber, TutorialCom
     private happinessState: string;
 
     private happinessStateText: Phaser.GameObjects.Text;
-    private mainText: Phaser.GameObjects.Text;
     private totalInfectionsText: Phaser.GameObjects.Text
 
     private x: number;
@@ -38,8 +37,8 @@ export class NewsPaper extends GuiElement implements TimeSubscriber, TutorialCom
         this.y = 780;
 
         this.backgroundImage = this.scene.add.image(this.x + 300, this.y, 'news').setScale(0.75);
-        this.newspaperImage = this.scene.add.image(this.x + 150, this.y + 125, 'flu-virus').setScale(0.5);
-        this.happinessStateText = this.scene.add.text(this.x + 300, this.y + 100, `Happiness Report:\nNewest surveys uncover\n${this.happinessState} results: \n${this.happiness} % of people happy.`, {
+        this.newspaperImage = this.scene.add.image(this.x + 150, this.y + 50, 'flu-virus').setScale(0.3);
+        this.happinessStateText = this.scene.add.text(this.x + 300, this.y - 50, `Happiness Report:\nNewest surveys uncover\n${this.happinessState} results: \n${this.happiness} % of people happy.`, {
             fontFamily:'Arial',
             color:'#000000',
             fontSize: '25px',
@@ -48,11 +47,6 @@ export class NewsPaper extends GuiElement implements TimeSubscriber, TutorialCom
             fontFamily:'Arial',
             color:'#000000',
             fontSize: '40px',
-        });
-        this.mainText = this.scene.add.text(this.x + 300, this.y - 50, `Within a week, \n${this.infected} new infections, \n${this.dead} new death and \n${this.cured} cured cases \nhave been confirmed`, {
-            fontFamily:'Arial',
-            color:'#000000',
-            fontSize: '25px',
         });
         this.updateHappinessReport();
         this.updateHeadline(0);
@@ -83,19 +77,13 @@ export class NewsPaper extends GuiElement implements TimeSubscriber, TutorialCom
         this.infected = this.cases[0];
         this.cured = this.cases[1];
         this.dead = this.cases[2];
-        // if(week == 1) {
-        //     this.newspaperImage.destroy();
-        //     this.newspaperImage = this.scene.add.image(this.x - 250, this.y + 125, 'ambulance').setScale(0.75);
-        // }
         
         this.totalInfectionsText.setText(`Infections pass ${totalInfections} cases`);
-        this.mainText.setText(`Within a week, \n${this.infected} new infections, \n${this.dead} new death and \n${this.cured} cured cases \nhave been confirmed`);
     }
 
     public activateComponent(): void {
         this.totalInfectionsText.visible = true;
         this.happinessStateText.visible = true;
-        this.mainText.visible = true;
         this.newspaperImage.visible = true;
         this.backgroundImage.visible = true;
     }
@@ -103,7 +91,6 @@ export class NewsPaper extends GuiElement implements TimeSubscriber, TutorialCom
     public hideComponent(): void {
         this.totalInfectionsText.visible = false;
         this.happinessStateText.visible = false;
-        this.mainText.visible = false;
         this.newspaperImage.visible = false;
         this.backgroundImage.visible = false;
     }
