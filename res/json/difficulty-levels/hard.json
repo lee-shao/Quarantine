@@ -17,5 +17,7 @@
 
     "budget": 750000000,
     "maxIncome": 350000000,
-    "income": 7500000
+    "income": 7500000,
+
+    "winLossCondition": "(You win if you manage to eradicate the virus.\nYou lose when the last survivor dies\n or if you are bankrupt.) Good Luck!"
 }
