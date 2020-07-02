@@ -1,7 +1,5 @@
 import { GuiElement } from "./guiElement";
 import { EventList } from "./event-list";
-import { GuiScene } from "./scenes/gui-scene";
-import { EventLog } from "../controller/eventLog";
 import { PopupWindow } from "./popupWindow";
 
 

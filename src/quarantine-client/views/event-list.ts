@@ -2,9 +2,6 @@ import { GuiElement } from "./guiElement";
 import { GuiScene } from "./scenes/gui-scene";
 import { PopupWindow } from "./popupWindow";
 import { EventLog } from "../controller/eventLog";
-import { TimeController } from "../controller/timeController";
-import { LogBookView } from "./log-book/logBookView";
-import { Stats } from "../controller/stats";
 
 
 export class EventList extends PopupWindow {

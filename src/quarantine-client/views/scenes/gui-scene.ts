@@ -11,7 +11,6 @@ import { StatusBar } from '../status-bar/statusBar';
 import { Tablet } from '../tablet/tablet';
 import { NewsPaper } from '../tablet/newspaper';
 import { PetriInfoButton } from '../general-gui-buttons/petriInfoButton';
-import { EventList } from '../event-list';
 import { EventButton } from '../event-button';
 
 /** Scene for user interface elements. */
