@@ -9,6 +9,7 @@ import { SoundButtons } from '../general-gui-buttons/soundButtons';
 import { SkipTutorialButton } from '../tutorial/skipTutorialButton';
 import { StatusBar } from '../status-bar/statusBar';
 import { Tablet } from '../tablet/tablet';
+import { NewsPaper } from '../tablet/newspaper';
 import { PetriInfoButton } from '../general-gui-buttons/petriInfoButton';
 
 /** Scene for user interface elements. */
@@ -26,6 +27,7 @@ export class GuiScene extends Phaser.Scene {
 
     private menu: ItemMenu;
     private skipTutorialBtn: SkipTutorialButton;
+    private newspaper: NewsPaper;
 
     private statusBar: StatusBar;
     public mainSceneIsPaused = false;
@@ -64,6 +66,9 @@ export class GuiScene extends Phaser.Scene {
     create(): void {
         // Creates Itemmenu and it to this scene
         this.menu = ItemMenu.getInstance(this, 650, 750);
+        this.newspaper = NewsPaper.getInstance(this, 0, 875);
+        // this.load.scene.add.image(1200, 875, 'news');
+        
 
         //** create sound objects */
         this.inGameMusic = this.sound.add("game_theme_music");
