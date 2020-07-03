@@ -198,7 +198,7 @@ export class EventController implements TimeSubscriber {
             eventInfo["name"],
             eventInfo["description"],
             eventInfo["image-path"],
-            eventInfo["ethos"],
+            eventInfo["positive"],
             eventInfo["summary"]
         );
     }
