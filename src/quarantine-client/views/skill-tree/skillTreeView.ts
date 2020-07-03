@@ -8,373 +8,350 @@ import { Icon } from "./icon";
  */
 export class SkillTreeView extends PopupWindow {
 
-    /** Number of currently available skill points */
-    private availableSkillPoints: number; 
+    /** Instance of SkillTreeView */
+    //private static instance: SkillTreeView;
 
-    /** Purchase price of the next skill point */
-    private nextSkillPointPrice: number;
+    public currentSkillIcons: any;
+
+    public previousSkill: string;
+    
+    public iconIsPressed: boolean;
+
+    public skillDescription: Phaser.GameObjects.Text;
+
+    public backButton: Phaser.GameObjects.Image;
+    
+    public descriptions = require("./../../../../res/json/skill-descriptions.json");
 
     constructor(scene: Phaser.Scene) {
-        super(scene, 0, 5, 'open-notebook', 1550, 50, true, [
-            new Phaser.GameObjects.Text(scene, 820, 50, 'Skill Tree', { 
+        super(scene, 0, 5, 'open-notebook2', innerWidth*0.805, innerHeight*0.055, true, [
+            new Phaser.GameObjects.Image(scene, innerWidth*0.705, innerHeight*0.5, 'transparent-area').setOrigin(0.5),
+            new Phaser.GameObjects.Text(scene, innerWidth*0.7, innerHeight*0.1, 'Skillbeschreibung', {
                 color: 'Black', 
-                fontSize: '70px',
+                fontSize: '50px',
                 fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif'
-            }),
-        ], false);
+            }).setOrigin(0.5)
+        ],
+        false);
 
-        this.availableSkillPoints = SkillController.getInstance().getAvailableSkillPoints();
-        this.nextSkillPointPrice = SkillController.getInstance().getNextSkillPointPrice();
+        this.skillDescription = new Phaser.GameObjects.Text(this.scene, innerWidth*0.585, innerHeight*0.215, ' ', {
+            color: 'Black', 
+            fontSize: '20px',
+            fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif'
+        });
+        this.add(this.skillDescription);
 
-        //this.addSkillTitles();
-        //this.addGameObjects(this.addSkillButtons());
-        this.addSkillButtons();
+        this.backButton = new Phaser.GameObjects.Image(this.scene, 320, 870, 'arrow-next').setAngle(180);
+        this.addBackButton();
+        this.backButton.setVisible(false);
+
+        this.iconIsPressed = false;
+        this.currentSkillIcons = this.addCurrentSkillIcons('main');
+        this.addSkills(this.currentSkillIcons);
         this.scene.add.existing(this);
     }
 
-    private addBackButton(key: string): void {
-        
-        const backButton = new Phaser.GameObjects.Image(this.scene, 320, 870, 'arrow-next');
-        backButton.angle = 180;
-
-        backButton.setInteractive()
+    private addBackButton(): void {
+        this.backButton.setInteractive()
         .on('pointerover', () => {
-            backButton.scale = 1.2;
+            this.backButton.scale = 1.2;
         })
         .on('pointerout', () => {
-            backButton.scale = 1;
+            this.backButton.scale = 1;
         })
         .on('pointerdown', () => {
-            backButton.scale = 1;
+            this.backButton.scale = 1;
         })
         .on('pointerup', () => {
-            backButton.scale = 1.2;
-            this.addSkillButtons();
-            this.removeSkillButtons(key);
-            backButton.destroy();
+            this.backButton.scale = 1.2;
+            this.hideCurrentSkills();
+            this.openMainTree();
+            this.backButton.setVisible(false);
+            this.iconIsPressed = false;
         });
-
-        this.add(backButton);
-    }
-
-    private addSkillButtons(): void {
-        const medicalTreatmentButton = new Icon(this.scene, this.x + 960, this.y + 250, 'medical-treatment', this, true).setScale(0.75).setName('mtButton');  //.setInteractive();
-        const policeButton = new Icon(this.scene, this.x + 1240, this.y + 400, 'police', this, true).setScale(0.75).setName('pButton');  //.setInteractive();
-        const testingButton = new Icon(this.scene, this.x + 1160, this.y + 700, 'testing', this, true).setScale(0.75).setName('tButton');    //.setInteractive();
-        const lockdownButton = new Icon(this.scene, this.x + 760, this.y + 700, 'lockdown', this, true).setScale(0.75).setName('ldButton');   //.setInteractive();
-        const citizensButton = new Icon(this.scene, this.x + 680, this.y + 400, 'citizen', this, true).setScale(0.75).setName('cButton');    //.setInteractive();
-
-        this.add(medicalTreatmentButton);
-        this.add(policeButton);
-        this.add(testingButton);
-        this.add(lockdownButton);
-        this.add(citizensButton);
+        this.add(this.backButton);
     }
 
     public openSubtree(key: string): void {
         
-        this.removeMainSkillButtons();
-        this.addBackButton(key);
-        if(key == 'medical-treatment') {
-            const additionalMedicalSuppliesI = new Icon(this.scene, this.x + 960, this.y + 300, 'additional-medical-supplies-1', this, true).setScale(0.75).setName('amsButton');   //.setInteractive();
-            const additionalMedicalSuppliesII = new Icon(this.scene, this.x + 760, this.y + 400, 'additional-medical-supplies-2', this, true).setScale(0.75).setName('ams2Button');  //.setInteractive();
-            const upgradeMedicalFacilitiesI = new Icon(this.scene, this.x + 1160, this.y + 400, 'upgrade-medical-facilities-1', this, true).setScale(0.75).setName('umfButton');    //.setInteractive();
-            const upgradeMedicalFacilitiesII = new Icon(this.scene, this.x + 960, this.y + 500, 'upgrade-medical-facilities-2', this, true).setScale(0.75).setName('umf2Button');    //.setInteractive();
-            const upgradeMedicalFacilitiesIII = new Icon(this.scene, this.x + 760, this.y + 600, 'upgrade-medical-facilities-3', this, true).setScale(0.75).setName('umf3Button');   //.setInteractive();
-            const medicinI = new Icon(this.scene, this.x + 1360, this.y + 500, 'medicine-1', this, true).setScale(0.75).setName('medButton');   //.setInteractive();
-            const medicinII = new Icon(this.scene, this.x + 1160, this.y + 600, 'medicine-2', this, true).setScale(0.75).setName('med2Button');  //.setInteractive();
-            const medicinIII = new Icon(this.scene, this.x + 960, this.y + 700, 'medicine-3', this, true).setScale(0.75).setName('med3Button');  //.setInteractive();
+        this.currentSkillIcons = this.addCurrentSkillIcons(key)
+        this.backButton.setVisible(true);
+        this.addSkills(this.currentSkillIcons);
+    }
 
-            this.add(additionalMedicalSuppliesI);
-            this.add(additionalMedicalSuppliesII);
-            this.add(upgradeMedicalFacilitiesI);
-            this.add(upgradeMedicalFacilitiesII);
-            this.add(upgradeMedicalFacilitiesIII);
-            this.add(medicinI);
-            this.add(medicinII);
-            this.add(medicinIII);
-        }
+    public openMainTree(): void {
+        this.currentSkillIcons = this.addCurrentSkillIcons('main');
+        this.addSkills(this.currentSkillIcons);
+        this.eraseDescription();
+    }
 
-        if(key == 'police') {
-            const learnExpertise = new Icon(this.scene, this.x + 960, this.y + 300, 'expertise', this, true).setScale(0.75).setName('exButton');
-            const militaryI = new Icon(this.scene, this.x + 760, this.y + 400, 'military-1', this, true).setScale(0.75).setName('mil1Button');
-            const militaryII = new Icon(this.scene, this.x + 1160, this.y + 400, 'military-2', this, true).setScale(0.75).setName('mil2Button');
-            const militaryIII = new Icon(this.scene, this.x + 960, this.y + 500, 'military-3', this, true).setScale(0.75).setName('mil32Button');
-            const policeEquipment = new Icon(this.scene, this.x + 760, this.y + 600, 'police-equipment', this, true).setScale(0.75).setName('peButton');
-            const testing = new Icon(this.scene, this.x + 1360, this.y + 500, 'testing', this, true).setScale(0.75).setName('tButton'); 
-            const trackingEncounters = new Icon(this.scene, this.x + 1160, this.y + 600, 'tracking', this, true).setScale(0.75).setName('trckButton');
-
-            this.add(learnExpertise);
-            this.add(militaryI);
-            this.add(militaryII);
-            this.add(militaryIII);
-            this.add(policeEquipment);
-            this.add(testing);
-            this.add(trackingEncounters);
-        }
-
-        if(key == 'testing') {
-            const additionalTestKits = new Icon(this.scene, this.x + 960, this.y + 300, 'additional-test-kits', this, true).setScale(0.75).setName('adtkButton');
-            const upgradeTestKitsI = new Icon(this.scene, this.x + 760, this.y + 400, 'upgrade-test-kit-1', this, true).setScale(0.75).setName('utk1Button');
-            const upgradeTestKitsII = new Icon(this.scene, this.x + 1160, this.y + 400, 'upgrade-test-kit-2', this, true).setScale(0.75).setName('utk2Button');
-            const nationwideTesting = new Icon(this.scene, this.x + 960, this.y + 500, 'nationwide-testing', this, true).setScale(0.75).setName('nwButton');
-            const dna = new Icon(this.scene, this.x + 760, this.y + 600, 'dna', this, true).setScale(0.75).setName('dnaButton');
-            const immunityTests = new Icon(this.scene, this.x + 1360, this.y + 500, 'immunity-tests', this, true).setScale(0.75).setName('itButton'); 
-
-            this.add(additionalTestKits);
-            this.add(upgradeTestKitsI);
-            this.add(upgradeTestKitsII);
-            this.add(nationwideTesting);
-            this.add(dna);
-            this.add(immunityTests);
-        }
-
-        if(key == 'lockdown') {
-            const lockdownStageI = new Icon(this.scene, this.x + 960, this.y + 300, 'lockdown-stage-1', this, true).setScale(0.75).setName('lds1Button');
-            const lockdownStageII = new Icon(this.scene, this.x + 760, this.y + 400, 'lockdown-stage-2', this, true).setScale(0.75).setName('lds2Button');
-            const lockdownStageIII = new Icon(this.scene, this.x + 1160, this.y + 400, 'lockdown-stage-3', this, true).setScale(0.75).setName('lds3Button');
-            const lockdownStageIV = new Icon(this.scene, this.x + 960, this.y + 500, 'lockdown-stage-4', this, true).setScale(0.75).setName('lds4Button');
-            const publicTransport = new Icon(this.scene, this.x + 760, this.y + 600, 'public-transport', this, true).setScale(0.75).setName('pubtButton');
-            const restrictedTraffic = new Icon(this.scene, this.x + 1360, this.y + 500, 'restricted-traffic', this, true).setScale(0.75).setName('rTrButton'); 
-            const fincancialSupportI = new Icon(this.scene, this.x + 1160, this.y + 600, 'financial-support-1', this, true).setScale(0.75).setName('fsup1Button'); 
-            const fincancialSupportII = new Icon(this.scene, this.x + 960, this.y + 700, 'financial-support-2', this, true).setScale(0.75).setName('fsup2Button');
-
-            this.add(lockdownStageI);
-            this.add(lockdownStageII);
-            this.add(lockdownStageIII);
-            this.add(lockdownStageIV);
-            this.add(publicTransport);
-            this.add(restrictedTraffic);
-            this.add(fincancialSupportI);
-            this.add(fincancialSupportII);
-        }
-
-        if(key == 'citizen') {
-            const expertiseI = new Icon(this.scene, this.x + 960, this.y + 300, 'expertise-1', this, true).setScale(0.75).setName('ex1Button');
-            const expertiseII = new Icon(this.scene, this.x + 760, this.y + 400, 'expertise-2', this, true).setScale(0.75).setName('ex2Button');
-            const expertiseIII = new Icon(this.scene, this.x + 1160, this.y + 400, 'expertise-3', this, true).setScale(0.75).setName('ex3Button');
-            const trackingAppI = new Icon(this.scene, this.x + 960, this.y + 500, 'tracking-1', this, true).setScale(0.75).setName('trck1Button');
-            const trackingAppII = new Icon(this.scene, this.x + 760, this.y + 600, 'tracking-2', this, true).setScale(0.75).setName('trck2Button');
-
-            this.add(expertiseI);
-            this.add(expertiseII);
-            this.add(expertiseIII);
-            this.add(trackingAppI);
-            this.add(trackingAppII);
+    public addSkills(buttons: any): void {
+        for (let i = 0; i < buttons.length; i++) {
+            this.add(buttons[i]);
         }
     }
 
-    private removeMainSkillButtons(): void {
-        this.getByName('mtButton').destroy();
-        this.getByName('pButton').destroy();
-        this.getByName('tButton').destroy();
-        this.getByName('ldButton').destroy();
-        this.getByName('cButton').destroy();
+    public hideCurrentSkills(): void {
+        this.currentSkillIcons.forEach(element => {
+            element.setVisible(false);
+        });
     }
 
-    public removeSkillButtons(key: string): void {
-        if(key == 'medical-treatment') {
-            this.getByName('amsButton').destroy();
-            this.getByName('ams2Button').destroy();
-            this.getByName('umfButton').destroy();
-            this.getByName('umf2Button').destroy();
-            this.getByName('umf3Button').destroy();
-            this.getByName('medButton').destroy();
-            this.getByName('med2Button').destroy();
-            this.getByName('med3Button').destroy();
+    public showDescription(key: string): void {
+        let concatDescription = '\n\n';
+        for (let i = 0; i < this.descriptions[key]['required_skills'].length; i++) {
+            const element = this.descriptions[key]['required_skills'][i];
+            concatDescription += '      ' + (i+1) + '. ' + element + '\n\n';
         }
-        if(key == 'police') {
-            this.getByName('exButton').destroy();
-            this.getByName('mil1Button').destroy();
-            this.getByName('mil2Button').destroy();
-            this.getByName('mil32Button').destroy();
-            this.getByName('peButton').destroy();
-            this.getByName('tButton').destroy();
-            this.getByName('trckButton').destroy();
-        }
-        if(key == 'testing') {
-            this.getByName('adtkButton').destroy();
-            this.getByName('utk1Button').destroy();
-            this.getByName('utk2Button').destroy();
-            this.getByName('nwButton').destroy();
-            this.getByName('dnaButton').destroy();
-            this.getByName('itButton').destroy();
-            
-        }
-        if(key == 'lockdown') {
-            this.getByName('lds1Button').destroy();
-            this.getByName('lds2Button').destroy();
-            this.getByName('lds3Button').destroy();
-            this.getByName('lds4Button').destroy();
-            this.getByName('pubtButton').destroy();
-            this.getByName('rTrButton').destroy();
-            this.getByName('fsup1Button').destroy();
-            this.getByName('fsup2Button').destroy();
-        }
-        if(key == 'citizen') {
-            this.getByName('ex1Button').destroy();
-            this.getByName('ex2Button').destroy();
-            this.getByName('ex3Button').destroy();
-            this.getByName('trck1Button').destroy();
-            this.getByName('trck2Button').destroy();
-        }
+        this.skillDescription.setText(this.descriptions[key]['name'] + '\n\n\n' + this.descriptions[key]['description'] + '\n\n\n\n Required skills: ' + concatDescription + '\n\n\n Price: ' + this.descriptions[key]['price'].toLocaleString() + ' €');
     }
 
-    /*
-    private addSkillButtons(): Phaser.GameObjects.GameObject[] {
-        const medicalTreatmentButton = new Icon(this.scene, this.x + 960, this.y + 250, 'medical-treatment', 'medical-treatment', true).setScale(0.75).setInteractive()
-        .on('pointerover', () => { medicalTreatmentButton.setScale(0.85) })
-        .on('pointerout', () => { medicalTreatmentButton.setScale(0.75) })
-        .on('pointerdown', () => { medicalTreatmentButton.setScale(0.75) })
-        .on('pointerup', () => { medicalTreatmentButton.setScale(0.85); this.openMedicalTreatmentsSkillTree('medical-treatment') });
-        const policeButton = new Icon(this.scene, this.x + 1240, this.y + 400, 'police', 'police', true).setScale(0.75).setInteractive()
-        .on('pointerover', () => { policeButton.setScale(0.85) })
-        .on('pointerout', () => { policeButton.setScale(0.75) })
-        .on('pointerdown', () => { policeButton.setScale(0.75) })
-        .on('pointerup', () => { policeButton.setScale(0.85); });
-        const testingButton = new Icon(this.scene, this.x + 1160, this.y + 700, 'testing', 'testing', true).setScale(0.75).setInteractive()
-        .on('pointerover', () => { testingButton.setScale(0.85) })
-        .on('pointerout', () => { testingButton.setScale(0.75) })
-        .on('pointerdown', () => { testingButton.setScale(0.75) })
-        .on('pointerup', () => { testingButton.setScale(0.85); });
-        const lockdownButton = new Icon(this.scene, this.x + 760, this.y + 700, 'lockdown', 'lockdown', true).setScale(0.75).setInteractive()
-        .on('pointerover', () => { lockdownButton.setScale(0.85) })
-        .on('pointerout', () => { lockdownButton.setScale(0.75) })
-        .on('pointerdown', () => { lockdownButton.setScale(0.75) })
-        .on('pointerup', () => { lockdownButton.setScale(0.85); });
-        const citizensButton = new Icon(this.scene, this.x + 680, this.y + 400, 'citizen', 'citizen', true).setScale(0.75).setInteractive()
-        .on('pointerover', () => { citizensButton.setScale(0.85) })
-        .on('pointerout', () => { citizensButton.setScale(0.75) })
-        .on('pointerdown', () => { citizensButton.setScale(0.75) })
-        .on('pointerup', () => { citizensButton.setScale(0.85); });
-
-        return [
-            medicalTreatmentButton, policeButton, testingButton, lockdownButton, citizensButton
-        ];
+    public eraseDescription(): void {
+        this.skillDescription.setText(' ');
     }
 
-    private openMedicalTreatmentsSkillTree(key: string): void {
-        const medicalTreatmentSubTree = new Phaser.GameObjects.Container(this.scene, 0, 0, this.addSkills(key));
-        this.scene.add.existing(medicalTreatmentSubTree);
-
-    }
-
-    private addSkills(key: string): Phaser.GameObjects.GameObject[] {
-        if(key == 'medical-treatment') {
-            const additionalMedicalSuppliesI = new Phaser.GameObjects.Image(this.scene, this.x + 960, this.y + 300, 'additional-medical-supplies').setScale(0.5).setInteractive()
-            .on('pointerover', () => { additionalMedicalSuppliesI.setScale(0.6) })
-            .on('pointerout', () => { additionalMedicalSuppliesI.setScale(0.5) })
-            .on('pointerdown', () => { additionalMedicalSuppliesI.setScale(0.5) })
-            .on('pointerup', () => { additionalMedicalSuppliesI.setScale(0.6); });
-            const additionalMedicalSuppliesII = new Phaser.GameObjects.Image(this.scene, this.x + 760, this.y + 400, 'additional-medical-supplies').setScale(0.5).setInteractive()
-            .on('pointerover', () => { additionalMedicalSuppliesII.setScale(0.6) })
-            .on('pointerout', () => { additionalMedicalSuppliesII.setScale(0.5) })
-            .on('pointerdown', () => { additionalMedicalSuppliesII.setScale(0.5) })
-            .on('pointerup', () => { additionalMedicalSuppliesII.setScale(0.6); });
-            const upgradeMedicalFacilitiesI = new Phaser.GameObjects.Image(this.scene, this.x + 1160, this.y + 400, 'upgrade-medical-facilities').setScale(0.5).setInteractive()
-            .on('pointerover', () => { additionalMedicalSuppliesII.setScale(0.6) })
-            .on('pointerout', () => { additionalMedicalSuppliesII.setScale(0.5) })
-            .on('pointerdown', () => { additionalMedicalSuppliesII.setScale(0.5) })
-            .on('pointerup', () => { additionalMedicalSuppliesII.setScale(0.6); });
-            const upgradeMedicalFacilitiesII = new Phaser.GameObjects.Image(this.scene, this.x + 960, this.y + 500, 'upgrade-medical-facilities').setScale(0.5).setInteractive()
-            .on('pointerover', () => { upgradeMedicalFacilitiesII.setScale(0.6) })
-            .on('pointerout', () => { upgradeMedicalFacilitiesII.setScale(0.5) })
-            .on('pointerdown', () => { upgradeMedicalFacilitiesII.setScale(0.5) })
-            .on('pointerup', () => { upgradeMedicalFacilitiesII.setScale(0.6); });
-            const upgradeMedicalFacilitiesIII = new Phaser.GameObjects.Image(this.scene, this.x + 760, this.y + 600, 'upgrade-medical-facilities').setScale(0.5).setInteractive()
-            .on('pointerover', () => { upgradeMedicalFacilitiesIII.setScale(0.6) })
-            .on('pointerout', () => { upgradeMedicalFacilitiesIII.setScale(0.5) })
-            .on('pointerdown', () => { upgradeMedicalFacilitiesIII.setScale(0.5) })
-            .on('pointerup', () => { upgradeMedicalFacilitiesIII.setScale(0.6); });
-            const medicinI = new Phaser.GameObjects.Image(this.scene, this.x + 1360, this.y + 500, 'medicine').setScale(0.5).setInteractive()
-            .on('pointerover', () => { medicinI.setScale(0.6) })
-            .on('pointerout', () => { medicinI.setScale(0.5) })
-            .on('pointerdown', () => { medicinI.setScale(0.5) })
-            .on('pointerup', () => { medicinI.setScale(0.6); });
-            const medicinII = new Phaser.GameObjects.Image(this.scene, this.x + 1160, this.y + 600, 'medicine').setScale(0.5).setInteractive()
-            .on('pointerover', () => { medicinII.setScale(0.6) })
-            .on('pointerout', () => { medicinII.setScale(0.5) })
-            .on('pointerdown', () => { medicinII.setScale(0.5) })
-            .on('pointerup', () => { medicinII.setScale(0.6); });
-            const medicinIII = new Phaser.GameObjects.Image(this.scene, this.x + 960, this.y + 700, 'medicine').setScale(0.5).setInteractive()
-            .on('pointerover', () => { medicinIII.setScale(0.6) })
-            .on('pointerout', () => { medicinIII.setScale(0.5) })
-            .on('pointerdown', () => { medicinIII.setScale(0.5) })
-            .on('pointerup', () => { medicinIII.setScale(0.6); });
-        }
-
-        return [
-
-        ]
-        
-    }*/
-
-    /*private addRingColor(): Phaser.GameObjects.GameObject[] {
-        return [
-            this.scene.add.image(this.x + 960, this.y + 250, 'circle-green')
-            /*this.setColor(SkillController.getInstance(), this.x + 960, this.y + 250),
-            this.setColor(SkillController.getInstance(), this.x + 1240, this.y + 400),
-            this.setColor(SkillController.getInstance(), this.x + 1160, this.y + 700),
-            this.setColor(SkillController.getInstance(), this.x + 760, this.y + 700),
-            this.setColor(SkillController.getInstance(), this.x + 680, this.y + 400),
-            this.setIcon(this.x + 960, this.y + 250, 'medical-treatment'),
-            this.setIcon(this.x + 1240, this.y + 400, 'police'),
-            this.setIcon(this.x + 1160, this.y + 700, 'testing'),
-            this.setIcon(this.x + 760, this.y + 700, 'lockdown'),
-            this.setIcon(this.x + 680, this.y + 400, 'citizen'),
-        ]
-        
-    }*/
-
-    /*private setColor(sC: SkillController, x: number, y: number, skill?: Function): Phaser.GameObjects.Image {
-        let color = '';
-       
-        if(skill() == true) {
-            color = 'circle-green';
-        } else {
-            if(sC.skillBuyable(sC) == true) {
-                color = 'circle-orange';
-            } else {
-                 color = 'circle-red';
+    public resetPreviouslyPressed(key: string): void {
+        this.currentSkillIcons.forEach(icon => {
+            if(icon instanceof Icon && icon.name == key) {
+                if(!(key == 'medical-treatment' || key == 'police-skill' || key == 'testing-skill' || key == 'lockdown-skill' || key == 'citizen')) {
+                    icon.resetScale(0.4);
+                }
             }
-        }
-        const iconColor = this.scene.add.image(x, y, color).setScale(0.75);
-
-        return iconColor;
+        });
     }
 
-    private setIcon(x: number, y: number, texture: string): Phaser.GameObjects.Image {
-        const icon = this.scene.add.image(x, y, texture).setScale(0.75);
-        return icon;
-    }*/
+    public hidePreviousBuyButton(key: string): void {
+        this.currentSkillIcons.forEach(icon => {
+            if(icon instanceof Icon && icon.name == key) {
+                if(icon.skillBought == true) {
+                    icon.buyButton.destroy();
+                }
+            }
+        });
+    }
 
-    /*private addSkillTitles(): void {
-        this.scene.add.text(960, 200, 'Medical Treatment', {
-            color: 'Black',
-            fontSize: '50px',
+    public addCurrentSkillIcons(key: string): any[] {
+        const title = new Phaser.GameObjects.Text(this.scene, innerWidth*0.35, innerHeight*0.1, 'Skill Tree', {
+            color: 'Black', 
+            fontSize: '70px',
             fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif'
-        }),
-        this.scene.add.text(960, 200, 'Police', {
-            color: 'Black',
-            fontSize: '50px',
-            fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif'
-        }),
-        this.scene.add.text(960, 200, 'Testing', {
-            color: 'Black',
-            fontSize: '50px',
-            fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif'
-        }),
-        new Phaser.GameObjects.Text(this.scene, 960, 200, 'Lockdown', {
-            color: 'Black',
-            fontSize: '50px',
-            fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif'
-        }),
-        new Phaser.GameObjects.Text(this.scene, 960, 200, 'Citizens', {
-            color: 'Black',
-            fontSize: '50px',
-            fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif'
-        })
-    }*/
+        }).setOrigin(0.5);
 
+        const connections = new Phaser.GameObjects.Image(this.scene, innerWidth*0.35, innerHeight*0.5, 'connections');
+        const medicalTreatmentButton = new Icon(this.scene, innerWidth*0.35, innerHeight*0.275, 'medical-treatment', this, false, false);
+        const policeButton = new Icon(this.scene, innerWidth*0.465, innerHeight*0.45, 'police-skill', this, false, false);
+        const testingButton = new Icon(this.scene, innerWidth*0.425, innerHeight*0.725, 'testing-skill', this, false, false);
+        const lockdownButton = new Icon(this.scene, innerWidth*0.28, innerHeight*0.725, 'lockdown-skill', this, false, false);
+        const citizensButton = new Icon(this.scene, innerWidth*0.24, innerHeight*0.45, 'citizen', this, false, false);
+        
+        if(key == 'medical-treatment') {
+            const title = new Phaser.GameObjects.Text(this.scene, innerWidth*0.35, innerHeight*0.1, 'Medical-Treatment', {
+                color: 'Black', 
+                fontSize: '70px',
+                fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif'
+            }).setOrigin(0.5);
 
+            const connections = new Phaser.GameObjects.Image(this.scene, innerWidth*0.4, innerHeight*0.555, 'medical-treatment-connections');
+            const medicalTreatment = new Icon(this.scene, innerWidth*0.3525, innerHeight*0.25, 'medical-treatment', this, false, false);
+            const additionalMedicalSuppliesI = new Icon(this.scene, innerWidth*0.3525, innerHeight*0.45, 'additional-medical-supplies-1', this, false, SkillController.getInstance().additionalMedicalSuppliesI);
+            const additionalMedicalSuppliesII = new Icon(this.scene, innerWidth*0.25, innerHeight*0.55, 'additional-medical-supplies-2', this, false, SkillController.getInstance().additionalMedicalSuppliesII);
+            const upgradeMedicalFacilitiesI = new Icon(this.scene, innerWidth*0.455, innerHeight*0.55, 'upgrade-medical-facilities-1', this, false, SkillController.getInstance().upgradeMedicalFacilitiesI);
+            const upgradeMedicalFacilitiesII = new Icon(this.scene, innerWidth*0.345, innerHeight*0.65, 'upgrade-medical-facilities-2', this, false, SkillController.getInstance().upgradeMedicalFacilitiesII);
+            const upgradeMedicalFacilitiesIII = new Icon(this.scene, innerWidth*0.255, innerHeight*0.755, 'upgrade-medical-facilities-3', this, false, SkillController.getInstance().upgradeMedicalFacilitiesIII);
+            const medicinI = new Icon(this.scene, innerWidth*0.535, innerHeight*0.65, 'medicine-1', this, false, SkillController.getInstance().medicineI);
+            const medicinII = new Icon(this.scene, innerWidth*0.45, innerHeight*0.755, 'medicine-2', this, false, SkillController.getInstance().medicineII);
+            const medicinIII = new Icon(this.scene, innerWidth*0.3525, innerHeight*0.875, 'medicine-3', this, false, SkillController.getInstance().medicineIII);
+
+            return [title, connections, medicalTreatment, additionalMedicalSuppliesI, additionalMedicalSuppliesII, upgradeMedicalFacilitiesI, upgradeMedicalFacilitiesII, upgradeMedicalFacilitiesIII, medicinI, medicinII, medicinIII]
+        }
+        if(key == 'police-skill') {
+            const title = new Phaser.GameObjects.Text(this.scene, innerWidth*0.35, innerHeight*0.1, 'Police', {
+                color: 'Black', 
+                fontSize: '70px',
+                fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif'
+            }).setOrigin(0.5);
+
+            const connections = new Phaser.GameObjects.Image(this.scene, innerWidth*0.35, innerHeight*0.5, 'police-connections');
+            const police = new Icon(this.scene, innerWidth*0.3475, innerHeight*0.25, 'police-skill', this, false, false);
+            const learnExpertise = new Icon(this.scene, innerWidth*0.3475, innerHeight*0.475, 'expertise', this, false, SkillController.getInstance().learnExpertise);
+            const militaryI = new Icon(this.scene, innerWidth*0.2675, innerHeight*0.5785, 'military-1', this, false, SkillController.getInstance().militaryI);
+            const militaryII = new Icon(this.scene, innerWidth*0.3455, innerHeight*0.675, 'military-2', this, false, SkillController.getInstance().militaryII);
+            const militaryIII = new Icon(this.scene, innerWidth*0.4325, innerHeight*0.775, 'military-3', this, false, SkillController.getInstance().militaryIII);
+            const policeEquipment = new Icon(this.scene, innerWidth*0.1925, innerHeight*0.675, 'police-equipment', this, false, SkillController.getInstance().policeEquipment);
+            const testing = new Icon(this.scene, innerWidth*0.4325, innerHeight*0.5725, 'testing', this, false, SkillController.getInstance().testing); 
+            const trackingEncounters = new Icon(this.scene, innerWidth*0.51, innerHeight*0.675, 'tracking', this, false, SkillController.getInstance().trackingEncounters);
+
+            return [title, connections, police, learnExpertise, militaryI, militaryII, militaryIII, policeEquipment, testing, trackingEncounters]
+        }
+
+        if(key == 'testing-skill') {
+            const title = new Phaser.GameObjects.Text(this.scene, innerWidth*0.35, innerHeight*0.1, 'Testing', {
+                color: 'Black', 
+                fontSize: '70px',
+                fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif'
+            }).setOrigin(0.5);
+
+            const connections = new Phaser.GameObjects.Image(this.scene, innerWidth*0.3375, innerHeight*0.5, 'testing-connections');
+            const testing = new Icon(this.scene, innerWidth/3, innerHeight/4, 'testing-skill', this, false, false);
+            const additionalTestKits = new Icon(this.scene, innerWidth*0.3325, innerHeight*0.47, 'additional-test-kits', this, false, SkillController.getInstance().additionalTestKits);
+            const upgradeTestKitsI = new Icon(this.scene, innerWidth*0.255, innerHeight*0.57, 'upgrade-test-kit-1', this, false, SkillController.getInstance().upgradeTestKitI);
+            const upgradeTestKitsII = new Icon(this.scene, innerWidth*0.1855, innerHeight*0.665, 'upgrade-test-kit-2', this, false, SkillController.getInstance().upgradeTestKitII);
+            const nationwideTesting = new Icon(this.scene, innerWidth*0.4155, innerHeight*0.57, 'nationwide-testing', this, false, SkillController.getInstance().nationwideTesting);
+            const dna = new Icon(this.scene, innerWidth*0.4875, innerHeight*0.68, 'dna', this, false, SkillController.getInstance().dnaRnaCodeSequence);
+            const immunityTests = new Icon(this.scene, innerWidth*0.41, innerHeight*0.778, 'immunity-tests', this, false, SkillController.getInstance().immunityTests); 
+
+            return [title, connections, testing, additionalTestKits, upgradeTestKitsI, upgradeTestKitsII, nationwideTesting, dna, immunityTests]
+        }
+
+        if(key == 'lockdown-skill') {
+            const title = new Phaser.GameObjects.Text(this.scene, innerWidth*0.35, innerHeight*0.1, 'Lockdown', {
+                color: 'Black', 
+                fontSize: '70px',
+                fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif'
+            }).setOrigin(0.5);
+
+            const connections = new Phaser.GameObjects.Image(this.scene, innerWidth*0.35, innerHeight*0.5, 'lockdown-connections');
+            const lockdown = new Icon(this.scene, innerWidth*0.3475, innerHeight/4, 'lockdown-skill', this, false, false);
+            const lockdownStageI = new Icon(this.scene, innerWidth*0.35, innerHeight*0.4675, 'lockdown-stage-1', this, false, SkillController.getInstance().lockdownStageI);
+            const lockdownStageII = new Icon(this.scene, innerWidth*0.27, innerHeight*0.57, 'lockdown-stage-2', this, false, SkillController.getInstance().lockdownStageII);
+            const lockdownStageIII = new Icon(this.scene, innerWidth*0.195, innerHeight*0.67, 'lockdown-stage-3', this, false, SkillController.getInstance().lockdownStageIII);
+            const lockdownStageIV = new Icon(this.scene, innerWidth*0.27, innerHeight*0.77, 'lockdown-stage-4', this, false, SkillController.getInstance().lockdownStageIV);
+            const publicTransport = new Icon(this.scene, innerWidth*0.43, innerHeight*0.57, 'public-transport', this, false, SkillController.getInstance().publicTransport);
+            const restrictedTraffic = new Icon(this.scene, innerWidth*0.35, innerHeight*0.67, 'restricted-traffic', this, false, SkillController.getInstance().restrictedTraffic); 
+            const fincancialSupportI = new Icon(this.scene, innerWidth*0.51, innerHeight*0.67, 'financial-support-1', this, false, SkillController.getInstance().financialSupportI); 
+            const fincancialSupportII = new Icon(this.scene, innerWidth*0.43, innerHeight*0.77, 'financial-support-2', this, false, SkillController.getInstance().financialSupportII);
+
+            return [title, connections, lockdown, lockdownStageI, lockdownStageII, lockdownStageIII, lockdownStageIV, publicTransport, restrictedTraffic, fincancialSupportI, fincancialSupportII]
+        }
+
+        if(key == 'citizen') {
+            const title = new Phaser.GameObjects.Text(this.scene, innerWidth*0.35, innerHeight*0.1, 'Citizen', {
+                color: 'Black', 
+                fontSize: '70px',
+                fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif'
+            }).setOrigin(0.5);
+
+            const connections = new Phaser.GameObjects.Image(this.scene, innerWidth*0.3515, innerHeight*0.45, 'citizens-connections');
+            const citizens = new Icon(this.scene, innerWidth*0.35, innerHeight/4, 'citizen', this, false, false);
+            const expertiseI = new Icon(this.scene, innerWidth*0.35, innerHeight*0.475, 'expertise-1', this, false, SkillController.getInstance().expertiseI);
+            const expertiseII = new Icon(this.scene, innerWidth*0.27, innerHeight*0.575, 'expertise-2', this, false, SkillController.getInstance().expertiseII);
+            const expertiseIII = new Icon(this.scene, innerWidth*0.19, innerHeight*0.675, 'expertise-3', this, false, SkillController.getInstance().expertiseIII);
+            const trackingAppI = new Icon(this.scene, innerWidth*0.43, innerHeight*0.575, 'tracking-1', this, false, SkillController.getInstance().trackingAppI);
+            const trackingAppII = new Icon(this.scene, innerWidth*0.51, innerHeight*0.675, 'tracking-2', this, false, SkillController.getInstance().trackingAppII);
+
+            return [title, connections, citizens, expertiseI, expertiseII, expertiseIII, trackingAppI, trackingAppII]
+        }
+        return [title, connections, medicalTreatmentButton, policeButton, testingButton, lockdownButton, citizensButton]
+    }
+
+    public activateSkill(key: string): boolean {
+        this.getByName(key).disableInteractive();
+        if(key == 'additional-medical-supplies-1') {
+            return SkillController.getInstance().activateAdditionalMedicalSuppliesI(key);
+        }
+        if(key == 'additional-medical-supplies-2') {
+            return SkillController.getInstance().activateAdditionalMedicalSuppliesII(key);
+        }
+        if(key == 'upgrade-medical-facilities-1') {
+            return SkillController.getInstance().activateUpgradeMedicalFacilitiesI(key);
+        }
+        if(key == 'upgrade-medical-facilities-2') {
+            return SkillController.getInstance().activateUpgradeMedicalFacilitiesII(key);
+        }
+        if(key == 'upgrade-medical-facilities-3') {
+            return SkillController.getInstance().activateUpgradeMedicalFacilitiesIII(key);
+        }
+        if(key == 'medicine-1') {
+            return SkillController.getInstance().activateMedicineI(key);
+        }
+        if(key == 'medicine-2') {
+            return SkillController.getInstance().activateMedicineII(key);
+        }
+        if(key == 'medicine-3') {
+            return SkillController.getInstance().activateMedicineIII(key);
+        }
+
+        if(key == 'expertise') {
+            return SkillController.getInstance().activateLearnExpertise(key);
+        }
+        if(key == 'military-1') {
+            return SkillController.getInstance().activateMilitaryI(key);
+        }
+        if(key == 'military-2') {
+            return SkillController.getInstance().activateMilitaryII(key);
+        }
+        if(key == 'military-3') {
+            return SkillController.getInstance().activateMilitaryIII(key);
+        }
+        if(key == 'police-equipment') {
+            return SkillController.getInstance().activatePoliceEquipment(key);
+        }
+        if(key == 'testing') {
+            return SkillController.getInstance().activateTesting(key);
+        }
+        if(key == 'tracking') {
+            return SkillController.getInstance().activateTrackingEncounters(key);
+        }
+
+        if(key == 'additional-test-kits') {
+            return SkillController.getInstance().activateAdditionalTestKits(key);
+        }
+        if(key == 'upgrade-test-kit-1') {
+            return SkillController.getInstance().activateUpgradeTestKitI(key);
+        }
+        if(key == 'upgrade-test-kit-2') {
+            return SkillController.getInstance().activateUpgradeTestKitII(key);
+        }
+        if(key == 'nationwide-testing') {
+            return SkillController.getInstance().activateNationwideTesting(key);
+        }
+        if(key == 'dna') {
+            return SkillController.getInstance().activatednaRnaCodeSequence(key);
+        }
+        if(key == 'immunity-tests') {
+            return SkillController.getInstance().activateImmunityTests(key);
+        }
+
+        if(key == 'lockdown-stage-1') {
+            return SkillController.getInstance().activateLockdownStageI(key);
+        }
+        if(key == 'lockdown-stage-2') {
+            return SkillController.getInstance().activateLockdownStageII(key);
+        }
+        if(key == 'lockdown-stage-3') {
+            return SkillController.getInstance().activateLockdownStageIII(key);
+        }
+        if(key == 'lockdown-stage-4') {
+            return SkillController.getInstance().activateLockdownStageIV(key);
+        }
+        if(key == 'public-transport') {
+            return SkillController.getInstance().activatePublicTransport(key);
+        }
+        if(key == 'restricted-traffic') {
+            return SkillController.getInstance().activateRestrictedTraffic(key);
+        }
+        if(key == 'financial-support-1') {
+            return SkillController.getInstance().activateFinancialSupportI(key);
+        }
+        if(key == 'financial-support-2') {
+            return SkillController.getInstance().activateFinancialSupportII(key);
+        }
+
+        if(key == 'expertise-1') {
+            return SkillController.getInstance().activateExpertiseI(key);
+        }
+        if(key == 'expertise-2') {
+            return SkillController.getInstance().activateExpertiseII(key);
+        }
+        if(key == 'expertise-3') {
+            return SkillController.getInstance().activateExpertiseIII(key);
+        }
+        if(key == 'tracking-1') {
+            return SkillController.getInstance().activateTrackingAppI(key);
+        }
+        if(key == 'tracking-2') {
+            return SkillController.getInstance().activateTrackingAppII(key);
+        }
+        return
+    }
 }
