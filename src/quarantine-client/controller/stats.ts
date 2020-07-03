@@ -3,6 +3,7 @@ import { UpgradeController } from "./gui-controller/upgradeController";
 import { DifficultyLevel} from "../models/util/enums/difficultyLevels";
 import { IncomeStatement } from "./entities/incomeStatement";
 import { ResourceController } from "./resourceController";
+import { GuiScene } from "../views/scenes/gui-scene";
 
 /**
  * Singleton controller which contains game variables (e.g. budget, population size)
