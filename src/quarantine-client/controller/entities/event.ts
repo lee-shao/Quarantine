@@ -51,7 +51,6 @@ export class Event {
         ppTitle.setX((1920 / 2) - ppTitle.width / 2);
         const ppDescription = new Phaser.GameObjects.Text(GuiScene.instance, 300, 350, description, styleDesc);
         ppDescription.setWordWrapWidth(1300);
-        // this.addLastEvent(title, description);
         GuiScene.instance.addLastEvent(title, description);
         const ppSummary = new Phaser.GameObjects.Text(GuiScene.instance, 300, 700, summary, styleSummary);
         ppSummary.setWordWrapWidth(1100);
@@ -59,37 +58,5 @@ export class Event {
 
         executeEventFunction();
     }
-
-    // public addLastEvent(title: string, description: string) {
-    //     const styleDesc = { // description style
-    //         color: 'Black',
-    //         fontSize: '25px',
-    //         fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
-    //         wordWrap: { width: 550 }
-    //     };
-    //     const styleTitle = { // title style
-    //         color: 'Black',
-    //         align: 'left',
-    //         fontSize: '30px',
-    //         fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
-    //         wordWrap: { width: 450 },
-            
-
-    //     };
-    //     if(!this.eventTitle) {
-    //         GuiScene.instance.scene.scene.add.rectangle(1670, 600, 480, 100, 0xffffff);
-    //         this.eventTitle = GuiScene.instance.scene.scene.add.text(1440, 570, title, styleTitle);
-    //     } //else {
-    //     //     this.eventTitle.destroy();
-    //     //     this.eventTitle = GuiScene.instance.scene.scene.add.text(1320, 670, title, styleTitle);
-    //     // }
-    //     if(!this.eventDescription) {
-    //         GuiScene.instance.scene.scene.add.rectangle(1580, 790, 640, 150, 0xffffff);
-    //         this.eventDescription = GuiScene.instance.scene.scene.add.text(1300, 730, description, styleDesc);
-    //     } //else {
-    //     //     this.eventDescription.destroy();
-    //     //     this.eventDescription = GuiScene.instance.scene.scene.add.text(1200, 830, description, styleDesc);
-    //     // }
-    // }
 
 }
