@@ -168,7 +168,7 @@ export class Stats {
     
     // ------------------------------------------------------------------- STATE VARIABLES
     /** Scale factor to multiply with population numbers to simulate real population numbers */
-    private readonly populationFactor = 50;  
+    private readonly populationFactor = 400;  
     /** Population of the country the player is playing in */
     private population: number;
     /** Number of deceased people since the game started */
