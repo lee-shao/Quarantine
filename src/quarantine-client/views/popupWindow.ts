@@ -5,6 +5,7 @@ import { ChartScene } from "./tablet/chart-scene";
 import { MapScene } from "./tablet/map-scene";
 import { Tablet } from "./tablet/tablet";
 import { TimeController } from "../controller/timeController";
+import { PetriNetScene } from "./scenes/petri-net-scene";
 
 
 /**
@@ -20,6 +21,7 @@ export class PopupWindow extends Phaser.GameObjects.Container {
     private mainScene = this.scene.scene.get('MainScene') as MainScene;
     private chartScene = this.scene.scene.get('ChartScene') as ChartScene;
     private mapScene = this.scene.scene.get('MapScene') as MapScene;
+    private petriNetScene = this.scene.scene.get('PetriNetScene') as PetriNetScene;
     
     /**
      * @param scene scene to which this GameObject belongs
@@ -101,6 +103,8 @@ export class PopupWindow extends Phaser.GameObjects.Container {
             /** Only wake up the scenes if they were prviously displayed in the tablet */
             if (!Tablet.instance.getChartSceneIsSleeping()) this.chartScene.scene.wake();
             if (!Tablet.instance.getMapSceneIsSleeping()) this.mapScene.scene.wake();
+
+            this.petriNetScene.scene.wake();
             
             // resume the game if game was paused.    
             if(this.pause){                     
@@ -126,6 +130,7 @@ export class PopupWindow extends Phaser.GameObjects.Container {
             const gui = this.scene.scene.get('GuiScene') as GuiScene;
             this.chartScene.scene.sleep();
             this.mapScene.scene.sleep();
+            this.petriNetScene.scene.sleep();
 
             if(this.pause){
                 gui.hideBtns();
