@@ -144,7 +144,7 @@ export class GuiScene extends Phaser.Scene {
     }
 
     update(): void {
-        if (!this.mainSceneIsPaused) this.menu.updateItemMenu(); // has to be invoked each tic/ ingame hour
+        // if (!this.mainSceneIsPaused) this.menu.updateItemMenu(); // has to be invoked each tic/ ingame hour
         if (!this.mainSceneIsPaused) this.statusBar.update();
     }
 

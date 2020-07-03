@@ -1,6 +1,7 @@
 import { SkillTreeView } from "./skillTreeView";
 import { UpgradeController } from "../../controller/gui-controller/upgradeController";
 import { SkillController } from "../../controller/gui-controller/skillController";
+import { GuiScene } from "../scenes/gui-scene";
 /**
  * 
  * @author Shao
@@ -56,6 +57,7 @@ export class Icon extends Phaser.GameObjects.Container {
                     this.ringColor = this.addRingColor(this.descriptions[key]['price'], key, skillTree).setScale(0.4);
                     this.remainState();
                 }
+                if (GuiScene.instance.soundON) GuiScene.instance.increaseSound.play();
             });
             this.add(this.buyButton);
         }

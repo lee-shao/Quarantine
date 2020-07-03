@@ -203,9 +203,11 @@ export class ButtonContainer implements TimeSubscriber {
                     }
                     break;
                 case 'police':
+                    this.eventListener();
                     UpgradeController.getInstance().buyPoliceOfficers(this.amount, this.dailyCost);
                     break;
                 case 'healthworkers':
+                    this.eventListener();
                     UpgradeController.getInstance().buyHealthWorkers(this.amount, this.dailyCost);
                     break;
                 default: 
