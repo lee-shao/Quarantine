@@ -7,17 +7,17 @@
     "happinessRate": 0,
     "compliance": 100.00,
 
-    "basicInteractionRate": 0.1,
-    "maxInteractionVariance": 0.05,
+    "basicInteractionRate": 0.15,
+    "maxInteractionVariance": 0.075,
 
-    "avgSalaryPO": 114,
-    "avgSalaryHW": 83,
-    "avgPriceTestKit": 44,
-    "avgPriceVaccination": 51,
+    "avgSalaryPO": 124,
+    "avgSalaryHW": 93,
+    "avgPriceTestKit": 49,
+    "avgPriceVaccination": 56,
 
-    "budget": 20000000000,
-    "maxIncome": 1000000000,
-    "income": 300000000,
+    "budget": 100000000,
+    "maxIncome": 500000000,
+    "income": 10000000,
 
     "winLossCondition": "(You win if there are no active cases left.\nYou lose when the last survivor dies.)\nGood Luck, have fun!"
 }

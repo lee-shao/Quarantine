@@ -26,7 +26,7 @@ export class SkillTreeView extends PopupWindow {
     constructor(scene: Phaser.Scene) {
         super(scene, 0, 5, 'open-notebook2', innerWidth*0.805, innerHeight*0.055, true, [
             new Phaser.GameObjects.Image(scene, innerWidth*0.705, innerHeight*0.5, 'transparent-area').setOrigin(0.5),
-            new Phaser.GameObjects.Text(scene, innerWidth*0.7, innerHeight*0.1, 'Skillbeschreibung', {
+            new Phaser.GameObjects.Text(scene, innerWidth*0.7, innerHeight*0.1, 'Description', {
                 color: 'Black', 
                 fontSize: '50px',
                 fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif'
