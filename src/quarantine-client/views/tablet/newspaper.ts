@@ -43,7 +43,7 @@ export class NewsPaper extends GuiElement implements TimeSubscriber, TutorialCom
             color:'#000000',
             fontSize: '25px',
         });
-        this.totalInfectionsText = this.scene.add.text(this.x + 150, this.y - 100, `Infections pass ${this.totalCases} cases` , {
+        this.totalInfectionsText = this.scene.add.text(this.x + 30, this.y - 100, `Infections pass ${Stats.formatLargerNumber(this.totalCases)} cases` , {
             fontFamily:'Arial',
             color:'#000000',
             fontSize: '40px',
