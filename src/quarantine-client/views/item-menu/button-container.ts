@@ -130,6 +130,7 @@ export class ButtonContainer implements TimeSubscriber {
                     this.amount += 1000;        // TODO: should be integrated with the const amt in the upgradecontroller
                     this.dailyCost += 40000;
                     this.setAmount();           // updates the text
+                    if (GuiScene.instance.soundON) GuiScene.instance.increaseSound.play();
                 }).setScale(0.4);
                 // Minus sign to decrease amount and daily costs linear
                 this.scene.add.image(this.x + 325, this.y + 100, 'minus').setInteractive()
@@ -138,6 +139,7 @@ export class ButtonContainer implements TimeSubscriber {
                         this.amount -= 1000;
                         this.dailyCost -= 40000;
                         this.setAmount();       // updates the text
+                        if (GuiScene.instance.soundON) GuiScene.instance.decreaseSound.play();
                     }
                 }).setScale(0.4);
                 this.scene.add.image(this.x + 275, this.y + 90, 'man').setScale(0.5);
@@ -209,7 +211,7 @@ export class ButtonContainer implements TimeSubscriber {
                 default: 
                     console.error("[WARNING] - Passed key does not exist.");
             }
-            if (GuiScene.instance.soundON) GuiScene.instance.itemBoughtSound.play();
+            if (GuiScene.instance.soundON) GuiScene.instance.randomSound().play();
             }else{
                 const popupMss = new PopupWindow(this.scene, 0, 0, '', 1050, 400, false, [], false);
                 const blankNode = this.scene.add.sprite(this.scene.game.renderer.width / 2 + 50, this.scene.game.renderer.height / 2, 'blank-note').setDisplaySize(300, 200);
