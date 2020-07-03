@@ -29,6 +29,8 @@ export class GuiScene extends Phaser.Scene {
     private menu: ItemMenu;
     private skipTutorialBtn: SkipTutorialButton;
     private newspaper: NewsPaper;
+    private eventTitle: Phaser.GameObjects.Text;
+    private eventDescription: Phaser.GameObjects.Text;
 
     private statusBar: StatusBar;
     public mainSceneIsPaused = false;
@@ -131,6 +133,38 @@ export class GuiScene extends Phaser.Scene {
     update(): void {
         if (!this.mainSceneIsPaused) this.menu.updateItemMenu(); // has to be invoked each tic/ ingame hour
         if (!this.mainSceneIsPaused) this.statusBar.update();
+    }
+
+    public addLastEvent(title: string, description: string) {
+        const styleDesc = { // description style
+            color: 'Black',
+            fontSize: '25px',
+            fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
+            wordWrap: { width: 550 }
+        };
+        const styleTitle = { // title style
+            color: 'Black',
+            align: 'left',
+            fontSize: '30px',
+            fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
+            wordWrap: { width: 450 },
+            
+
+        };
+        if(!this.eventTitle) {
+            // GuiScene.instance.scene.scene.add.rectangle(1670, 600, 480, 100, 0xffffff);
+            this.eventTitle = this.scene.scene.add.text(1480, 580, title, styleTitle);
+        } else {
+            this.eventTitle.destroy();
+            this.eventTitle = GuiScene.instance.scene.scene.add.text(1480, 580, title, styleTitle);
+        }
+        if(!this.eventDescription) {
+            // GuiScene.instance.scene.scene.add.rectangle(1580, 790, 640, 150, 0xffffff);
+            this.eventDescription = this.scene.scene.add.text(1340, 730, description, styleDesc);
+        } else {
+            this.eventDescription.destroy();
+            this.eventDescription = this.scene.scene.add.text(1340, 730, description, styleDesc);
+        }
     }
 
     //-----Hide/show the buttons while pause/resume

@@ -13,14 +13,14 @@ export class EventButton extends GuiElement {
 
 
     public create(): EventButton {
-        this.eventNote = this.scene.add.image(1600, 750, 'event-note'); // old position 1500 850
+        this.eventNote = this.scene.add.image(1630, 750, 'event-note'); // old position 1500 850
         this.eventNote.setInteractive();
-        this.eventNote.scale = 0.5;
+        this.eventNote.scale = 0.45;
         
         // this.eventLog = EventLog.getInstance();
 
-        this.eventNote.on('pointerover', () => { this.eventNote.scale = 0.55; });
-        this.eventNote.on('pointerout', () => { this.eventNote.scale = 0.5; });
+        this.eventNote.on('pointerover', () => { this.eventNote.scale = 0.5; });
+        this.eventNote.on('pointerout', () => { this.eventNote.scale = 0.45; });
         this.eventNote.on('pointerup', () => {
             if(!this.scene.mainSceneIsPaused){
                 console.log("hello biatch1");
