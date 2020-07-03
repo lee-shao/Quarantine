@@ -24,7 +24,7 @@ export class Event {
             title: string,
             description: string,
             imagePath: string,
-            ethos: boolean,
+            positive: boolean,
             summary: string
             ) {
         if (!imagePath) imagePath = "letter";
@@ -44,7 +44,7 @@ export class Event {
             fontSize: '40px',
             fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif'
         };
-        styleSummary['color'] = (ethos) ? 'green' : 'red'; // summary is red for bad events and green for good events
+        styleSummary['color'] = (positive) ? 'green' : 'red'; // summary is red for bad events and green for good events
 
         const ppTitle = new Phaser.GameObjects.Text(GuiScene.instance, 0, 90, title, styleTitle);
         ppTitle.setWordWrapWidth(1300);

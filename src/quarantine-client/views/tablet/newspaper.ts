@@ -1,12 +1,13 @@
-import { GuiElement } from "../guiElement";
 import { Stats } from "../../controller/stats";
-import { ChartScene } from "./chart-scene";
 import { TimeController } from "../../controller/timeController";
-import { GuiScene } from "../scenes/gui-scene";
+import { TimeSubscriber } from "../../models/util/timeSubscriber";
+import { TutorialComponent } from "../tutorial/tutorialComponent";
+import { GuiElement } from "../guiElement";
 
-export class NewsPaper extends Phaser.GameObjects.Container {
-
+export class NewsPaper extends GuiElement implements TimeSubscriber, TutorialComponent {
+    
     private newspaperImage: Phaser.GameObjects.Image;
+    private backgroundImage: Phaser.GameObjects.Image;
     private stats: Stats;
     private happiness: number;
     private totalCases: number;
@@ -16,50 +17,46 @@ export class NewsPaper extends Phaser.GameObjects.Container {
     private cases: number[];
     private static instance: NewsPaper;
     private happinessState: string;
-    
 
     private happinessStateText: Phaser.GameObjects.Text;
-    private mainText: Phaser.GameObjects.Text;
     private totalInfectionsText: Phaser.GameObjects.Text
 
+    private x: number;
+    private y: number;
 
-    public constructor(scene: Phaser.Scene, x: number, y: number) {
-        super(scene, x, y);
+    /** The only existing instance of time controller */
+    private tC: TimeController;
+
+    public create(): NewsPaper {
         this.stats = Stats.getInstance();
-        this.scene.add.image(300, 875, 'news').setScale(0.75);
-        this.newspaperImage = this.scene.add.image(this.x+150, this.y + 125, 'flu-virus').setScale(0.5);
-        this.scene.add.text(this.x +300, this.y+100, `Happiness Report:`, {
-            fontFamily:'Arial',
-            color:'#000000',
-            fontSize: '30px',
-            fontWeight: '700'
-        });
-        this.happinessStateText = this.scene.add.text(this.x + 300, this.y + 100, `\nNewest surveys uncover\n${this.happinessState} results: \n${this.happiness} % of people happy.`, {
+
+        this.tC = TimeController.getInstance();
+        this.tC.subscribe(this);
+
+        this.x = 0;
+        this.y = 780;
+        this.totalCases = 0;
+
+        this.backgroundImage = this.scene.add.image(this.x + 300, this.y, 'news').setScale(0.75);
+        this.newspaperImage = this.scene.add.image(this.x + 150, this.y + 50, 'flu-virus').setScale(0.3);
+        this.happinessStateText = this.scene.add.text(this.x + 300, this.y - 50, `Happiness Report:\nNewest surveys uncover\n${this.happinessState} results: \n${this.happiness} % of people happy.`, {
             fontFamily:'Arial',
             color:'#000000',
             fontSize: '25px',
         });
-        this.totalInfectionsText = this.scene.add.text(this.x+100, this.y - 100, `Infections pass ${this.totalCases} cases` , {
+        this.totalInfectionsText = this.scene.add.text(this.x + 30, this.y - 100, `Infections pass ${this.totalCases} cases` , {
             fontFamily:'Arial',
             color:'#000000',
             fontSize: '40px',
         });
-        this.mainText = this.scene.add.text(this.x+300, this.y - 50, `Within a week, \n${this.infected} new infections, \n${this.dead} new death and \n${this.cured} cured cases \nhave been confirmed`, {
-            fontFamily:'Arial',
-            color:'#000000',
-            fontSize: '25px',
-        });
         this.updateHappinessReport();
         this.updateHeadline(0);
-        this.scene.add.existing(this);
+        this.hideComponent();
+
+        return this;
     }
 
-    public static getInstance(scene = null, x = 0, y = 0): NewsPaper {
-        if(!NewsPaper.instance) NewsPaper.instance = new NewsPaper(scene, x, y);
-        return NewsPaper.instance;
-    }
-
-    public updateHappinessReport() {
+    public updateHappinessReport(): void {
         this.happiness = this.stats.happiness;
         if(this.happiness < 25) {
             this.happinessState = "devastating";
@@ -75,18 +72,34 @@ export class NewsPaper extends Phaser.GameObjects.Container {
         this.happinessStateText.setText(`\nNewest surveys uncover\n${this.happinessState} results: \n${this.happiness} % of people happy.`);
     }
 
-    public updateHeadline(totalInfections: number) {
+    public updateHeadline(totalInfections: number): void {
         const week = TimeController.getInstance().getWeeksSinceGameStart();
         this.cases = Stats.getInstance().getWeeklyStats(week);
         this.infected = this.cases[0];
         this.cured = this.cases[1];
         this.dead = this.cases[2];
-        // if(week == 1) {
-        //     this.newspaperImage.destroy();
-        //     this.newspaperImage = this.scene.add.image(this.x - 250, this.y + 125, 'ambulance').setScale(0.75);
-        // }
         
-        this.totalInfectionsText.setText(`Infections pass ${totalInfections} cases`);
-        this.mainText.setText(`Within a week, \n${this.infected} new infections, \n${this.dead} new death and \n${this.cured} cured cases \nhave been confirmed`);
+        this.totalInfectionsText.setText(`Infections pass ${Stats.formatLargerNumber(totalInfections)} cases`);
+    }
+
+    public activateComponent(): void {
+        this.totalInfectionsText.visible = true;
+        this.happinessStateText.visible = true;
+        this.newspaperImage.visible = true;
+        this.backgroundImage.visible = true;
+    }
+
+    public hideComponent(): void {
+        this.totalInfectionsText.visible = false;
+        this.happinessStateText.visible = false;
+        this.newspaperImage.visible = false;
+        this.backgroundImage.visible = false;
+    }
+
+    notify(): void {
+        if (TimeController.getInstance().getDaysSinceGameStart() % 7 == 0) {
+            this.updateHappinessReport();
+            this.updateHeadline(this.stats.getInfected());
+        }
     }
 }

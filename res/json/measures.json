@@ -23,23 +23,23 @@
         "name": "Research",
         "current_level": 0,
         "description": "1. level buys laboratory; 10. level buys factory for vaccine production",
-        "prices": [500000, 150000, 200000, 250000, 300000, 350000, 400000, 450000, 500000, 1000000],
-        "number_of_new_health_workers": 100000
+        "prices": [100000000, 100000000, 100000000, 250000000, 250000000, 250000000, 500000000, 500000000, 500000000, 1000000000],
+        "number_of_new_health_workers": 50000
     },
     "police": {
         "name": "Police",
         "current_level": 0,
         "description": "",
-        "price": [10000],
-        "daily_cost": 4000,
+        "price": [10000000],
+        "daily_cost": 2000,
         "amount": 1000
     },
     "healthworkers": {
         "name": "Health Workers",
         "current_level": 0,
         "description": "",
-        "price": [10000],
-        "daily_cost": 4000,
-        "amount": 3000
+        "price": [10000000],
+        "daily_cost": 1000,
+        "amount": 1000
     }
 }

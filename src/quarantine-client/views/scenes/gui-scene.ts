@@ -22,6 +22,10 @@ export class GuiScene extends Phaser.Scene {
     public inGameMusic: Phaser.Sound.BaseSound;
     public buttonClickMusic: Phaser.Sound.BaseSound;
     public itemBoughtSound: Phaser.Sound.BaseSound;
+    public increaseSound: Phaser.Sound.BaseSound;
+    public decreaseSound: Phaser.Sound.BaseSound;
+
+    private randomBoughtSound: Array<Phaser.Sound.BaseSound> = new Array<Phaser.Sound.BaseSound>();
 
     /** Gui scene instance */
     public static instance: GuiScene;
@@ -63,20 +67,37 @@ export class GuiScene extends Phaser.Scene {
         //** load audio files */
         this.load.audio("game_theme_music", "assets/sounds/In_Game_Music.mp3");
         this.load.audio("button_click", ["assets/sounds/click-sound.mp3", "assets/sounds/click-sound.ogg"]);
+        this.load.audio("money_notes_x3_sound", ["assets/sounds/money_notes_x3_sound.mp3", "assets/sounds/money_notes_x3_sound.ogg"]);
+        this.load.audio("50_and_20_pence_peice_sound", ["assets/sounds/50_and_20_pence_peice_sound.mp3", "assets/sounds/50_and_20_pence_peice_sound.ogg"]);
+        this.load.audio("20_pence_peice_sound", ["assets/sounds/20_pence_peice_sound.mp3", "assets/sounds/20_pence_peice_sound.ogg"]);
         this.load.audio("buy_sound", "assets/sounds/cash-register.mp3");
+        this.load.audio("decrease_sound", ["assets/sounds/decrease_sound.mp3", "assets/sounds/decrease_sound.ogg"]);
+        this.load.audio("increase_sound", ["assets/sounds/increase_sound.mp3", "assets/sounds/increase_sound.ogg"]);
+    }
+
+    public randomSound(): Phaser.Sound.BaseSound {
+        //** Returns an integer random number between min (0) (included) and max (this.randomBoughtSound.length - 1) (included): */
+        const randomIndex = Math.floor(Math.random() * ((this.randomBoughtSound.length - 1) - 0 + 1) + 0);
+        return this.itemBoughtSound = this.randomBoughtSound[randomIndex];
     }
 
     create(): void {
         // Creates Itemmenu and it to this scene
         this.menu = ItemMenu.getInstance(this, 650, 750);
-        this.newspaper = NewsPaper.getInstance(this, 0, 875);
-        // this.load.scene.add.image(1200, 875, 'news');
-        
 
         //** create sound objects */
         this.inGameMusic = this.sound.add("game_theme_music");
         this.buttonClickMusic = this.sound.add("button_click");
-        this.itemBoughtSound = this.sound.add("buy_sound");
+        this.increaseSound = this.sound.add("increase_sound");
+        this.decreaseSound = this.sound.add("decrease_sound");
+        // this.itemBoughtSound = this.sound.add("buy_sound");
+        this.randomBoughtSound.push(this.sound.add("buy_sound"));
+        this.randomBoughtSound.push(this.sound.add("20_pence_peice_sound"));
+        this.randomBoughtSound.push(this.sound.add("money_notes_x3_sound"));
+        this.randomBoughtSound.push(this.sound.add("50_and_20_pence_peice_sound"));
+
+        
+        
         
 
         const musicConfig = {
@@ -113,16 +134,15 @@ export class GuiScene extends Phaser.Scene {
         new SoundButtons(this).create().getSoundButtons().forEach(b => {
             this.buttons.push(b);
         });
-        const tablet = new Tablet(this).create();
         // add the tablet
-        //this.buttons.push(new Tablet(this).create().getHomeButton());
+        const tablet = new Tablet(this).create();
+        // add the newspaper
+        const newspaper = new NewsPaper(this).create();
         // add the status bar
-        this.statusBar = new StatusBar(this);
-        this.statusBar.create();
+        this.statusBar = new StatusBar(this).create();
 
         // -------------------------------------------------------------------- TUTORIAL SET UP
-
-        const tutComponents = [tablet, logBookBtn, this.menu, skillTreeBtn];
+        const tutComponents = [tablet, logBookBtn, this.menu, skillTreeBtn, newspaper];
         // adds skip tutorial button
         this.skipTutorialBtn = new SkipTutorialButton(this, tutComponents).create();
         // start tutorial
@@ -131,7 +151,7 @@ export class GuiScene extends Phaser.Scene {
     }
 
     update(): void {
-        if (!this.mainSceneIsPaused) this.menu.updateItemMenu(); // has to be invoked each tic/ ingame hour
+        // if (!this.mainSceneIsPaused) this.menu.updateItemMenu(); // has to be invoked each tic/ ingame hour
         if (!this.mainSceneIsPaused) this.statusBar.update();
     }
 

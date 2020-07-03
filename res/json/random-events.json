@@ -4,7 +4,7 @@
             "name": "Donations of Test Kits",
             "description": "A neighboring country is donating test kits. They should be enough for a whole week of testing without any expenses.",
             "image-path": "",
-            "ethos": "good",
+            "positive": "true",
             "summary": "money for 10.000 test kits"
 
         },
@@ -12,28 +12,28 @@
             "name": "Test Kit Shortages",
             "description": "Our ordered test-kits didn't arrive on time, to still keep up with testing, test kits will cost us double the amount for the next week.",
             "image-path": "",
-            "ethos": "bad",
+            "positive": "false",
             "summary": "price of test kits *2 for 7 days"
         },
         {
             "name": "Medical personnel is volunteering",
             "description": "Non-governmental organisations are sending trained force to support our health workers for a week.",
             "image-path": "",
-            "ethos": "good",
+            "positive": "true",
             "summary": "salary for 10.000 health workers is sponsored for 7 days"
         },
         {
             "name": "An anonymous donation was made to our cause",
             "description": "An anonymous donation of 100.000 € was made to our cause.",
             "image-path": "",
-            "ethos": "good",
+            "positive": "true",
             "summary": "+100.000 €"
         },
         {
             "name": "Bad news are dominating the media",
-            "description": "Lately, a lot of bad news have been popping up. The population seems affected by this.",
+            "description": "Lately, a lot of false news have been popping up. The population seems affected by this.",
             "image-path": "",
-            "ethos": "bad",
+            "positive": "false",
             "summary": "happiness -15%"
         }
     ],
@@ -42,28 +42,28 @@
             "name": "An anonymous donation was made to our cause.",
             "description": "An anonymous donation of 1 Mio. € was made to our cause.",
             "image-path": "",
-            "ethos": "good",
+            "positive": "true",
             "summary": "+1 Mio. €"
         },
         {
             "name": "State employees demand a bonus",
             "description": "Given the risks of their dangerous new working conditions, police and health workers demand a bonus.  For two weeks their salary increases by 10 € / day.",
             "image-path": "",
-            "ethos": "bad",
+            "positive": "false",
             "summary": "salary of state employees +10 € for 14 day"
         },
         {
-            "name": "Finally some good news",
-            "description": "Lately, we have been seeing a lot more good news than usual. This eases unhappy minds.",
+            "name": "Finally some true news",
+            "description": "Lately, we have been seeing a lot more true news than usual. This eases unhappy minds.",
             "image-path": "",
-            "ethos": "good",
+            "positive": "true",
             "summary": "happiness +20%"
         },
         {
             "name": "People going out due to heat wave",
             "description": "Amid the hot weather, people are drawn to parks, lakes and the sea. Virologists are predicting a small surge in new infections.",
             "image-path": "",
-            "ethos": "bad",
+            "positive": "false",
             "summary": "interaction rate +20% for some days"
         }
     ],
@@ -72,21 +72,21 @@
             "name": "Police are sending trainees to work",
             "description": "To support the strained force, police decided to put their trainees to work early. For us, this means more force for the same price.",
             "image-path": "",
-            "ethos": "good",
+            "positive": "true",
             "summary": "salary for 10.000 police officers is sponsored for 7 days"
         },
         {
             "name": "An anonymous donation was made to our cause.",
             "description": "An anonymous donation of 100.000.000 € was made to our cause.",
             "image-path": "",
-            "ethos": "good",
+            "positive": "true",
             "summary": "+100 Mio. €"
         },
         {
             "name": "People staying in due to storms",
-            "description": "The bad weather lately has people leave their houses less. Virologists are predicting a small dip in new infections.",
+            "description": "The false weather lately has people leave their houses less. Virologists are predicting a small dip in new infections.",
             "image-path": "",
-            "ethos": "good",
+            "positive": "true",
             "summary": "interaction rate -10% for some days"
         }
     ],
@@ -95,21 +95,21 @@
             "name": "An anonymous donation was made to our cause.",
             "description": "An anonymous donation of 1.000.000.000 € was made to our cause.",
             "image-path": "",
-            "ethos": "good",
+            "positive": "true",
             "summary": "+1 Billion €"
         },
         {
             "name": "State employees demand a bonus",
             "description": "Given the risks of their dangerous new working conditions, police and health workers demand a bonus. For six weeks their salary increases by 5 € / day.",
             "image-path": "",
-            "ethos": "bad",
+            "positive": "false",
             "summary": "salary of state employees +5 € for 42 day"
         },
         {
             "name": "Flu season",
             "description": "As flu season is beginning, experts are anticipating higher-than-usual death rates as the diseases overlap.",
             "image-path": "",
-            "ethos": "bad",
+            "positive": "false",
             "summary": "unknown consequences"
         }
     ],
@@ -118,21 +118,21 @@
             "name": "Generous NGO supporting police and health workers",
             "description": "An NGO is supplying volunteers and 1 Mio. € in donations in a large-scale effort to help police and healthcare.",
             "image-path": "",
-            "ethos": "good",
+            "positive": "true",
             "summary": "+1 Mio. € | salary of state employees -5 €/day permanently | +5.000 police officers | +5.000 health workers"
         },
         {
             "name": "An anonymous donation was made to our cause.",
             "description": "An anonymous donation of 5.000.000.000 € was made to our cause. Sponsored by M.K. and S.F.",
             "image-path": "",
-            "ethos": "good",
+            "positive": "true",
             "summary": "+5 Billion €"
         },
         {
-            "name": "Some f*cking good news!",
+            "name": "Some f*cking true news!",
             "description": "A neighbouring country has no more active cases. Your population gains hope that the pandemic can be stopped!",
             "image-path": "",
-            "ethos": "good",
+            "positive": "true",
             "summary": "reset of happiness to 100%"
         }
     ]

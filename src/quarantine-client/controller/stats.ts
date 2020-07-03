@@ -93,6 +93,7 @@ export class Stats {
             this.weeklyDead.push(0);
             this.weeklyInfected.push(0);
             this.weeklyCured.push(0);
+            this.weeklyCured[currWeek + 1] = this.immune;
             this.weeklyHW.push(0);
             this.weeklyHW[currWeek + 1] = this.weeklyHW[currWeek];
             this.weeklyPolice.push(0);
@@ -139,12 +140,12 @@ export class Stats {
             invert = true;
         }
 
-        if (value >= 1_000_000_000) { // trillion
+        if (value >= 1_000_000_000_000) { // trillion
             if (invert) value = value * -1;
-            result = (+(value / 1_000_000_000).toFixed(2)).toLocaleString("de-DE") + " Trillion";
+            result = (+(value / 1_000_000_000_000).toFixed(2)).toLocaleString("de-DE") + "  Trillion";
         } else if (value >= 1_000_000_000) { // billion
             if (invert) value = value * -1;
-            result = (+(value / 1_000_000_000).toFixed(2)).toLocaleString("de-DE") + " Mrd.";
+            result = (+(value / 1_000_000_000).toFixed(2)).toLocaleString("de-DE") + " Billion";
         } else if (value >= 1_000_000) { // millions
             if (invert) value = value * -1;
             result = (+(value / 1_000_000).toFixed(2)).toLocaleString("de-DE") + " Mio."; // + before paranthesis clips 0 after the decimal
@@ -278,14 +279,24 @@ export class Stats {
      */
     public getInfected(): number {return this.infected * this.populationFactor;}
 
+    /** @returns Number of immune people */
+    public getImmune(): number {return this.immune * this.populationFactor;}
+
+    /** @returns Number of healthy people */
+    public getHealthy(): number {return (this.population - this.infected - this.unknowinglyInfected) * this.populationFactor;}
+
     /** @returns Number of police officers */
     public getNumberOfPolice(): number {return this.weeklyPolice[TimeController.getInstance().getWeeksSinceGameStart()] * this.populationFactor;}
 
     /** @returns Number of health workers */
     public getNumberOfHealthWorkers(): number {return this.weeklyHW[TimeController.getInstance().getWeeksSinceGameStart()] * this.populationFactor;}
 
-    /** @returns salary for all health workers */
-    public getHWSalary(): number {return this.getNumberOfHealthWorkers() * this.currentSalaryHW;}
+    /** @returns salary for all health workers (minus hw's which were added through the research upgrade) */
+    public getHWSalary(): number {
+        const uC = UpgradeController.getInstance();
+        if (uC.researchExists()) return (this.getNumberOfHealthWorkers() - uC.measures["research"]["number_of_new_health_workers"]) * this.currentSalaryHW;
+        else return this.getNumberOfHealthWorkers() * this.currentSalaryHW;
+    }
 
     /** @returns salary for all police officers */
     public getPOSalary(): number {return this.getNumberOfPolice() * this.currentSalaryPO;}
@@ -395,6 +406,12 @@ export class Stats {
     /** Decrease infected counter by one and consume one vaccine */
     public cureInfected(): void {
         this.infected--;
+        this.immune++;
+        this.vaccineUsed();
+    }
+
+    /** Increase infected counter by one and consume one vaccine */
+    public cureHealthy(): void {
         this.immune++;
         this.vaccineUsed();
     }

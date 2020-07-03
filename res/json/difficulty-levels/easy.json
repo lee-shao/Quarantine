@@ -15,7 +15,9 @@
     "avgPriceTestKit": 44,
     "avgPriceVaccination": 51,
 
-    "budget": 2000000000,
-    "maxIncome": 1000000000,
-    "income": 150000000
+    "budget": 150000000,
+    "maxIncome": 750000000,
+    "income": 15000000,
+
+    "winLossCondition": "(You win if there are no active cases left.\nYou lose when the last survivor dies.)\nHave fun!"
 }

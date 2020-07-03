@@ -1,0 +1,237 @@
+{
+    "medical-treatment": {
+        "name": "Medical Treatment",
+        "description": "",
+        "price": 0,
+        "required_skills": []
+    },
+        "additional-medical-supplies-1": {
+            "name": "Additional Medical Supplies I",
+            "description": "The government buys a package of medicalsupplies,\n\nto fill up the needs of all hospitals and medical\n\nstaff. (Medical supplies consist of the most\n\nnecessary medical equipmentlike face masks,\n\ngloves, disinfectant, etc.)",
+            "price": 100000000,
+            "required_skills": []
+        },
+        "additional-medical-supplies-2": {
+            "name": "Additional Medical Supplies II",
+            "description": "The government declares state of emergency.\n\nLarge amounts of money will be spent on additional\n\nmedical supplies. Medical staff will be provided\n\nwith upgraded face masks (FFP3-masks).",
+            "price": 200000000,
+            "required_skills": ["Additional Medical Supplies I"]
+        },
+        "upgrade-medical-facilities-1" :{
+            "name": "Upgrade Medical Facilities I",
+            "description": "Increase of hygiene standards and additional\n\nmedical staff in hospitals and other medical facilities. ",
+            "price": 200000000,
+            "required_skills": ["Additional Medical Supplies I"]
+        },
+        "upgrade-medical-facilities-2" :{
+            "name": "Upgrade Medical Facilities II",
+            "description": "Hospitals will be upgraded with modern medical\n\nequipment. (Isolated ventilation systems,\n\nventilators, etc. to enable isolated treatments\n\nin quarantine)",
+            "price": 200000000,
+            "required_skills": ["Additional Medical Supplies I", "Upgrade Medical Facilities I"]
+        },
+        "upgrade-medical-facilities-3" :{
+            "name": "Upgrade Medical Facilities III",
+            "description": "Large investments in all medical facilities.\n\nNew hospitals built out of nothing.\n\nLarge research institutes working together.\n\nMedical staff are getting protective suits with\n\nmasks and filter attachments.",
+            "price": 300000000,
+            "required_skills": ["Additional Medical Supplies I", "Upgrade Medical Facilities I", "Upgrade Medical Facilities II"]
+        },
+        "medicine-1" :{
+            "name": "Medicine I",
+            "description": "A research Institute discovered the effectiveness\n\nof a medicine which can reduce symptoms.",
+            "price": 100000000,
+            "required_skills": ["Additional Medical Supplies I", "Upgrade Medical Facilities I"]
+        },
+        "medicine-2" :{
+            "name": "Medicine II",
+            "description": "A new medicine developed to slow down the speed of\n\nthe spreading, in the human body.",
+            "price": 200000000,
+            "required_skills": ["Additional Medical Supplies I", "Upgrade Medical Facilities I", "Medicine I", "DNA/RNA Code-Sequence"]
+        },
+        "medicine-3" :{
+            "name": "Medicine III",
+            "description": "A highly effective medicine got developed, which can\n\nstop the virus from spreading in the human body.\n\nIf taken early enough there is a high chance that\n\nthe human will survive.",
+            "price": 300000000,
+            "required_skills": ["Additional Medical Supplies I", "Upgrade Medical Facilities I", "Medicine I", "Medicine II", "DNA/RNA Code-Sequence"]
+        },
+        "police-skill": {
+            "name": "Police",
+            "description": "",
+            "price": 0,
+            "required_skills": []
+        },
+        "expertise" :{
+            "name": "Learn Expertise",
+            "description": "Police will be informed and educated by experts\n\nand are spreading facts and positive hope messages\n\nto citizen by contact. Citizen will trust the\n\npolice and feel safer.",
+            "price": 100000000,
+            "required_skills": []
+        },
+        "police-equipment" :{
+            "name": "Police Equipment",
+            "description": "Police forces will be provided extra safety\n\nequipment in which they feel safer. This increases\n\nthe effectiveness of the police.",
+            "price": 200000000,
+            "required_skills": ["Learn Expertise", "Additional Medical Supplies I"]
+        },
+        "testing" :{
+            "name": "Testing",
+            "description": "Police forces will be provided with test-kits\n\nand can test citizen, which they suspect of illness.",
+            "price": 200000000,
+            "required_skills": ["Learn Expertise"]
+        },
+        "tracking" :{
+            "name": "Tracking Encounters",
+            "description": "The police are now able to track the people,\n\nwhich might have encountered with already\n\ninfected people.",
+            "price": 300000000,
+            "required_skills": ["Learn Expertise", "Testing", "Nationwide Testing"]
+        },
+        "military-1" :{
+            "name": "Military I",
+            "description": "The government deploy military troops in the\n\nmajor cities to provide security and maintain\n\ncontrol. This reduces the chance that citizen\n\nwill violate the law and break out of lockdown.",
+            "price": 100000000,
+            "required_skills": ["Learn Expertise"]
+        },
+        "military-2" :{
+            "name": "Military II",
+            "description": "All military forces are deployed around the\n\nwhole country to provide security and maintain\n\ncontrol. Any outbreak or violation of the law\n\nwill be punished immediately. The military uses\n\ntransport vehicles to provide food to the citizens\n\nand transport infected people to hospitals.",
+            "price": 200000000,
+            "required_skills": ["Learn Expertise", "Military I"]
+        },
+        "military-3" :{
+            "name": "Military III",
+            "description": "All cities are under entry and exit ban.\n\nMajor roads are blocked by military forces.\n\nThe military has the instruction to shoot down\n\nany citizen, who attempts to break out from a\n\nlockdown.",
+            "price": 300000000,
+            "required_skills": ["Learn Expertise", "Military I", "Military II"]
+        },
+        "testing-skill": {
+            "name": "Testing",
+            "description": "",
+            "price": 0,
+            "required_skills": []
+        },
+        "additional-test-kits" :{
+            "name": "Additional Test-Kits",
+            "description": "The government use funds and loans to stock up\n\nthe amount of test-kits. The overall number of\n\ntests per day will increase.",
+            "price": 100000000,
+            "required_skills": []
+        },
+        "upgrade-test-kit-1" :{
+            "name": "Upgrade Test-Kit I",
+            "description": "A research institute developed a new method of\n\ntesting which is more reliable than the old tests.",
+            "price": 200000000,
+            "required_skills": ["Additional Test-Kits"]
+        },
+        "upgrade-test-kit-2" :{
+            "name": "Upgrade Test-Kit II",
+            "description": "Testing is now faster and even more reliable.",
+            "price": 300000000,
+            "required_skills": ["Additional Test-Kits", "Upgrade Test-Kit I"]
+        },
+        "nationwide-testing" :{
+            "name": "Nationwide Testing",
+            "description": "The government declares to not only test the\n\npeople with symptoms and those who had contact to\n\nthose but allowing nationwide tests.",
+            "price": 100000000,
+            "required_skills": ["Additional Test-Kits"]
+        },
+        "dna" :{
+            "name": "DNA/RNA Code-Sequence",
+            "description": "A research institute analysed a code-sequence of\n\nthe (virus). The new discovery will speed up the\n\nresearch for a cure.",
+            "price": 200000000,
+            "required_skills": ["Additional Test-Kits", "Nationwide Testing"]
+        },
+        "immunity-tests" :{
+            "name": "Immunity Tests",
+            "description": "A new antibody test now allows fully reliable\n\ntests which can be done in under 2 hours.",
+            "price": 300000000,
+            "required_skills": ["Additional Test-Kits", "Nationwide Testing", "DNA/RNA Code-Sequence"]
+        },
+        "lockdown-skill" :{
+            "name": "Lockdown",
+            "description": "",
+            "price": 0,
+            "required_skills": []
+        },
+        "lockdown-stage-1" :{
+            "name": "Lockdown Stage I",
+            "description": "Big events with more than 1000 people are\n\ncancelled. The government suggests washing hands\n\nmore often and to hold your hand in front of your\n\nmouth when coughing. Infected people are treated\n\nas usual in average hospitals.",
+            "price": 100000000,
+            "required_skills": []
+        },
+        "lockdown-stage-2" :{
+            "name": "Lockdown Stage II",
+            "description": "Events and Groups with more than 100 people are\n\nforbidden. Infected people are treated isolated\n\nif possible. Citizens are recommended to stay\n\nhome and work from home if possible and only go\n\noutside when necessary. Common public facilities\n\nbeside from school and churches are closed.\n\nCitizens are supervised to avoid contact to others\n\nwhen going out.",
+            "price": 200000000,
+            "required_skills": ["Lockdown Stage I"]
+        },
+        "lockdown-stage-3" :{
+            "name": "Lockdown Stage III",
+            "description": "All public facilities (schools, churches,\n\nuniversities, etc.) are closed. Everyone citizens\n\nare under curfew. Going to the supermarket and\n\n hospitals is still allowed. No more than two\n\nFamilies are allowed to meet in one apartment.\n\nWhen going outside people must keep a distance of\n\n1.5 meters from others.",
+            "price": 300000000,
+            "required_skills": ["Lockdown Stage I", "Lockdown Stage II"]
+        },
+        "lockdown-stage-4" :{
+            "name": "Lockdown Stage IV",
+            "description": "Full lockdown. No one is supposed to be outside\n\nof their houses.Military provide food and water.",
+            "price": 400000000,
+            "required_skills": ["Lockdown Stage I", "Lockdown Stage II", "Lockdown Stage III"]
+        },
+        "public-transport" :{
+            "name": "Public Transport",
+            "description": "Limited public transportation. Drivers are\n\nprovided with more safety so that they can\n\nconcentrate on their work. Wearing a mask is\n\nrequired while using public transportation.\n\nVehicles are cleaned and sterilized daily.",
+            "price": 200000000,
+            "required_skills": ["Lockdown Stage I"]
+        },
+        "restricted-traffic" :{
+            "name": "Restricted Traffic",
+            "description": "No public transportation. Roadblocks prevent\n\ncitizens from using their own car to drive around.\n\nAirports and docks are closed. Only vehicles\n\nallowed are those from the police, the military\n\nand high officials.",
+            "price": 300000000,
+            "required_skills": ["Lockdown Stage I", "Public Transport"]
+        },
+        "financial-support-1" :{
+            "name": "Financial Support I",
+            "description": "The government honour the work of important jobs\n\n(health workers, doctors and even supermarket\n\ncashiers) with a lot of applause and shoutouts.\n\nAfter a lot of complaints and negative critism\n\nfrom the internet and influencers the government\n\nis pressurized to raise the wage of those people\n\na bit.",
+            "price": 250000000,
+            "required_skills": ["Lockdown Stage I", "Public Transport"]
+        },
+        "financial-support-2" :{
+            "name": "Financial Support II",
+            "description": "To assure citizens will stay home and to prevent\n\npeople from going bankrupt the generous government\n\nwill provide a monthly financial support packet\n\nto those who are directly affected by the lockdown.",
+            "price": 250000000,
+            "required_skills": ["Lockdown Stage I", "Public Transport", "Financial Support I"]
+        },
+        "citizen" :{
+            "name": "Citizen",
+            "description": "",
+            "price": 0,
+            "required_skills": []
+        },
+        "expertise-1" :{
+            "name": "Expertise I",
+            "description": "Officials are holding press conferences to make\n\nstatements about the current situation.\n\nSpecialists are recommending behaviours\n\n(hand washing, not touching faces, etc.).\n\nCitizens feel more enlightened and the government\n\nseems transparent and trustworthy.",
+            "price": 100000000,
+            "required_skills": []
+        },
+        "expertise-2" :{
+            "name": "Expertise II",
+            "description": "Officials working together with experts and\n\ninfluencers to help provide positive messages and\n\nhelpful behaviour. This will reduce the spread of\n\nmade up fake news. Citizens are more likely to\n\nadapt recommended behaviours. (washing hands more\n\nfrequently, coughing into elbow, not touching faces,\n\ndistance from other people, etc.)",
+            "price": 200000000,
+            "required_skills": ["Expertise I"]
+        },
+        "expertise-3" :{
+            "name": "Expertise III",
+            "description": "Everyone strictly follows recommended behaviours.\n\n(Excessive hand washing, very high usage of\n\ndisinfectant everywhere, no handshaking when\n\ngreeting others, etc.) Citizens now wear face\n\nmasks to protect others of getting infected.",
+            "price": 300000000,
+            "required_skills": ["Expertise I", "Expertise II"]
+        },
+        "tracking-1" :{
+            "name": "Tracking App I",
+            "description": "The use of a tracking app based on voluntary basis\n\nis now available for citizens to use.",
+            "price": 200000000,
+            "required_skills": ["Expertise I"]
+        },
+        "tracking-2" :{
+            "name": "Tracking App II",
+            "description": "The government overtake the Tracking app.\n\nEvery citizen must use the tracking app to enable\n\nlocalization and to help informing the police and\n\nother citizens about infected people.",
+            "price": 300000000,
+            "required_skills": ["Expertise I", "Tracking App I", "Tracking Encounters"]
+        }
+    
+}
