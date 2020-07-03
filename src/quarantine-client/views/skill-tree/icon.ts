@@ -1,5 +1,6 @@
 import { SkillTreeView } from "./skillTreeView";
 import { UpgradeController } from "../../controller/gui-controller/upgradeController";
+import { SkillController } from "../../controller/gui-controller/skillController";
 import { GuiScene } from "../scenes/gui-scene";
 /**
  * 
