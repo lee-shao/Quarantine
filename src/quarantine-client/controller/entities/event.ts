@@ -40,6 +40,7 @@ export class Event {
             fontSize: '40px',
             fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif'
         };
+        console.log(ethos);
         styleSummary['color'] = (ethos) ? 'green' : 'red'; // summary is red for bad events and green for good events
 
         const ppTitle = new Phaser.GameObjects.Text(GuiScene.instance, 0, 90, title, styleTitle);

@@ -35,6 +35,7 @@ export class NewsPaper extends GuiElement implements TimeSubscriber, TutorialCom
 
         this.x = 0;
         this.y = 780;
+        this.totalCases = 0;
 
         this.backgroundImage = this.scene.add.image(this.x + 300, this.y, 'news').setScale(0.75);
         this.newspaperImage = this.scene.add.image(this.x + 150, this.y + 50, 'flu-virus').setScale(0.3);
@@ -43,7 +44,7 @@ export class NewsPaper extends GuiElement implements TimeSubscriber, TutorialCom
             color:'#000000',
             fontSize: '25px',
         });
-        this.totalInfectionsText = this.scene.add.text(this.x + 30, this.y - 100, `Infections pass ${Stats.formatLargerNumber(this.totalCases)} cases` , {
+        this.totalInfectionsText = this.scene.add.text(this.x + 30, this.y - 100, `Infections pass ${this.totalCases} cases` , {
             fontFamily:'Arial',
             color:'#000000',
             fontSize: '40px',
@@ -78,7 +79,7 @@ export class NewsPaper extends GuiElement implements TimeSubscriber, TutorialCom
         this.cured = this.cases[1];
         this.dead = this.cases[2];
         
-        this.totalInfectionsText.setText(`Infections pass ${totalInfections} cases`);
+        this.totalInfectionsText.setText(`Infections pass ${Stats.formatLargerNumber(totalInfections)} cases`);
     }
 
     public activateComponent(): void {
