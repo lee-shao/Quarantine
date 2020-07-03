@@ -140,12 +140,12 @@ export class Stats {
             invert = true;
         }
 
-        if (value >= 1_000_000_000) { // trillion
+        if (value >= 1_000_000_000_000) { // trillion
             if (invert) value = value * -1;
-            result = (+(value / 1_000_000_000).toFixed(2)).toLocaleString("de-DE") + "  Billion";
+            result = (+(value / 1_000_000_000_000).toFixed(2)).toLocaleString("de-DE") + "  Trillion";
         } else if (value >= 1_000_000_000) { // billion
             if (invert) value = value * -1;
-            result = (+(value / 1_000_000_000).toFixed(2)).toLocaleString("de-DE") + " Mrd.";
+            result = (+(value / 1_000_000_000).toFixed(2)).toLocaleString("de-DE") + " Billion";
         } else if (value >= 1_000_000) { // millions
             if (invert) value = value * -1;
             result = (+(value / 1_000_000).toFixed(2)).toLocaleString("de-DE") + " Mio."; // + before paranthesis clips 0 after the decimal
