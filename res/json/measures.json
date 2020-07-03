@@ -6,7 +6,7 @@
         "daily_cost": 10000000,
         "activated_on_day": -1,
         "frustration" : 1,
-        "isolation_factor" : 3
+        "isolation_factor" : 2
     },
     "lockdown": {
         "name": "Lock Down",
@@ -17,7 +17,7 @@
         "daily_cost": 10000000,
         "activated_on_day": -1,
         "frustration" : 2,
-        "isolation_factor" : 6
+        "isolation_factor" : 4
     },
     "research": {
         "name": "Research",
@@ -39,7 +39,7 @@
         "current_level": 0,
         "description": "",
         "price": [10000000],
-        "daily_cost": 2000,
-        "amount": 3000
+        "daily_cost": 1000,
+        "amount": 1000
     }
 }
