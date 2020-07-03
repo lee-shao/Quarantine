@@ -4,6 +4,8 @@ import { UpgradeController } from '../../controller/gui-controller/upgradeContro
 import { ButtonContainer } from './button-container';
 import { TutorialComponent } from '../tutorial/tutorialComponent';
 import { Stats } from '../../controller/stats';
+import { TimeSubscriber } from '../../models/util/timeSubscriber';
+import { TimeController } from '../../controller/timeController';
 
 /**
  * Extends Phaser.GameObjects.Container and represents the ingame item menu.
@@ -13,7 +15,7 @@ import { Stats } from '../../controller/stats';
  * @author Marvin Kruber
  * @author Shao
  */
-export class ItemMenu extends Phaser.GameObjects.Container implements TutorialComponent {
+export class ItemMenu extends Phaser.GameObjects.Container implements TutorialComponent, TimeSubscriber {
 
     /** Current available budget */
     private budget: number;
@@ -56,6 +58,12 @@ export class ItemMenu extends Phaser.GameObjects.Container implements TutorialCo
         this.scene.add.existing(this);
 
         this.addStatistics();
+
+        TimeController.getInstance().subscribe(this);
+    }
+
+    public notify(): void {
+        this.updateItemMenu();
     }
 
     /** Creates the "profile". That means item menu relevant stats are visualized on the menu. */
@@ -85,8 +93,8 @@ export class ItemMenu extends Phaser.GameObjects.Container implements TutorialCo
         // Add/unlocks button container
         ++this.activationCounter;
         if( this.activationCounter == 1) {
-            new ButtonContainer(this.scene, this.x + 25, 675, 'police', this.measures['police']['price']);
-            new ButtonContainer(this.scene, this.x + 25, 775, 'healthworkers', this.measures['healthworkers']['price']);
+            new ButtonContainer(this.scene, this.x + 25, 675, 'police', this.measures['police']['price'], () => this.updateItemMenu());
+            new ButtonContainer(this.scene, this.x + 25, 775, 'healthworkers', this.measures['healthworkers']['price'], () => this.updateItemMenu());
         } else {
             new ButtonContainer(this.scene, this.x + 25, 475, 'research', this.measures['research']['prices'][0], () => this.upgradeContr.buyResearchLevel());
         }

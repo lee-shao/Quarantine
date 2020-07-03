@@ -291,8 +291,12 @@ export class Stats {
     /** @returns Number of health workers */
     public getNumberOfHealthWorkers(): number {return this.weeklyHW[TimeController.getInstance().getWeeksSinceGameStart()] * this.populationFactor;}
 
-    /** @returns salary for all health workers */
-    public getHWSalary(): number {return this.getNumberOfHealthWorkers() * this.currentSalaryHW;}
+    /** @returns salary for all health workers (minus hw's which were added through the research upgrade) */
+    public getHWSalary(): number {
+        const uC = UpgradeController.getInstance();
+        if (uC.researchExists()) return (this.getNumberOfHealthWorkers() - uC.measures["research"]["number_of_new_health_workers"]) * this.currentSalaryHW;
+        else return this.getNumberOfHealthWorkers() * this.currentSalaryHW;
+    }
 
     /** @returns salary for all police officers */
     public getPOSalary(): number {return this.getNumberOfPolice() * this.currentSalaryPO;}

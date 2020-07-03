@@ -13,7 +13,7 @@
         "I finished upgrading your tablet, by the way. It now receives the newest infection numbers daily. That graph is pretty handy, don't you think? It also features an infection map, if you prefer more abstract imagery. Give it a whirl later."
     ],
     "measures": [
-        "In addition to the discovered infections, there are also undiscoverd ones. You can detect them by using test kits. They cost XX€ per piece and are handed out by our health workers, so you might want to employ more of those by clicking on that new button on the notepad. If a cure were to be found, they would also be the ones to distribute that.",
+        "In addition to the discovered infections, there are also undiscoverd ones. You can detect them by using test kits. They cost 44€ per piece and are handed out by our health workers, so you might want to employ more of those by clicking on that new button on the notepad. If a cure were to be found, they would also be the ones to distribute that.",
         "Our police is also not idling at the moment. They are patroling the streets, quarantining infected people, if they come across them. Feel free to employ more police officers, if that is your strategy. The button is also on the notepad.",
         "Keep in mind though, that you have to pay salaries to all of those people. If you run out of funds, we could get in serious trouble, so budget wisely."
     ],
@@ -25,6 +25,6 @@
         "Also now that you settled in a bit more, you can use that money of yours to develop some perks and techniques. Go ahead and take a look at your skills, there are some nice things to uncover."
     ],
     "lockdown": [
-        "Well the virus sure is more infectious than we feared. This demands more drastic action. On the notepad, you can now call Lockdown, this will make people seriously unhappy and your income will be affected too but that might be necessary sometimes. You can only keep it active for XX days at a time, with XX days in between. So use it wisely."
+        "Well the virus sure is more infectious than we feared. This demands more drastic action. On the notepad, you can now call Lockdown, this will make people seriously unhappy and your income will be affected too but that might be necessary sometimes. So use it wisely."
     ]
 }
