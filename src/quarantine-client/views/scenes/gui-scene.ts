@@ -158,32 +158,32 @@ export class GuiScene extends Phaser.Scene {
     public addLastEvent(title: string, description: string) {
         const styleDesc = { // description style
             color: 'Black',
-            fontSize: '25px',
+            fontSize: '20px',
             fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
-            wordWrap: { width: 550 }
+            wordWrap: { width: 500 }
         };
         const styleTitle = { // title style
             color: 'Black',
             align: 'left',
-            fontSize: '30px',
+            fontSize: '25px',
             fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
-            wordWrap: { width: 450 },
+            wordWrap: { width: 400 },
             
 
         };
         if(!this.eventTitle) {
             // GuiScene.instance.scene.scene.add.rectangle(1670, 600, 480, 100, 0xffffff);
-            this.eventTitle = this.scene.scene.add.text(1480, 580, title, styleTitle);
+            this.eventTitle = this.scene.scene.add.text(1490, 600, title, styleTitle);
         } else {
             this.eventTitle.destroy();
-            this.eventTitle = GuiScene.instance.scene.scene.add.text(1480, 580, title, styleTitle);
+            this.eventTitle = GuiScene.instance.scene.scene.add.text(1490, 600, title, styleTitle);
         }
         if(!this.eventDescription) {
             // GuiScene.instance.scene.scene.add.rectangle(1580, 790, 640, 150, 0xffffff);
-            this.eventDescription = this.scene.scene.add.text(1340, 730, description, styleDesc);
+            this.eventDescription = this.scene.scene.add.text(1375, 730, description, styleDesc);
         } else {
             this.eventDescription.destroy();
-            this.eventDescription = this.scene.scene.add.text(1340, 730, description, styleDesc);
+            this.eventDescription = this.scene.scene.add.text(1375, 730, description, styleDesc);
         }
     }
 
