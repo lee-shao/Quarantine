@@ -11,6 +11,7 @@ import { StatusBar } from '../status-bar/statusBar';
 import { Tablet } from '../tablet/tablet';
 import { NewsPaper } from '../tablet/newspaper';
 import { PetriInfoButton } from '../general-gui-buttons/petriInfoButton';
+import { EventButton } from '../event-button';
 
 /** Scene for user interface elements. */
 export class GuiScene extends Phaser.Scene {
@@ -32,6 +33,8 @@ export class GuiScene extends Phaser.Scene {
     private menu: ItemMenu;
     private skipTutorialBtn: SkipTutorialButton;
     private newspaper: NewsPaper;
+    private eventTitle: Phaser.GameObjects.Text;
+    private eventDescription: Phaser.GameObjects.Text;
 
     private statusBar: StatusBar;
     public mainSceneIsPaused = false;
@@ -123,6 +126,10 @@ export class GuiScene extends Phaser.Scene {
         const skillTreeBtn = new SkillTreeButton(this).create();
         // add the log book button
         const logBookBtn = new LogBookButton(this).create();
+
+        this.buttons.push(new EventButton(this).create().getEventButton());
+        // const eventButton = new EventButton(this).create();
+
         // add the sound buttons
         new SoundButtons(this).create().getSoundButtons().forEach(b => {
             this.buttons.push(b);
@@ -148,6 +155,38 @@ export class GuiScene extends Phaser.Scene {
         if (!this.mainSceneIsPaused) this.statusBar.update();
     }
 
+    public addLastEvent(title: string, description: string) {
+        const styleDesc = { // description style
+            color: 'Black',
+            fontSize: '20px',
+            fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
+            wordWrap: { width: 500 }
+        };
+        const styleTitle = { // title style
+            color: 'Black',
+            align: 'left',
+            fontSize: '25px',
+            fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
+            wordWrap: { width: 400 },
+            
+
+        };
+        if(!this.eventTitle) {
+            // GuiScene.instance.scene.scene.add.rectangle(1670, 600, 480, 100, 0xffffff);
+            this.eventTitle = this.scene.scene.add.text(1490, 600, title, styleTitle);
+        } else {
+            this.eventTitle.destroy();
+            this.eventTitle = GuiScene.instance.scene.scene.add.text(1490, 600, title, styleTitle);
+        }
+        if(!this.eventDescription) {
+            // GuiScene.instance.scene.scene.add.rectangle(1580, 790, 640, 150, 0xffffff);
+            this.eventDescription = this.scene.scene.add.text(1375, 730, description, styleDesc);
+        } else {
+            this.eventDescription.destroy();
+            this.eventDescription = this.scene.scene.add.text(1375, 730, description, styleDesc);
+        }
+    }
+
     //-----Hide/show the buttons while pause/resume
     public showBtns(): void {
         this.buttons.forEach(b => {
@@ -171,4 +210,9 @@ export class GuiScene extends Phaser.Scene {
     public addToVisibleButtons(element: Phaser.GameObjects.Image): void {
         this.buttons.push(element);
     }
+
+    // public static getInstance(scene = null, x = 0, y = 0): GuiScene {
+    //     if(!GuiScene.instance) GuiScene.instance = new GuiScene();
+    //     return GuiScene.instance;
+    // }
 }

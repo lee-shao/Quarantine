@@ -8,7 +8,7 @@ import { TimedEvent } from "./entities/timedEvent";
 import { Controller } from "./controller";
 import { Role } from "../models/util/enums/roles";
 import { TutorialController } from "./gui-controller/tutorialController";
-
+import { EventLog } from "./eventLog";
 /**
  * Singleton controller which implements application logic for events.
  * @author Sebastian Führ
@@ -193,6 +193,9 @@ export class EventController implements TimeSubscriber {
     private callRandomEvent(eventRarity: string): void {
         const idx = this.getRandomIntInclusive(0, this.eventList[eventRarity].length - 1);
         const eventInfo = this.eventList[eventRarity][idx];
+        // debugger
+        console.log("im in callrandomevent");
+        
         new Event(
             EventController.eventFunctionList[eventRarity][idx],
             eventInfo["name"],
@@ -201,6 +204,7 @@ export class EventController implements TimeSubscriber {
             eventInfo["positive"],
             eventInfo["summary"]
         );
+        EventLog.getInstance().updateEventList( eventInfo["name"], eventInfo["description"], eventInfo["image-path"] );
     }
 
     /** Reduces all event counters by one. */

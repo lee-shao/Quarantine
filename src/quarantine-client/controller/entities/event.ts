@@ -12,6 +12,10 @@ import { GuiScene } from "../../views/scenes/gui-scene";
  */
 export class Event {
 
+    private eventTitle: Phaser.GameObjects.Text;
+    private eventDescription: Phaser.GameObjects.Text;
+
+
     /**
      * @param executeEventFunction Should Encapsulates game logic which is executed when the event is triggered. E.g. increment the death counter (removal) of a citizen.
      */
@@ -47,12 +51,12 @@ export class Event {
         ppTitle.setX((1920 / 2) - ppTitle.width / 2);
         const ppDescription = new Phaser.GameObjects.Text(GuiScene.instance, 300, 350, description, styleDesc);
         ppDescription.setWordWrapWidth(1300);
+        GuiScene.instance.addLastEvent(title, description);
         const ppSummary = new Phaser.GameObjects.Text(GuiScene.instance, 300, 700, summary, styleSummary);
         ppSummary.setWordWrapWidth(1100);
         const popup = new PopupWindow(GuiScene.instance, 0, 0, 'event-note', 1600, 80, true, [img, ppTitle, ppDescription, ppSummary], false);
 
         executeEventFunction();
-        popup.createModal();
     }
 
 }
